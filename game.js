@@ -316,27 +316,28 @@ function endGame(allDone = false) {
   const banner = document.getElementById('new-record-banner');
   if (banner) banner.style.display = isNewRecord ? 'flex' : 'none';
 
-  // ── Кнопка «Скопировать результат» ──────────────────────────────
-  const shareBtn  = document.getElementById('share-text-btn');
-  const shareHint = document.getElementById('share-copied-hint');
-  if (shareBtn) {
-    // Переназначаем листенер при каждом конце игры, чтобы цифры были актуальны
-    const freshBtn = shareBtn.cloneNode(true);
-    shareBtn.replaceWith(freshBtn);
+  // ── Шаринг: генерируем ключ, сохраняем результат, строим ссылку ──
+  const key = Array.from(crypto.getRandomValues(new Uint8Array(5)))
+    .map(b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36])
+    .join('');
+  localStorage.setItem('v1_result_' + key, JSON.stringify({ correct, wrong, total, pct, date }));
+
+  const base     = location.href.replace(/\/[^/]*(\?.*)?$/, '/');
+  const shareUrl = document.getElementById('share-url');
+  if (shareUrl) shareUrl.value = base + 'result.html#' + key;
+
+  const copyBtn = document.getElementById('copy-btn');
+  if (copyBtn) {
+    const freshBtn = copyBtn.cloneNode(true);
+    copyBtn.replaceWith(freshBtn);
     freshBtn.addEventListener('click', () => {
-      const text =
-        `🌍 Флаги Мира — результат игры\n` +
-        `✅ Угадано: ${correct} из ${total}\n` +
-        `❌ Ошибок: ${wrong}\n` +
-        `📊 Точность: ${pct}% правильных\n` +
-        `👉 Сыграй сам: https://ithemaybe.github.io/game/`;
-      navigator.clipboard.writeText(text).then(() => {
-        const hint = document.getElementById('share-copied-hint');
-        if (hint) {
-          hint.textContent = '✓ Скопировано!';
-          setTimeout(() => { hint.textContent = ''; }, 2000);
-        }
+      const url = document.getElementById('share-url');
+      if (!url) return;
+      navigator.clipboard.writeText(url.value).catch(() => {
+        url.select(); document.execCommand('copy');
       });
+      freshBtn.classList.add('copied');
+      setTimeout(() => freshBtn.classList.remove('copied'), 1500);
     });
   }
 }

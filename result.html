@@ -33,26 +33,6 @@
   }
   .record-sub { font-size: .8rem; color: var(--muted, #6b7494); }
   .record-icon { font-size: 2.2rem; filter: drop-shadow(0 0 10px rgba(245,200,66,.4)); }
-
-  .share-text-btn {
-    display: flex; align-items: center; gap: .5rem;
-    background: var(--card, #161b2e);
-    border: 1.5px solid var(--border, #232a42);
-    border-radius: 12px;
-    padding: .7rem 1.2rem;
-    color: var(--muted, #6b7494);
-    font-family: 'Inter', sans-serif;
-    font-size: .9rem; cursor: pointer;
-    transition: .2s;
-    width: 100%;
-    justify-content: center;
-  }
-  .share-text-btn:hover { border-color: var(--accent, #4f8cff); color: var(--accent, #4f8cff); }
-  .share-copied-hint {
-    text-align: center; font-size: .8rem;
-    color: var(--correct, #22d3a3);
-    min-height: 1.2rem;
-  }
   .notfound-state {
     display: flex; flex-direction: column;
     align-items: center; gap: 1.5rem;
@@ -69,7 +49,7 @@
 <div class="wrapper">
   <div class="screen active" style="text-align:center;" id="result-block">
 
-    <!-- Последний результат -->
+    <!-- Найден результат -->
     <div id="found-state" style="display:none; flex-direction:column; align-items:center; gap:1.5rem;">
       <div class="result-trophy anim-in" id="result-trophy">🏆</div>
       <h2 class="result-title anim-in" style="animation-delay:.1s">Результат игры</h2>
@@ -99,28 +79,28 @@
         <div class="pct-text" id="pct-text">0% правильных</div>
       </div>
 
-      <!-- Личный рекорд -->
+      <!-- Личный рекорд (только если открыт на том же устройстве) -->
       <div class="record-card anim-in" id="record-block" style="animation-delay:.35s; display:none;">
         <div class="record-left">
           <div class="record-label">🏅 Личный рекорд</div>
           <div class="record-value" id="record-value">—</div>
-          <div class="record-sub" id="record-sub"></div>
+          <div class="record-sub"   id="record-sub"></div>
         </div>
         <div class="record-icon">🏆</div>
       </div>
 
-      <!-- Поделиться -->
+      <!-- Поле с ссылкой -->
       <div class="share-box anim-in" style="animation-delay:.4s; width:100%">
-        <span class="share-label">Поделиться результатом:</span>
-        <button class="share-text-btn" id="share-text-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-          </svg>
-          Скопировать результат
-        </button>
-        <div class="share-copied-hint" id="share-copied-hint"></div>
+        <span class="share-label">Ссылка на этот результат:</span>
+        <div class="share-row">
+          <input class="share-input" id="share-url" readonly>
+          <button class="copy-btn" id="copy-btn" title="Скопировать">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <a href="index.html" class="btn-start" style="display:inline-block; text-decoration:none; margin-top:.5rem;">
@@ -128,11 +108,11 @@
       </a>
     </div>
 
-    <!-- Нет данных -->
+    <!-- Результат не найден -->
     <div id="notfound-state" class="notfound-state" style="display:none;">
       <div class="hero-icon">🚩</div>
       <h2 class="result-title">Результат не найден</h2>
-      <p class="hero-sub">Сначала сыграй хотя бы одну партию!</p>
+      <p class="hero-sub">Ссылка устарела или недействительна.<br>Результаты хранятся только в браузере игрока.</p>
       <a href="index.html" class="btn-start" style="display:inline-block; text-decoration:none;">
         На главную
       </a>
@@ -143,21 +123,21 @@
 
 <script>
 (function () {
-  const last   = JSON.parse(localStorage.getItem('v1_last')   || 'null');
-  const record = JSON.parse(localStorage.getItem('v1_record') || 'null');
+  const key    = location.hash.slice(1);           // всё после #
+  const stored = key ? localStorage.getItem('v1_result_' + key) : null;
+  const data   = stored ? JSON.parse(stored) : null;
 
   const foundEl    = document.getElementById('found-state');
   const notfoundEl = document.getElementById('notfound-state');
 
-  if (!last) {
+  if (!data) {
     notfoundEl.style.display = 'flex';
     return;
   }
 
-  // Показываем последний результат
   foundEl.style.display = 'flex';
 
-  const { correct, wrong, total, pct, date } = last;
+  const { correct, wrong, total, pct, date } = data;
 
   document.getElementById('result-trophy').textContent =
     pct >= 80 ? '🏆' : pct >= 50 ? '🥈' : '🌍';
@@ -167,12 +147,14 @@
   document.getElementById('res-total').textContent   = total;
   document.getElementById('result-date').textContent = date || '';
   document.getElementById('pct-text').textContent    = pct + '% правильных';
+  document.getElementById('share-url').value         = location.href;
 
   requestAnimationFrame(() => {
     document.getElementById('pct-fill').style.width = pct + '%';
   });
 
-  // Показываем рекорд если есть
+  // Показываем рекорд если открыто на том же устройстве
+  const record = JSON.parse(localStorage.getItem('v1_record') || 'null');
   if (record) {
     const recBlock = document.getElementById('record-block');
     recBlock.style.display = 'flex';
@@ -182,20 +164,15 @@
       record.pct + '% точность · ' + (record.date || '');
   }
 
-  // Кнопка «Скопировать результат»
-  document.getElementById('share-text-btn').addEventListener('click', () => {
-    const text =
-      `🌍 Флаги Мира — результат игры\n` +
-      `✅ Угадано: ${correct} из ${total}\n` +
-      `❌ Ошибок: ${wrong}\n` +
-      `📊 Точность: ${pct}% правильных\n` +
-      `👉 Сыграй сам: https://ithemaybe.github.io/game/`;
-
-    navigator.clipboard.writeText(text).then(() => {
-      const hint = document.getElementById('share-copied-hint');
-      hint.textContent = '✓ Скопировано!';
-      setTimeout(() => { hint.textContent = ''; }, 2000);
+  // Копирование ссылки
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const url = document.getElementById('share-url');
+    navigator.clipboard.writeText(url.value).catch(() => {
+      url.select(); document.execCommand('copy');
     });
+    const btn = document.getElementById('copy-btn');
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 1500);
   });
 })();
 </script>

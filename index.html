@@ -17,6 +17,44 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .record-card {
+    width: 100%;
+    background: var(--card, #161b2e);
+    border: 1px solid var(--border, #232a42);
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .record-left { display: flex; flex-direction: column; gap: .2rem; }
+  .record-label {
+    font-size: .7rem; letter-spacing: .08em;
+    color: var(--muted, #6b7494);
+    text-transform: uppercase;
+    font-family: 'Unbounded', sans-serif;
+  }
+  .record-value {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1.8rem; font-weight: 800;
+    color: #f5c842;
+  }
+  .record-sub { font-size: .8rem; color: var(--muted, #6b7494); }
+  .record-icon { font-size: 2.5rem; filter: drop-shadow(0 0 12px rgba(245,200,66,.4)); }
+
+  .new-record-banner {
+    align-items: center; justify-content: center; gap: .5rem;
+    background: linear-gradient(135deg, rgba(245,200,66,.15), rgba(245,200,66,.05));
+    border: 1px solid rgba(245,200,66,.35);
+    border-radius: 16px; padding: .75rem 1.2rem;
+    font-family: 'Unbounded', sans-serif;
+    font-size: .85rem; font-weight: 700;
+    color: #f5c842;
+    width: 100%;
+  }
+</style>
 </head>
 <body>
 
@@ -36,6 +74,17 @@
     <div class="hero-icon">🌍</div>
     <h1 class="hero-title">Флаги<br><span>Мира</span></h1>
     <p class="hero-sub">Угадай страну по флагу.<br>60 секунд — сколько успеешь?</p>
+
+    <!-- Плашка рекорда -->
+    <div class="record-card" id="record-card">
+      <div class="record-left">
+        <div class="record-label">🏅 Личный рекорд</div>
+        <div class="record-value" id="record-count">—</div>
+        <div class="record-sub"  id="record-sub">Сыграй первую партию!</div>
+      </div>
+      <div class="record-icon">🏆</div>
+    </div>
+
     <button class="btn-start" id="btn-start">Начать игру</button>
     <div class="hero-hint">← → кнопки 1–4 для ответа</div>
   </div>
@@ -82,7 +131,7 @@
     <h2 class="result-title">Игра окончена!</h2>
 
     <!-- Баннер нового рекорда -->
-    <div class="new-record-banner" id="new-record-banner" style="display:none">
+    <div class="new-record-banner" id="new-record-banner" style="display:none;">
       🎉 Новый личный рекорд!
     </div>
 
@@ -108,18 +157,18 @@
       <div class="pct-text" id="pct-text">0% правильных</div>
     </div>
 
-    <!-- Кнопка поделиться (текстом, без URL с параметрами) -->
+    <!-- Поле с ссылкой -->
     <div class="share-box">
-      <span class="share-label">Поделиться результатом:</span>
-      <button class="share-text-btn" id="share-text-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-          <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-        </svg>
-        Скопировать результат
-      </button>
-      <div class="share-copied-hint" id="share-copied-hint"></div>
+      <span class="share-label">Ссылка на результат:</span>
+      <div class="share-row">
+        <input class="share-input" id="share-url" readonly>
+        <button class="copy-btn" id="copy-btn" title="Скопировать">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <button class="btn-start" id="btn-again">Играть снова</button>
@@ -130,52 +179,28 @@
 <script src="game.js"></script>
 <script src="swimming-cat.js"></script>
 
-<!-- Рекорды и шэринг через localStorage -->
+<!-- Плашка рекорда на старт-экране -->
 <script>
 (function () {
-  const RECORD_KEY = 'v1_record';
-
-  /* ── Сохранить результат и проверить рекорд ── */
-  window.saveV1Result = function (correct, wrong, total) {
-    const pct     = total > 0 ? Math.round(correct / total * 100) : 0;
-    const date    = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
-    const saved   = JSON.parse(localStorage.getItem(RECORD_KEY) || 'null');
-    const isNew   = !saved || correct > saved.correct;
-
-    // Всегда сохраняем последний результат
-    localStorage.setItem('v1_last', JSON.stringify({ correct, wrong, total, pct, date }));
-
-    // Обновляем рекорд если побит
-    if (isNew) {
-      localStorage.setItem(RECORD_KEY, JSON.stringify({ correct, wrong, total, pct, date }));
+  function renderRecord() {
+    const rec = JSON.parse(localStorage.getItem('v1_record') || 'null');
+    const countEl = document.getElementById('record-count');
+    const subEl   = document.getElementById('record-sub');
+    if (!countEl || !subEl) return;
+    if (rec) {
+      countEl.textContent = rec.correct + ' из ' + rec.total;
+      subEl.textContent   = rec.pct + '% точность · ' + (rec.date || '');
+    } else {
+      countEl.textContent = '—';
+      subEl.textContent   = 'Сыграй первую партию!';
     }
+  }
 
-    // Баннер нового рекорда
-    const banner = document.getElementById('new-record-banner');
-    if (banner) banner.style.display = isNew ? 'flex' : 'none';
-  };
+  renderRecord();
 
-  /* ── Кнопка «Скопировать результат» ── */
-  document.getElementById('share-text-btn')?.addEventListener('click', () => {
-    const correct = document.getElementById('res-correct')?.textContent || '0';
-    const wrong   = document.getElementById('res-wrong')?.textContent   || '0';
-    const total   = document.getElementById('res-total')?.textContent   || '0';
-    const pct     = document.getElementById('pct-text')?.textContent    || '';
-
-    const text =
-      `🌍 Флаги Мира — результат игры\n` +
-      `✅ Угадано: ${correct} из ${total}\n` +
-      `❌ Ошибок: ${wrong}\n` +
-      `📊 Точность: ${pct}\n` +
-      `👉 Сыграй сам: https://ithemaybe.github.io/game/`;
-
-    navigator.clipboard.writeText(text).then(() => {
-      const hint = document.getElementById('share-copied-hint');
-      if (hint) {
-        hint.textContent = '✓ Скопировано!';
-        setTimeout(() => { hint.textContent = ''; }, 2000);
-      }
-    });
+  // Обновляем плашку при возврате на старт
+  document.getElementById('btn-again')?.addEventListener('click', () => {
+    setTimeout(renderRecord, 50);
   });
 })();
 </script>
