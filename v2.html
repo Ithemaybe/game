@@ -7,12 +7,12 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ithemaybe.github.io/v2.html">
 <meta property="og:title" content="Страны Мира 🌍 — V2 Режим">
-<meta property="og:description" content="Сколько стран назовёшь? Выбери время и режим ввода!">
+<meta property="og:description" content="10 минут — сколько стран назовёшь? Напиши максимум!">
 <meta property="og:image" content="https://flagcdn.com/w640/un.png">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Страны Мира 🌍 — V2 Режим">
-<meta name="twitter:description" content="Сколько стран назовёшь?">
+<meta name="twitter:description" content="10 минут — сколько стран назовёшь?">
 <meta name="twitter:image" content="https://flagcdn.com/w640/un.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
     <div class="badge-v2">✦ V2 РЕЖИМ</div>
     <div class="hero-icon">🗺️</div>
     <h1 class="hero-title">Страны<br><span>Мира</span></h1>
-    <p class="hero-sub">Вспомни как можно больше стран.<br>Выбери время и способ ввода!</p>
+    <p class="hero-sub">Вспомни как можно больше стран за 10 минут.<br>Вводи названия — считаем правильные!</p>
 
     <!-- Блок рекорда -->
     <div class="record-card" id="record-card">
@@ -43,42 +43,12 @@
       <div class="record-icon">🏆</div>
     </div>
 
-    <!-- Выбор времени -->
-    <div class="options-card">
-      <div class="options-title">⏱️ Время игры</div>
-      <div class="time-selector">
-        <button class="time-btn" data-time="60">1 мин</button>
-        <button class="time-btn" data-time="300">5 мин</button>
-        <button class="time-btn active" data-time="600">10 мин</button>
-      </div>
-    </div>
-
-    <!-- Выбор режима ввода -->
-    <div class="options-card">
-      <div class="options-title">🎙️ Способ ввода</div>
-      <div class="input-mode-selector">
-        <button class="mode-btn active" data-mode="text" id="mode-text-btn">
-          <span class="mode-icon">⌨️</span>
-          <span class="mode-label">Письменный</span>
-          <span class="mode-desc">Вводи страны с клавиатуры</span>
-        </button>
-        <button class="mode-btn" data-mode="voice" id="mode-voice-btn">
-          <span class="mode-icon">🎙️</span>
-          <span class="mode-label">Голосовой</span>
-          <span class="mode-desc">Произноси названия вслух</span>
-        </button>
-      </div>
-      <div id="voice-warning" class="voice-warning" style="display:none;">
-        ⚠️ Голосовой режим требует разрешения на микрофон и работает только в браузерах с поддержкой Web Speech API (Chrome, Edge, Safari).
-      </div>
-    </div>
-
     <div class="rules-card">
       <div class="rules-title">📋 Правила</div>
       <div class="rules-list">
-        <div class="rule-item"><span class="rule-icon">⏱️</span><span>Выбери время — используй каждую секунду</span></div>
-        <div class="rule-item"><span class="rule-icon">⌨️</span><span>Вводи названия на <strong>русском</strong> — с клавиатуры или голосом</span></div>
-        <div class="rule-item"><span class="rule-icon">✅</span><span>Засчитываются только существующие страны</span></div>
+        <div class="rule-item"><span class="rule-icon">⏱️</span><span>У тебя ровно <strong>10 минут</strong> — используй каждую секунду</span></div>
+        <div class="rule-item"><span class="rule-icon">⌨️</span><span>Вводи названия стран на <strong>русском</strong> и нажимай Enter или кнопку</span></div>
+        <div class="rule-item"><span class="rule-icon">✅</span><span>Засчитываются только существующие страны — опечатки не считаются</span></div>
         <div class="rule-item"><span class="rule-icon">🔁</span><span>Повторы и дубликаты не засчитываются</span></div>
         <div class="rule-item"><span class="rule-icon">🏆</span><span>В мире <strong>195</strong> стран — сможешь назвать больше половины?</span></div>
       </div>
@@ -119,8 +89,7 @@
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
 
-    <!-- Письменный ввод -->
-    <div class="input-area" id="text-input-area">
+    <div class="input-area">
       <input
         type="text"
         class="country-input"
@@ -131,18 +100,6 @@
         spellcheck="false"
       >
       <button class="submit-btn" id="submit-btn">Ввести</button>
-    </div>
-
-    <!-- Голосовой ввод -->
-    <div class="voice-area" id="voice-input-area" style="display:none;">
-      <button class="voice-btn" id="voice-btn">
-        <span class="voice-btn-icon">🎙️</span>
-        <span class="voice-btn-label" id="voice-btn-label">Нажми и говори</span>
-      </button>
-      <div class="voice-listening" id="voice-listening">
-        <div class="voice-pulse"></div>
-        <span id="voice-interim">Слушаю...</span>
-      </div>
     </div>
 
     <div class="feedback-toast" id="feedback-toast"></div>
@@ -210,6 +167,7 @@
 (function () {
   const RECORD_KEY = 'v2_record';
 
+  /* ── Показать рекорд на старте ── */
   function renderStartRecord() {
     const saved = JSON.parse(localStorage.getItem(RECORD_KEY) || 'null');
     const countEl = document.getElementById('record-count');
@@ -224,6 +182,7 @@
     }
   }
 
+  /* ── Сохранить рекорд после игры ── */
   function trySetRecord(count, pct) {
     const saved   = JSON.parse(localStorage.getItem(RECORD_KEY) || 'null');
     const isNew   = !saved || count > saved.count;
@@ -238,6 +197,7 @@
     }
   }
 
+  /* ── Хук: наблюдаем за появлением экрана результатов ── */
   const observer = new MutationObserver(() => {
     const resultScreen = document.getElementById('result-screen');
     if (resultScreen && resultScreen.classList.contains('active')) {
@@ -251,6 +211,7 @@
 
   observer.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
 
+  /* ── Также слушаем кнопку «Играть снова» — обновляем рекорд на старте ── */
   document.addEventListener('click', function (e) {
     if (e.target.id === 'btn-again' || e.target.id === 'btn-start') {
       setTimeout(renderStartRecord, 50);

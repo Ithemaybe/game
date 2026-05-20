@@ -1,10 +1,10 @@
 'use strict';
 
-// ══════════════════════════════════════════════════════
-//  DATA
-// ══════════════════════════════════════════════════════
+// ── Full country list (195 recognized states) ─────────────────────
+// Includes common aliases so players don't get stuck on spelling
 
 const COUNTRIES = new Set([
+  // Европа
   "Россия","Германия","Франция","Италия","Испания","Великобритания",
   "Польша","Нидерланды","Швеция","Норвегия","Финляндия","Швейцария",
   "Австрия","Бельгия","Португалия","Греция","Румыния","Венгрия",
@@ -13,6 +13,7 @@ const COUNTRIES = new Set([
   "Латвия","Эстония","Молдова","Албания","Северная Македония",
   "Черногория","Ирландия","Исландия","Люксембург","Мальта","Кипр",
   "Лихтенштейн","Монако","Андорра","Сан-Марино","Ватикан",
+  // Азия
   "Китай","Япония","Индия","Южная Корея","Индонезия","Таиланд",
   "Вьетнам","Филиппины","Малайзия","Сингапур","Казахстан",
   "Саудовская Аравия","ОАЭ","Иран","Ирак","Пакистан","Бангладеш",
@@ -22,6 +23,7 @@ const COUNTRIES = new Set([
   "Кыргызстан","Азербайджан","Армения","Грузия","Ливан","Кувейт",
   "Катар","Бахрейн","Оман","Йемен","Бруней","Восточный Тимор",
   "Палестина",
+  // Африка
   "Египет","ЮАР","Нигерия","Кения","Марокко","Эфиопия","Танзания",
   "Гана","Алжир","Тунис","Ливия","Судан","Южный Судан","Конго",
   "ДР Конго","Ангола","Мозамбик","Замбия","Зимбабве","Уганда",
@@ -31,590 +33,352 @@ const COUNTRIES = new Set([
   "Кабо-Верде","Сомали","Джибути","Эритрея","Экваториальная Гвинея",
   "Габон","ЦАР","Намибия","Ботсвана","Лесото","Эсватини","Малави",
   "Мадагаскар","Маврикий","Сейшелы","Коморы","Сан-Томе и Принсипи",
+  // Северная и Центральная Америка
   "США","Канада","Мексика","Куба","Гаити","Доминиканская Республика",
   "Ямайка","Тринидад и Тобаго","Панама","Коста-Рика","Никарагуа",
   "Гондурас","Сальвадор","Гватемала","Белиз","Багамы","Барбадос",
   "Сент-Люсия","Гренада","Антигуа и Барбуда","Доминика",
   "Сент-Китс и Невис","Сент-Винсент и Гренадины",
+  // Южная Америка
   "Бразилия","Аргентина","Колумбия","Перу","Чили","Венесуэла",
   "Боливия","Парагвай","Уругвай","Эквадор","Гайана","Суринам",
+  // Океания
   "Австралия","Новая Зеландия","Папуа — Новая Гвинея","Фиджи",
   "Соломоновы Острова","Вануату","Самоа","Кирибати","Тонга",
   "Микронезия","Палау","Маршалловы Острова","Науру","Тувалу",
 ]);
 
+// ── Alias map: alternate spellings → canonical ────────────────────
 const ALIASES = {
-  "рф":"Россия","российская федерация":"Россия",
-  "сша":"США","америка":"США","соединённые штаты":"США","соединенные штаты":"США","штаты":"США",
-  "британия":"Великобритания","англия":"Великобритания","великая британия":"Великобритания","uk":"Великобритания",
-  "оаэ":"ОАЭ","объединённые арабские эмираты":"ОАЭ","объединенные арабские эмираты":"ОАЭ","эмираты":"ОАЭ",
-  "дрк":"ДР Конго","демократическая республика конго":"ДР Конго","конго-киншаса":"ДР Конго","заир":"ДР Конго",
-  "юар":"ЮАР","южная африка":"ЮАР",
-  "цар":"ЦАР","центральноафриканская республика":"ЦАР",
-  "чешская республика":"Чехия","чехословакия":"Чехия",
-  "кндр":"Северная Корея",
-  "корея":"Южная Корея",
-  "бирма":"Мьянма",
-  "свазиленд":"Эсватини",
-  "македония":"Северная Македония",
-  "тимор-лесте":"Восточный Тимор",
-  "папуа новая гвинея":"Папуа — Новая Гвинея","папуа-новая гвинея":"Папуа — Новая Гвинея",
-  "кот д'ивуар":"Кот-д'Ивуар","кот дивуар":"Кот-д'Ивуар","берег слоновой кости":"Кот-д'Ивуар",
-  "босния":"Босния и Герцеговина","герцеговина":"Босния и Герцеговина",
-  "тринидад":"Тринидад и Тобаго",
-  "антигуа":"Антигуа и Барбуда",
-  "сент китс":"Сент-Китс и Невис","сент-китс":"Сент-Китс и Невис",
-  "сент винсент":"Сент-Винсент и Гренадины","сент-винсент":"Сент-Винсент и Гренадины",
-  "сан томе":"Сан-Томе и Принсипи","сан-томе":"Сан-Томе и Принсипи",
-  "соломоновы острова":"Соломоновы Острова",
-  "маршалловы острова":"Маршалловы Острова",
-  "федеративные штаты микронезии":"Микронезия",
-  "палестинская автономия":"Палестина",
-  "голландия":"Нидерланды",
-  "белоруссия":"Беларусь",
-  "молдавия":"Молдова",
-  "киргизия":"Кыргызстан","киргизстан":"Кыргызстан",
+  // Россия
+  "рф": "Россия", "российская федерация": "Россия",
+  // США
+  "сша": "США", "америка": "США", "соединённые штаты": "США",
+  "соединенные штаты": "США", "штаты": "США",
+  // Великобритания
+  "великобритания": "Великобритания", "британия": "Великобритания",
+  "англия": "Великобритания", "великая британия": "Великобритания",
+  "uk": "Великобритания",
+  // ОАЭ
+  "оаэ": "ОАЭ", "объединённые арабские эмираты": "ОАЭ",
+  "объединенные арабские эмираты": "ОАЭ", "эмираты": "ОАЭ",
+  // ДР Конго
+  "дрк": "ДР Конго", "демократическая республика конго": "ДР Конго",
+  "конго-киншаса": "ДР Конго", "заир": "ДР Конго",
+  // ЮАР
+  "юар": "ЮАР", "южная африка": "ЮАР",
+  // ЦАР
+  "цар": "ЦАР", "центральноафриканская республика": "ЦАР",
+  // Чехия
+  "чехия": "Чехия", "чешская республика": "Чехия", "чехословакия": "Чехия",
+  // Северная Корея
+  "северная корея": "Северная Корея", "кндр": "Северная Корея",
+  // Южная Корея
+  "южная корея": "Южная Корея", "корея": "Южная Корея",
+  // Тайвань (спорная — не включаем в набор, но признаём как ввод)
+  // Мьянма
+  "мьянма": "Мьянма", "бирма": "Мьянма",
+  // Эсватини
+  "эсватини": "Эсватини", "свазиленд": "Эсватини",
+  // Северная Македония
+  "северная македония": "Северная Македония", "македония": "Северная Македония",
+  // Восточный Тимор
+  "восточный тимор": "Восточный Тимор", "тимор-лесте": "Восточный Тимор",
+  // Папуа
+  "папуа новая гвинея": "Папуа — Новая Гвинея",
+  "папуа-новая гвинея": "Папуа — Новая Гвинея",
+  // Кот-д'Ивуар
+  "кот д'ивуар": "Кот-д'Ивуар", "кот дивуар": "Кот-д'Ивуар",
+  "берег слоновой кости": "Кот-д'Ивуар",
+  // Босния
+  "босния": "Босния и Герцеговина", "герцеговина": "Босния и Герцеговина",
+  // Тринидад
+  "тринидад": "Тринидад и Тобаго",
+  // Антигуа
+  "антигуа": "Антигуа и Барбуда",
+  // Сент-Китс
+  "сент китс": "Сент-Китс и Невис", "сент-китс": "Сент-Китс и Невис",
+  // Сент-Винсент
+  "сент винсент": "Сент-Винсент и Гренадины",
+  "сент-винсент": "Сент-Винсент и Гренадины",
+  // Сан-Томе
+  "сан томе": "Сан-Томе и Принсипи",
+  "сан-томе": "Сан-Томе и Принсипи",
+  // Соломоновы острова
+  "соломоновы острова": "Соломоновы Острова",
+  "маршалловы острова": "Маршалловы Острова",
+  // Микронезия
+  "федеративные штаты микронезии": "Микронезия",
+  // Палестина
+  "палестинская автономия": "Палестина",
+  // Нидерланды
+  "голландия": "Нидерланды", "нидерланды": "Нидерланды",
+  // Беларусь
+  "белоруссия": "Беларусь",
+  // Молдова
+  "молдавия": "Молдова",
+  // Кыргызстан
+  "киргизия": "Кыргызстан", "киргизстан": "Кыргызстан",
+  // Каждая страна сама на себя (lowercase)
 };
 
-// Нормализация для голосового ввода: убираем шумы распознавания
-const VOICE_NORMALIZE = {
-  // Часто распознаётся неправильно
-  "германии":"германия","россию":"россия","францию":"франция",
-  "китае":"китай","японии":"япония","индии":"индия",
-  "бразилии":"бразилия","аргентины":"аргентина","канады":"канада",
-  "мексики":"мексика","италии":"италия","испании":"испания",
-  "польши":"польша","швеции":"швеция","норвегии":"норвегия",
-  "турции":"турция","египте":"египет","нигерии":"нигерия",
-  "кении":"кения","марокко":"марокко","алжира":"алжир",
-  "судане":"судан","анголы":"ангола","мозамбик":"мозамбик",
-  "уганды":"уганда","ганы":"гана","мали":"мали",
-  "чаде":"чад","нигере":"нигер","бенине":"бенин",
-  "того":"того","либерии":"либерия","гамбии":"гамбия",
-  "сомали":"сомали","джибути":"джибути",
-  "намибии":"намибия","ботсваны":"ботсвана",
-  "австралии":"австралия","фиджи":"фиджи","самоа":"самоа",
-  "тонга":"тонга","палау":"палау","науру":"науру","тувалу":"тувалу",
-};
-
+// Pre-build lowercase lookup for all canonical countries
 const CANONICAL_LOWER = new Map();
-for (const c of COUNTRIES) CANONICAL_LOWER.set(c.toLowerCase(), c);
-
-function normalizeWord(w) {
-  return VOICE_NORMALIZE[w] || w;
+for (const c of COUNTRIES) {
+  CANONICAL_LOWER.set(c.toLowerCase(), c);
 }
 
+/**
+ * Try to match user input to a canonical country name.
+ * Returns canonical name or null.
+ */
 function matchCountry(raw) {
-  const t = raw.trim();
-  if (!t) return null;
-  const lo = t.toLowerCase();
-  if (CANONICAL_LOWER.has(lo)) return CANONICAL_LOWER.get(lo);
-  if (ALIASES[lo]) {
-    const a = ALIASES[lo];
-    if (COUNTRIES.has(a)) return a;
-    if (CANONICAL_LOWER.has(a.toLowerCase())) return CANONICAL_LOWER.get(a.toLowerCase());
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  const lower = trimmed.toLowerCase();
+
+  // Direct canonical match
+  if (CANONICAL_LOWER.has(lower)) return CANONICAL_LOWER.get(lower);
+
+  // Alias match
+  if (ALIASES[lower]) {
+    const alias = ALIASES[lower];
+    // Make sure alias is an actual country
+    if (COUNTRIES.has(alias)) return alias;
+    // Alias might itself need canonical lookup
+    const aliasLower = alias.toLowerCase();
+    if (CANONICAL_LOWER.has(aliasLower)) return CANONICAL_LOWER.get(aliasLower);
   }
+
   return null;
 }
 
-// Жадный разбор транскрипта слева направо.
-// Нормализует падежи, пробует окна 4→1 слово.
-// Возвращает список найденных стран (с дедупликацией внутри фрагмента).
-function extractCountries(text) {
-  const raw  = text.trim().toLowerCase();
-  // Токенизация: убираем знаки пунктуации, нормализуем пробелы
-  const words = raw.replace(/[.,!?;:]/g, ' ').split(/\s+/).filter(Boolean);
-  const found = [];
-  const seenInThisChunk = new Set(); // не дублируем внутри одного финального результата
-  let i = 0;
-  while (i < words.length) {
-    let matched = null;
-    let matchLen = 0;
-    const maxLen = Math.min(4, words.length - i);
-    for (let len = maxLen; len >= 1; len--) {
-      const slice = words.slice(i, i + len);
-      // Пробуем как есть и с нормализацией каждого слова
-      const phrase1 = slice.join(' ');
-      const phrase2 = slice.map(normalizeWord).join(' ');
-      for (const phrase of [phrase1, phrase2]) {
-        const c = matchCountry(phrase);
-        if (c && !seenInThisChunk.has(c)) {
-          matched = c; matchLen = len;
-          break;
-        }
-      }
-      if (matched) break;
-    }
-    if (matched) {
-      seenInThisChunk.add(matched);
-      found.push(matched);
-      i += matchLen;
-    } else {
-      i++;
-    }
-  }
-  return found;
-}
+// ── Constants ─────────────────────────────────────────────────────
+const TOTAL_COUNTRIES = 195;
+const DURATION_SECS   = 10 * 60; // 10 minutes
+const CIRCUMFERENCE   = 2 * Math.PI * 50; // r=50
 
-// ══════════════════════════════════════════════════════
-//  CONSTANTS & STATE
-// ══════════════════════════════════════════════════════
+// ── State ─────────────────────────────────────────────────────────
+let answered   = new Set();  // canonical names entered correctly
+let timeLeft   = DURATION_SECS;
+let timerInterval = null;
+let gameActive = false;
 
-const TOTAL   = 195;
-const CIRCUM  = 2 * Math.PI * 50;
+// ── DOM refs ──────────────────────────────────────────────────────
+const screens = {
+  start:  document.getElementById('start-screen'),
+  game:   document.getElementById('game-screen'),
+  result: document.getElementById('result-screen'),
+};
+const countCorrectEl  = document.getElementById('count-correct');
+const pctValEl        = document.getElementById('pct-val');
+const timerTextEl     = document.getElementById('timer-text');
+const ringFillEl      = document.getElementById('ring-fill');
+const progressFillEl  = document.getElementById('progress-fill');
+const inputEl         = document.getElementById('country-input');
+const submitBtn       = document.getElementById('submit-btn');
+const feedbackEl      = document.getElementById('feedback-toast');
+const answeredHeader  = document.getElementById('answered-header');
+const answeredGrid    = document.getElementById('answered-grid');
 
-let selectedDuration = 600;
-let selectedMode     = 'text';
+const resCorrectEl    = document.getElementById('res-correct');
+const resPctEl        = document.getElementById('res-pct');
+const resultTitleEl   = document.getElementById('result-title');
+const resultSubEl     = document.getElementById('result-subtitle');
+const resultTrophyEl  = document.getElementById('result-trophy');
+const resultTagsEl    = document.getElementById('result-tags');
+const shareUrlEl      = document.getElementById('share-url');
+const copyBtnEl       = document.getElementById('copy-btn');
 
-let answered      = new Set();
-let timeLeft      = 0;
-let timerID       = null;   // setInterval handle
-let gameActive    = false;
-let gameEnded     = false;  // one-shot flag, prevents any second call to endGame
+const btnStart  = document.getElementById('btn-start');
+const btnAgain  = document.getElementById('btn-again');
 
-// ── Voice ─────────────────────────────────────────────────────────
-let rec          = null;   // SpeechRecognition instance
-let recRunning   = false;  // true while rec is between .start() and .onend
-let stopOnPurpose = false; // set before intentional .stop()
-
-// ══════════════════════════════════════════════════════
-//  DOM
-// ══════════════════════════════════════════════════════
-
-const $ = id => document.getElementById(id);
-
-const screens        = { start: $('start-screen'), game: $('game-screen'), result: $('result-screen') };
-const countCorrectEl = $('count-correct');
-const pctValEl       = $('pct-val');
-const timerTextEl    = $('timer-text');
-const ringFillEl     = $('ring-fill');
-const progressFillEl = $('progress-fill');
-const inputEl        = $('country-input');
-const submitBtn      = $('submit-btn');
-const feedbackEl     = $('feedback-toast');
-const answeredHeader = $('answered-header');
-const answeredGrid   = $('answered-grid');
-const textInputArea  = $('text-input-area');
-const voiceInputArea = $('voice-input-area');
-const voiceBtnEl     = $('voice-btn');
-const voiceBtnLabel  = $('voice-btn-label');
-const voiceListening = $('voice-listening');
-const voiceInterim   = $('voice-interim');
-const resCorrectEl   = $('res-correct');
-const resPctEl       = $('res-pct');
-const resultTitleEl  = $('result-title');
-const resultSubEl    = $('result-subtitle');
-const resultTrophyEl = $('result-trophy');
-const resultTagsEl   = $('result-tags');
-const shareUrlEl     = $('share-url');
-const copyBtnEl      = $('copy-btn');
-const btnStart       = $('btn-start');
-const btnAgain       = $('btn-again');
-
-// ══════════════════════════════════════════════════════
-//  START SCREEN SELECTORS
-// ══════════════════════════════════════════════════════
-
-document.querySelectorAll('.time-btn').forEach(btn =>
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedDuration = +btn.dataset.time;
-  })
-);
-
-document.querySelectorAll('.mode-btn').forEach(btn =>
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedMode = btn.dataset.mode;
-    const warn = $('voice-warning');
-    if (selectedMode === 'voice') {
-      warn.style.display = 'block';
-      const ok = ('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window);
-      warn.textContent = ok
-        ? '⚠️ Будет запрошен доступ к микрофону. Говори чётко — можно называть много стран подряд без пауз.'
-        : '❌ Браузер не поддерживает Web Speech API. Используйте Chrome или Edge.';
-      warn.style.color = ok ? '' : 'var(--wrong)';
-    } else {
-      warn.style.display = 'none';
-    }
-  })
-);
-
-// ══════════════════════════════════════════════════════
-//  HELPERS
-// ══════════════════════════════════════════════════════
-
+// ── Screen management ─────────────────────────────────────────────
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove('active'));
   screens[name].classList.add('active');
 }
 
-function formatTime(s) {
-  return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+// ── Timer ─────────────────────────────────────────────────────────
+function formatTime(secs) {
+  const m = Math.floor(secs / 60).toString().padStart(2, '0');
+  const s = (secs % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
 }
 
-function updateRing(s) {
-  const f = s / selectedDuration;
-  ringFillEl.style.strokeDashoffset = CIRCUM * (1 - f);
-  ringFillEl.style.stroke = f > .5 ? 'url(#timerGradV2)' : f > .2 ? '#f5c842' : '#f4536a';
+function updateRing(secs) {
+  const frac = secs / DURATION_SECS;
+  const offset = CIRCUMFERENCE * (1 - frac);
+  ringFillEl.style.strokeDashoffset = offset;
+  // Color shift as time runs out
+  ringFillEl.style.stroke =
+    frac > .5 ? 'url(#timerGradV2)' :
+    frac > .2 ? '#f5c842' : '#f4536a';
 }
 
+function startTimer() {
+  timeLeft = DURATION_SECS;
+  timerTextEl.textContent = formatTime(timeLeft);
+  updateRing(timeLeft);
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    timerTextEl.textContent = formatTime(timeLeft);
+    updateRing(timeLeft);
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+// ── Stats update ──────────────────────────────────────────────────
 function updateStats() {
-  const n = answered.size, pct = Math.round(n / TOTAL * 100);
+  const n = answered.size;
+  const pct = Math.round(n / TOTAL_COUNTRIES * 100);
   countCorrectEl.textContent = n;
   pctValEl.textContent = pct + '%';
   progressFillEl.style.width = pct + '%';
   answeredHeader.textContent = `Принятые страны (${n})`;
 }
 
+// ── Add tag to answered list ──────────────────────────────────────
 function addTag(name) {
-  const t = document.createElement('span');
-  t.className = 'answered-tag';
-  t.textContent = name;
-  answeredGrid.appendChild(t);
-  answeredGrid.closest('.answered-section').scrollTop = 9e9;
+  const tag = document.createElement('span');
+  tag.className = 'answered-tag';
+  tag.textContent = name;
+  answeredGrid.appendChild(tag);
+  // Scroll to bottom so newest is visible
+  const section = answeredGrid.closest('.answered-section');
+  section.scrollTop = section.scrollHeight;
 }
 
-// ── Feedback queue (не перебивает быстрые сообщения) ──────────────
-let fbQueue = [], fbBusy = false, fbTimer = null;
-
+// ── Feedback toast ────────────────────────────────────────────────
+let feedbackTimer = null;
 function showFeedback(msg, type) {
-  fbQueue.push({ msg, type });
-  pumpFeedback();
-}
-
-function pumpFeedback() {
-  if (fbBusy || !fbQueue.length) return;
-  fbBusy = true;
-  const { msg, type } = fbQueue.shift();
   feedbackEl.textContent = msg;
-  feedbackEl.className = 'feedback-toast ' + type;
-  clearTimeout(fbTimer);
-  fbTimer = setTimeout(() => {
+  feedbackEl.className = `feedback-toast ${type}`;
+  clearTimeout(feedbackTimer);
+  feedbackTimer = setTimeout(() => {
     feedbackEl.textContent = '';
     feedbackEl.className = 'feedback-toast';
-    fbBusy = false;
-    pumpFeedback();
-  }, fbQueue.length ? 500 : 1400);
+  }, 1800);
 }
 
-// ── Core guess ────────────────────────────────────────────────────
-function submitGuess(name) {
-  // called with canonical name already
-  if (!gameActive || gameEnded) return;
-  if (answered.has(name)) return; // silent skip for voice rapid-fire
-  answered.add(name);
-  addTag(name);
-  updateStats();
-  showFeedback('✓ ' + name, 'ok');
-  if (answered.size >= TOTAL) triggerEnd(true);
-}
+// ── Handle submission ─────────────────────────────────────────────
+function handleSubmit() {
+  if (!gameActive) return;
+  const raw = inputEl.value;
+  const canonical = matchCountry(raw);
 
-// ══════════════════════════════════════════════════════
-//  TEXT INPUT
-// ══════════════════════════════════════════════════════
-
-function handleTextSubmit() {
-  if (!gameActive || gameEnded || !inputEl) return;
-  const raw = inputEl.value.trim();
-  if (!raw) return;
-  inputEl.value = '';
-  const c = matchCountry(raw);
-  if (!c) {
+  if (!canonical) {
+    // Unknown country
     inputEl.classList.add('shake');
     setTimeout(() => inputEl.classList.remove('shake'), 320);
     showFeedback('❌ Неизвестная страна', 'err');
     return;
   }
-  if (answered.has(c)) {
-    showFeedback(`🔁 ${c} — уже есть!`, 'dup');
+
+  if (answered.has(canonical)) {
+    // Duplicate
+    inputEl.classList.add('shake');
+    setTimeout(() => inputEl.classList.remove('shake'), 320);
+    showFeedback(`🔁 «${canonical}» уже есть!`, 'dup');
+    inputEl.value = '';
     return;
   }
+
+  // Correct!
+  answered.add(canonical);
+  addTag(canonical);
+  updateStats();
+
   inputEl.classList.add('glow-correct');
   setTimeout(() => inputEl.classList.remove('glow-correct'), 400);
-  submitGuess(c);
-}
+  showFeedback(`✓ ${canonical}`, 'ok');
+  inputEl.value = '';
 
-// ══════════════════════════════════════════════════════
-//  VOICE
-// ══════════════════════════════════════════════════════
-
-function buildRec() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) return null;
-
-  const r = new SR();
-  r.lang           = 'ru-RU';
-  r.continuous     = true;
-  r.interimResults = true;
-  r.maxAlternatives = 6;
-
-  // Курсор обработанных слов для КАЖДОГО resultIndex.
-  // Ключ = resultIndex, значение = кол-во слов уже засчитанных из interim этого результата.
-  // Это позволяет засчитывать страны СРАЗУ по мере появления в interim,
-  // не дожидаясь финального результата — главное ускорение.
-  const processedWords = new Map();
-
-  r.onstart = () => {
-    recRunning = true;
-    voiceListening.classList.add('active');
-    voiceBtnEl.classList.add('listening');
-    voiceBtnLabel.textContent = 'Слушаю...';
-    voiceInterim.textContent  = '...';
-  };
-
-  r.onresult = (event) => {
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      const result = event.results[i];
-      const isFinal = result.isFinal;
-
-      // Берём лучшую альтернативу — но также проверяем все остальные
-      // Собираем уникальные транскрипты (alt0 … alt N)
-      const alts = [];
-      for (let j = 0; j < result.length; j++) {
-        alts.push(result[j].transcript);
-      }
-
-      // Основной транскрипт для отображения
-      const mainText = alts[0].trim();
-
-      if (isFinal) {
-        // Финальный результат: проходим по ВСЕМ альтернативам,
-        // извлекаем страны из каждой, берём лучший (наибольший) набор
-        let bestFound = [];
-        for (const alt of alts) {
-          const found = extractCountries(alt);
-          if (found.length > bestFound.length) bestFound = found;
-        }
-        // Засчитываем все найденные
-        for (const country of bestFound) submitGuess(country);
-
-        // Обнуляем cursor для этого resultIndex
-        processedWords.delete(i);
-        voiceInterim.textContent = '...';
-
-      } else {
-        // INTERIM — работаем инкрементально.
-        // Разбиваем на слова, смотрим сколько уже обработали
-        const words = mainText.toLowerCase()
-          .replace(/[.,!?;:]/g, ' ')
-          .split(/\s+/).filter(Boolean);
-
-        const cursor = processedWords.get(i) || 0;
-
-        // Пробуем найти страны в ещё необработанном хвосте
-        // Но оставляем последние 1 слово как «неполное» — оно ещё может дополниться
-        const safeEnd = Math.max(cursor, words.length - 1);
-        if (safeEnd <= cursor) {
-          // Нечего обрабатывать ещё
-          voiceInterim.textContent = mainText || '...';
-          continue;
-        }
-
-        const tail = words.slice(cursor, safeEnd);
-        let pos = 0;
-        let newCursor = cursor;
-        while (pos < tail.length) {
-          let matched = null, matchLen = 0;
-          for (let len = Math.min(4, tail.length - pos); len >= 1; len--) {
-            const slice = tail.slice(pos, pos + len);
-            const p1 = slice.join(' ');
-            const p2 = slice.map(normalizeWord).join(' ');
-            for (const p of [p1, p2]) {
-              const c = matchCountry(p);
-              if (c) { matched = c; matchLen = len; break; }
-            }
-            if (matched) break;
-          }
-          if (matched) {
-            submitGuess(matched);
-            pos += matchLen;
-            newCursor = cursor + pos;
-          } else {
-            pos++;
-            newCursor = cursor + pos;
-          }
-        }
-        processedWords.set(i, newCursor);
-
-        // Показываем в строке статус
-        const tentative = extractCountries(mainText);
-        voiceInterim.textContent = tentative.length
-          ? '🔍 ' + tentative.slice(-3).join(', ') + (tentative.length > 3 ? '...' : '')
-          : mainText || '...';
-      }
-    }
-  };
-
-  r.onerror = (e) => {
-    if (e.error === 'no-speech' || e.error === 'aborted') return;
-    if (e.error === 'not-allowed') {
-      showFeedback('❌ Доступ к микрофону запрещён', 'err');
-      triggerEnd();
-    }
-  };
-
-  r.onend = () => {
-    recRunning = false;
-    voiceListening.classList.remove('active');
-    voiceBtnEl.classList.remove('listening');
-    voiceBtnLabel.textContent = 'Нажми и говори';
-
-    if (stopOnPurpose || !gameActive || gameEnded) return;
-
-    // Перезапуск через минимальную задержку для непрерывного слушания
-    setTimeout(() => {
-      if (!stopOnPurpose && gameActive && !gameEnded && rec) {
-        try { rec.start(); } catch(_) {}
-      }
-    }, 80);
-  };
-
-  return r;
-}
-
-function startVoice() {
-  stopOnPurpose = false;
-  rec = buildRec();
-  if (!rec) { showFeedback('❌ Браузер не поддерживает голосовой ввод', 'err'); return; }
-  try { rec.start(); } catch(e) { console.warn('rec.start:', e); }
-}
-
-function stopVoice() {
-  stopOnPurpose = true;
-  if (rec) {
-    try { rec.stop(); } catch(_) {}
-    // Не обнуляем rec сразу — onend проверит stopOnPurpose
+  // All countries found — end early
+  if (answered.size >= TOTAL_COUNTRIES) {
+    endGame(true);
   }
-  voiceListening.classList.remove('active');
-  voiceBtnEl && voiceBtnEl.classList.remove('listening');
 }
 
-// ══════════════════════════════════════════════════════
-//  TIMER
-// ══════════════════════════════════════════════════════
-
-function startTimer() {
-  timeLeft = selectedDuration;
-  timerTextEl.textContent = formatTime(timeLeft);
-  updateRing(timeLeft);
-  if (timerID) { clearInterval(timerID); timerID = null; }
-  timerID = setInterval(() => {
-    if (!gameActive || gameEnded) { clearInterval(timerID); timerID = null; return; }
-    timeLeft--;
-    timerTextEl.textContent = formatTime(timeLeft);
-    updateRing(timeLeft);
-    if (timeLeft <= 0) {
-      clearInterval(timerID); timerID = null;
-      triggerEnd();
-    }
-  }, 1000);
-}
-
-// ══════════════════════════════════════════════════════
-//  GAME FLOW
-// ══════════════════════════════════════════════════════
-
+// ── Start game ────────────────────────────────────────────────────
 function startGame() {
-  // Reset everything
   answered.clear();
   answeredGrid.innerHTML = '';
+  inputEl.value = '';
   feedbackEl.textContent = '';
-  feedbackEl.className   = 'feedback-toast';
-  fbQueue = []; fbBusy = false;
-  gameActive  = true;
-  gameEnded   = false;
-  stopOnPurpose = false;
-
+  feedbackEl.className = 'feedback-toast';
   updateStats();
+  gameActive = true;
   showScreen('game');
-
-  if (selectedMode === 'voice') {
-    textInputArea.style.display = 'none';
-    voiceInputArea.style.display = 'flex';
-    voiceBtnEl.classList.remove('listening');
-    voiceBtnLabel.textContent = 'Нажми и говори';
-    voiceListening.classList.remove('active');
-    startVoice();
-  } else {
-    textInputArea.style.display = 'flex';
-    voiceInputArea.style.display = 'none';
-    if (inputEl) { inputEl.value = ''; setTimeout(() => inputEl.focus(), 80); }
-  }
-
   startTimer();
+  setTimeout(() => inputEl.focus(), 100);
 }
 
-function triggerEnd(allDone = false) {
-  // One-shot guard — no matter what calls this, it runs exactly once
-  if (gameEnded) return;
-  gameEnded  = true;
+// ── End game ──────────────────────────────────────────────────────
+function endGame(allDone = false) {
+  clearInterval(timerInterval);
   gameActive = false;
+  showScreen('result');
 
-  // Stop timer
-  if (timerID) { clearInterval(timerID); timerID = null; }
-
-  // Stop voice (don't wait for onend)
-  stopVoice();
-
-  // Give browser one frame to settle before switching screen
-  // This prevents the "freeze on last second" visual glitch
-  requestAnimationFrame(() => {
-    showScreen('result');
-    fillResultScreen(allDone);
-  });
-}
-
-function fillResultScreen(allDone) {
-  const n   = answered.size;
-  const pct = Math.round(n / TOTAL * 100);
+  const n = answered.size;
+  const pct = Math.round(n / TOTAL_COUNTRIES * 100);
 
   resCorrectEl.textContent = n;
-  resPctEl.textContent     = pct + '%';
+  resPctEl.textContent = pct + '%';
 
+  // Trophy & title
   let trophy, title, subtitle;
-  if      (allDone)   { trophy='🌍'; title='Все страны!';           subtitle='Невероятный результат! Ты знаешь все 195 стран!'; }
-  else if (pct >= 70) { trophy='🏆'; title='Легенда географии!';   subtitle=`${n} стран — потрясающий результат!`; }
-  else if (pct >= 50) { trophy='🥇'; title='Отличный результат!';  subtitle=`${n} из 195 — больше половины!`; }
-  else if (pct >= 30) { trophy='🥈'; title='Хороший результат!';   subtitle=`${n} стран — неплохо, есть куда расти!`; }
-  else if (pct >= 15) { trophy='🌐'; title='Неплохое начало!';     subtitle=`${n} стран — попробуй ещё!`; }
-  else                { trophy='🗺️'; title='Время вышло!';         subtitle=`${n} стран — в следующий раз лучше!`; }
+  if (allDone) {
+    trophy = '🌍'; title = 'Все страны!'; subtitle = 'Невероятный результат! Ты знаешь все 195 стран мира!';
+  } else if (pct >= 70) {
+    trophy = '🏆'; title = 'Легенда географии!'; subtitle = `${n} стран — это потрясающе! Ты настоящий эксперт.`;
+  } else if (pct >= 50) {
+    trophy = '🥇'; title = 'Отличный результат!'; subtitle = `${n} стран из 195 — больше половины! Достойно.`;
+  } else if (pct >= 30) {
+    trophy = '🥈'; title = 'Хороший результат!'; subtitle = `${n} стран — неплохо, но есть куда расти!`;
+  } else if (pct >= 15) {
+    trophy = '🌐'; title = 'Неплохое начало!'; subtitle = `${n} стран — попробуй ещё раз, ты можешь лучше!`;
+  } else {
+    trophy = '🗺️'; title = 'Время вышло!'; subtitle = `${n} стран — в следующий раз узнаешь больше!`;
+  }
 
   resultTrophyEl.textContent = trophy;
   resultTitleEl.textContent  = title;
   resultSubEl.textContent    = subtitle;
 
+  // Build result tags
   resultTagsEl.innerHTML = '';
-  [...answered].sort((a,b) => a.localeCompare(b,'ru')).forEach(c => {
-    const t = document.createElement('span');
-    t.className = 'result-tag'; t.textContent = c;
-    resultTagsEl.appendChild(t);
-  });
+  const sorted = [...answered].sort((a, b) => a.localeCompare(b, 'ru'));
+  for (const c of sorted) {
+    const tag = document.createElement('span');
+    tag.className = 'result-tag';
+    tag.textContent = c;
+    resultTagsEl.appendChild(tag);
+  }
 
-  const now = new Date().toISOString().slice(0,16).replace('T','+');
-  shareUrlEl.value = location.href.replace(/\/[^/]*$/,'/') +
-    `result-v2.html#n=${n}&pct=${pct}&d=${encodeURIComponent(now)}`;
+  // Share URL
+  const now = new Date().toISOString().slice(0, 16).replace('T', '+');
+  const hash = `n=${n}&pct=${pct}&d=${encodeURIComponent(now)}`;
+  const base = location.href.replace(/\/[^/]*$/, '/');
+  shareUrlEl.value = base + 'result-v2.html#' + hash;
 }
 
-// ══════════════════════════════════════════════════════
-//  EVENTS
-// ══════════════════════════════════════════════════════
-
+// ── Events ────────────────────────────────────────────────────────
 btnStart?.addEventListener('click', startGame);
 btnAgain?.addEventListener('click', startGame);
-submitBtn?.addEventListener('click', handleTextSubmit);
-inputEl?.addEventListener('keydown', e => { if (e.key === 'Enter') handleTextSubmit(); });
+submitBtn?.addEventListener('click', handleSubmit);
 
-voiceBtnEl?.addEventListener('click', () => {
-  if (!gameActive || gameEnded) return;
-  if (recRunning) { stopVoice(); }
-  else            { stopOnPurpose = false; if (rec) { try { rec.start(); } catch(_){} } else { startVoice(); } }
+inputEl?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleSubmit();
 });
 
 copyBtnEl?.addEventListener('click', () => {
-  const v = shareUrlEl.value; if (!v) return;
-  navigator.clipboard.writeText(v).catch(() => { shareUrlEl.select(); document.execCommand('copy'); });
+  const val = shareUrlEl.value;
+  if (!val) return;
+  navigator.clipboard.writeText(val).catch(() => {
+    shareUrlEl.select(); document.execCommand('copy');
+  });
   copyBtnEl.classList.add('copied');
   setTimeout(() => copyBtnEl.classList.remove('copied'), 1500);
 });
