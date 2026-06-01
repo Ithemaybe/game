@@ -1,6 +1,5 @@
 'use strict';
 
-// ── SVG gradient injection ─────────────────────────────────────────
 (function() {
   const svg = document.querySelector('.timer-ring svg');
   if (!svg) return;
@@ -13,9 +12,7 @@
   svg.prepend(defs);
 })();
 
-// ── Countries dataset (ISO 3166-1 alpha-2 codes for flagcdn.com) ───
 const COUNTRIES = [
-  // Европа
   {name:"Россия",code:"ru"},{name:"Германия",code:"de"},
   {name:"Франция",code:"fr"},{name:"Италия",code:"it"},
   {name:"Испания",code:"es"},{name:"Великобритания",code:"gb"},
@@ -39,7 +36,6 @@ const COUNTRIES = [
   {name:"Лихтенштейн",code:"li"},{name:"Монако",code:"mc"},
   {name:"Андорра",code:"ad"},{name:"Сан-Марино",code:"sm"},
   {name:"Ватикан",code:"va"},
-  // Азия
   {name:"Китай",code:"cn"},{name:"Япония",code:"jp"},
   {name:"Индия",code:"in"},{name:"Южная Корея",code:"kr"},
   {name:"Индонезия",code:"id"},{name:"Таиланд",code:"th"},
@@ -64,7 +60,6 @@ const COUNTRIES = [
   {name:"Оман",code:"om"},{name:"Йемен",code:"ye"},
   {name:"Бруней",code:"bn"},{name:"Восточный Тимор",code:"tl"},
   {name:"Палестина",code:"ps"},
-  // Африка
   {name:"Египет",code:"eg"},{name:"ЮАР",code:"za"},
   {name:"Нигерия",code:"ng"},{name:"Кения",code:"ke"},
   {name:"Марокко",code:"ma"},{name:"Эфиопия",code:"et"},
@@ -92,7 +87,6 @@ const COUNTRIES = [
   {name:"Малави",code:"mw"},{name:"Мадагаскар",code:"mg"},
   {name:"Маврикий",code:"mu"},{name:"Сейшелы",code:"sc"},
   {name:"Коморы",code:"km"},{name:"Сан-Томе и Принсипи",code:"st"},
-  // Северная и Центральная Америка
   {name:"США",code:"us"},{name:"Канада",code:"ca"},
   {name:"Мексика",code:"mx"},{name:"Куба",code:"cu"},
   {name:"Гаити",code:"ht"},{name:"Доминиканская Республика",code:"do"},
@@ -105,14 +99,12 @@ const COUNTRIES = [
   {name:"Гренада",code:"gd"},{name:"Антигуа и Барбуда",code:"ag"},
   {name:"Доминика",code:"dm"},{name:"Сент-Китс и Невис",code:"kn"},
   {name:"Сент-Винсент и Гренадины",code:"vc"},
-  // Южная Америка
   {name:"Бразилия",code:"br"},{name:"Аргентина",code:"ar"},
   {name:"Колумбия",code:"co"},{name:"Перу",code:"pe"},
   {name:"Чили",code:"cl"},{name:"Венесуэла",code:"ve"},
   {name:"Боливия",code:"bo"},{name:"Парагвай",code:"py"},
   {name:"Уругвай",code:"uy"},{name:"Эквадор",code:"ec"},
   {name:"Гайана",code:"gy"},{name:"Суринам",code:"sr"},
-  // Океания
   {name:"Австралия",code:"au"},{name:"Новая Зеландия",code:"nz"},
   {name:"Папуа — Новая Гвинея",code:"pg"},{name:"Фиджи",code:"fj"},
   {name:"Соломоновы Острова",code:"sb"},{name:"Вануату",code:"vu"},
@@ -122,7 +114,6 @@ const COUNTRIES = [
   {name:"Науру",code:"nr"},{name:"Тувалу",code:"tv"},
 ];
 
-// ── Helpers ───────────────────────────────────────────────────────
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -134,7 +125,6 @@ function shuffle(arr) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ── DOM refs ──────────────────────────────────────────────────────
 const screens = {
   start:  document.getElementById('start-screen'),
   game:   document.getElementById('game-screen'),
@@ -158,7 +148,6 @@ const pctText    = document.getElementById('pct-text');
 const btnStart   = document.getElementById('btn-start');
 const btnAgain   = document.getElementById('btn-again');
 
-// ── State ─────────────────────────────────────────────────────────
 const DURATION = 60;
 const CIRCUMFERENCE = 2 * Math.PI * 50;
 
@@ -169,13 +158,11 @@ let currentQuestion = null;
 let answered        = false;
 let queue           = [];
 
-// ── Screen management ─────────────────────────────────────────────
 function show(name) {
   Object.values(screens).forEach(s => s.classList.remove('active'));
   screens[name].classList.add('active');
 }
 
-// ── Timer ring ────────────────────────────────────────────────────
 function updateRing(secs) {
   const frac   = secs / DURATION;
   const offset = CIRCUMFERENCE * (1 - frac);
@@ -198,9 +185,7 @@ function startTimer() {
   }, 1000);
 }
 
-// ── Question generation ───────────────────────────────────────────
 function nextQuestion() {
-  // Возвращает null когда все страны показаны — игра завершается
   if (queue.length === 0) return null;
   const country = queue.pop();
   const others  = shuffle(COUNTRIES.filter(c => c.name !== country.name)).slice(0, 3);
@@ -208,7 +193,6 @@ function nextQuestion() {
   return { code: country.code, correct: country.name, options: options.map(c => c.name) };
 }
 
-// ── Load question ─────────────────────────────────────────────────
 async function loadQuestion() {
   answered = false;
   feedback.textContent = '';
@@ -220,7 +204,6 @@ async function loadQuestion() {
 
   const q = nextQuestion();
 
-  // Все страны пройдены — заканчиваем игру
   if (!q) {
     flagStage.classList.remove('flip');
     endGame(true);
@@ -239,7 +222,6 @@ async function loadQuestion() {
   flagStage.classList.remove('flip');
 }
 
-// ── Answer handling ───────────────────────────────────────────────
 function handleAnswer(idx) {
   if (answered || !currentQuestion) return;
   answered = true;
@@ -266,11 +248,9 @@ function handleAnswer(idx) {
     feedback.className   = 'feedback wrong-fb';
   }
 
-  // Не грузим следующий вопрос если таймер уже остановил игру
   if (timeLeft > 0) loadQuestion();
 }
 
-// ── End game ──────────────────────────────────────────────────────
 function endGame(allDone = false) {
   clearInterval(timerInterval);
   show('result');
@@ -290,7 +270,6 @@ function endGame(allDone = false) {
   const trophy = document.getElementById('result-trophy');
   trophy.textContent = pct >= 80 ? '🏆' : pct >= 50 ? '🥈' : '🌍';
 
-  // Если прошли все страны — показываем особый заголовок
   const resultTitle = document.querySelector('.result-title');
   if (resultTitle) {
     resultTitle.textContent = allDone
@@ -298,25 +277,20 @@ function endGame(allDone = false) {
       : 'Игра окончена!';
   }
 
-  // ── Сохранение результата в localStorage ──────────────────────
   const RECORD_KEY = 'v1_record';
   const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
 
-  // Всегда сохраняем последний результат (для result.html)
   localStorage.setItem('v1_last', JSON.stringify({ correct, wrong, total, pct, date }));
 
-  // Обновляем рекорд если побит
   const saved = JSON.parse(localStorage.getItem(RECORD_KEY) || 'null');
   const isNewRecord = !saved || correct > saved.correct;
   if (isNewRecord) {
     localStorage.setItem(RECORD_KEY, JSON.stringify({ correct, wrong, total, pct, date }));
   }
 
-  // Показываем / скрываем баннер нового рекорда
   const banner = document.getElementById('new-record-banner');
   if (banner) banner.style.display = isNewRecord ? 'flex' : 'none';
 
-  // ── Шаринг: генерируем ключ, сохраняем результат, строим ссылку ──
   const key = Array.from(crypto.getRandomValues(new Uint8Array(5)))
     .map(b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36])
     .join('');
@@ -342,7 +316,6 @@ function endGame(allDone = false) {
   }
 }
 
-// ── Game start ────────────────────────────────────────────────────
 function startGame() {
   correct = 0; wrong = 0;
   queue   = shuffle(COUNTRIES);
@@ -356,12 +329,10 @@ function startGame() {
 btnStart?.addEventListener('click', startGame);
 btnAgain?.addEventListener('click', startGame);
 
-// ── Option buttons ────────────────────────────────────────────────
 optBtns.forEach((btn, i) => {
   btn.addEventListener('click', () => handleAnswer(i));
 });
 
-// ── Keyboard shortcuts ────────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (!screens.game.classList.contains('active')) return;
   const map = {'1':0,'2':1,'3':2,'4':3};

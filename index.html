@@ -64,7 +64,7 @@
 
 <div class="wrapper">
 
-  <!-- HERO / START SCREEN -->
+  
   <div id="start-screen" class="screen active">
     <a href="v2.html" class="btn-v2-mode" title="V2 режим — угадай страны по названию">
       <span class="btn-v2-badge">V2</span>
@@ -75,7 +75,7 @@
     <h1 class="hero-title">Флаги<br><span>Мира</span></h1>
     <p class="hero-sub">Угадай страну по флагу.<br>60 секунд — сколько успеешь?</p>
 
-    <!-- Плашка рекорда -->
+    
     <div class="record-card" id="record-card">
       <div class="record-left">
         <div class="record-label">🏅 Личный рекорд</div>
@@ -89,7 +89,7 @@
     <div class="hero-hint">← → кнопки 1–4 для ответа</div>
   </div>
 
-  <!-- GAME SCREEN -->
+  
   <div id="game-screen" class="screen">
     <div class="game-header">
       <div class="stat-box">
@@ -125,12 +125,12 @@
     <div class="feedback" id="feedback"></div>
   </div>
 
-  <!-- RESULT SCREEN -->
+  
   <div id="result-screen" class="screen">
     <div class="result-trophy" id="result-trophy">🏆</div>
     <h2 class="result-title">Игра окончена!</h2>
 
-    <!-- Баннер нового рекорда -->
+    
     <div class="new-record-banner" id="new-record-banner" style="display:none;">
       🎉 Новый личный рекорд!
     </div>
@@ -157,7 +157,7 @@
       <div class="pct-text" id="pct-text">0% правильных</div>
     </div>
 
-    <!-- Поле с ссылкой -->
+    
     <div class="share-box">
       <span class="share-label">Ссылка на результат:</span>
       <div class="share-row">
@@ -179,7 +179,6 @@
 <script src="game.js"></script>
 <script src="swimming-cat.js"></script>
 
-<!-- Плашка рекорда на старт-экране -->
 <script>
 (function () {
   function renderRecord() {
@@ -198,7 +197,6 @@
 
   renderRecord();
 
-  // Обновляем плашку при возврате на старт
   document.getElementById('btn-again')?.addEventListener('click', () => {
     setTimeout(renderRecord, 50);
   });

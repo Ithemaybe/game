@@ -1,7 +1,4 @@
-/* ════════════════════════════════════════════
-   FLAGS OF THE WORLD — Dark Geo Aesthetic
-   Font: Unbounded (display) + Inter (body)
-   ════════════════════════════════════════════ */
+
 
 :root {
   --bg:       #0a0c12;
@@ -31,7 +28,6 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ── Background decorations ── */
 .bg-grid {
   position: fixed; inset: 0; z-index: 0;
   background-image:
@@ -49,7 +45,6 @@ html, body {
     radial-gradient(ellipse 50% 60% at 80% 80%, var(--glow-b), transparent);
 }
 
-/* ── Layout ── */
 .wrapper {
   position: relative; z-index: 1;
   min-height: 100dvh;
@@ -57,7 +52,6 @@ html, body {
   padding: 1.5rem;
 }
 
-/* ── Screens ── */
 .screen {
   display: none; width: 100%; max-width: 540px;
   flex-direction: column; align-items: center; gap: 1.5rem;
@@ -70,7 +64,6 @@ html, body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Hero / Start ── */
 .hero-icon {
   font-size: 5rem; line-height: 1;
   filter: drop-shadow(0 0 24px rgba(79,140,255,.5));
@@ -106,7 +99,6 @@ html, body {
   padding: .3rem .9rem;
 }
 
-/* ── Primary button ── */
 .btn-start {
   font-family: 'Unbounded', sans-serif;
   font-size: 1rem; font-weight: 600;
@@ -129,11 +121,6 @@ html, body {
 .btn-start:hover::after { opacity: 1; }
 .btn-start:active { transform: translateY(0); }
 
-/* ══════════════════════════════════
-   GAME SCREEN
-══════════════════════════════════ */
-
-/* Header row */
 .game-header {
   width: 100%;
   display: flex; align-items: center; justify-content: space-between;
@@ -154,7 +141,6 @@ html, body {
 .correct-count { color: var(--correct); }
 .wrong-count   { color: var(--wrong); }
 
-/* Timer ring */
 .timer-ring {
   position: relative;
   width: 90px; height: 90px;
@@ -174,7 +160,6 @@ html, body {
   font-size: 1.35rem; font-weight: 700;
 }
 
-/* Flag stage */
 .flag-stage {
   width: 220px; height: 160px;
   background: var(--card);
@@ -199,7 +184,6 @@ html, body {
   pointer-events: none;
 }
 
-/* Options grid */
 .options-grid {
   width: 100%;
   display: grid; grid-template-columns: 1fr 1fr;
@@ -241,7 +225,6 @@ html, body {
 }
 .opt-text { position: relative; z-index: 1; }
 
-/* Correct / Wrong states */
 .opt-btn.correct {
   background: rgba(34,211,163,.12);
   border-color: var(--correct);
@@ -258,7 +241,6 @@ html, body {
 
 .opt-btn:disabled { cursor: default; }
 
-/* Feedback */
 .feedback {
   font-family: 'Unbounded', sans-serif;
   font-size: .85rem; font-weight: 600;
@@ -269,9 +251,6 @@ html, body {
 .feedback.correct-fb { color: var(--correct); }
 .feedback.wrong-fb   { color: var(--wrong); }
 
-/* ══════════════════════════════════
-   RESULT SCREEN
-══════════════════════════════════ */
 .result-trophy {
   font-size: 5rem; line-height: 1;
   filter: drop-shadow(0 0 24px rgba(255,200,0,.4));
@@ -298,7 +277,6 @@ html, body {
 .rs-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-top: .3rem; }
 .rs-divider { color: var(--border); font-size: 1.5rem; }
 
-/* Percent bar */
 .result-pct { width: 100%; }
 .pct-bar {
   width: 100%; height: 10px;
@@ -316,7 +294,6 @@ html, body {
   font-size: .85rem; color: var(--muted); text-align: right;
 }
 
-/* Share box */
 .share-box {
   width: 100%;
   background: var(--card); border: 1px solid var(--border);
@@ -342,17 +319,14 @@ html, body {
 .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
 .copy-btn.copied { border-color: var(--correct); color: var(--correct); background: rgba(34,211,163,.1); }
 
-/* Utility animation */
 .anim-in { animation: fadeUp .5s ease both; }
 
-/* ── Responsive ── */
 @media (max-width: 400px) {
   .hero-title { font-size: 2rem; }
   .flag-stage { width: 180px; height: 130px; }
   .options-grid { grid-template-columns: 1fr; }
 }
 
-/* ── V2 mode button (top-right of start screen) ── */
 .btn-v2-mode {
   position: absolute;
   top: 1.25rem; right: 1.25rem;
@@ -390,7 +364,6 @@ html, body {
 }
 .btn-v2-arrow { font-size: .8rem; opacity: .6; }
 
-/* Make start screen wrapper relative so absolute button works */
 #start-screen { position: relative; }
 .captcha-wrap {
   display: flex;
@@ -406,7 +379,6 @@ html, body {
 }
 .btn-start:disabled::after { display: none; }
 
-/* ── Swimming Cat ──────────────────────────────────────────────── */
 #swimming-cat {
   position: fixed;
   z-index: 0;

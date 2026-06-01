@@ -16,7 +16,7 @@
 <meta name="twitter:image" content="https://flagcdn.com/w640/un.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style-v2.css">
+<link rel="stylesheet" href="style-v2.css?v=3">
 </head>
 <body>
 
@@ -25,40 +25,44 @@
 <div class="bg-glow"></div>
 
 <div class="wrapper">
-
-  <!-- ════ START SCREEN ════ -->
   <div id="start-screen" class="screen active">
     <div class="badge-v2">✦ V2 РЕЖИМ</div>
     <div class="hero-icon">🗺️</div>
     <h1 class="hero-title">Страны<br><span>Мира</span></h1>
-    <p class="hero-sub">Вспомни как можно больше стран за 10 минут.<br>Вводи названия — считаем правильные!</p>
+    <p class="hero-sub">Выбери режим игры.</p>
 
-    <!-- Блок рекорда -->
-    <div class="record-card" id="record-card">
-      <div class="record-left">
-        <div class="record-label">🏅 Личный рекорд</div>
-        <div class="record-value" id="record-count">—</div>
-        <div class="record-sub" id="record-sub">Сыграй первую партию!</div>
+    <div class="mode-records">
+      <div class="record-card record-card-small" id="record-card-text">
+        <div class="record-left">
+          <div class="record-label">⌨️ Рекорд текста</div>
+          <div class="record-value" id="record-count-text">—</div>
+          <div class="record-sub" id="record-sub-text">—</div>
+        </div>
+        <div class="record-icon">🏆</div>
       </div>
-      <div class="record-icon">🏆</div>
-    </div>
-
-    <div class="rules-card">
-      <div class="rules-title">📋 Правила</div>
-      <div class="rules-list">
-        <div class="rule-item"><span class="rule-icon">⏱️</span><span>У тебя ровно <strong>10 минут</strong> — используй каждую секунду</span></div>
-        <div class="rule-item"><span class="rule-icon">⌨️</span><span>Вводи названия стран на <strong>русском</strong> и нажимай Enter или кнопку</span></div>
-        <div class="rule-item"><span class="rule-icon">✅</span><span>Засчитываются только существующие страны — опечатки не считаются</span></div>
-        <div class="rule-item"><span class="rule-icon">🔁</span><span>Повторы и дубликаты не засчитываются</span></div>
-        <div class="rule-item"><span class="rule-icon">🏆</span><span>В мире <strong>195</strong> стран — сможешь назвать больше половины?</span></div>
+      <div class="record-card record-card-small" id="record-card-voice">
+        <div class="record-left">
+          <div class="record-label">🎙️ Рекорд голоса</div>
+          <div class="record-value" id="record-count-voice">—</div>
+          <div class="record-sub" id="record-sub-voice">—</div>
+        </div>
+        <div class="record-icon">🎤</div>
       </div>
     </div>
 
-    <button class="btn-primary" id="btn-start">Начать игру</button>
+    <div class="mode-select">
+      <button class="mode-card" id="btn-start-text" type="button">
+        <span class="mode-card-icon">⌨️</span>
+        <span class="mode-card-title">1. Текстовая игра</span>
+      </button>
+      <button class="mode-card mode-card-voice" id="btn-start-voice" type="button">
+        <span class="mode-card-icon">🎙️</span>
+        <span class="mode-card-title">2. Голосовая игра</span>
+      </button>
+    </div>
+
     <a href="index.html" class="nav-back">← Флаговый режим (V1)</a>
   </div>
-
-  <!-- ════ GAME SCREEN ════ -->
   <div id="game-screen" class="screen">
     <div class="game-header">
       <div class="stat-box">
@@ -89,7 +93,9 @@
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
 
-    <div class="input-area">
+    <div class="mode-game-badge" id="game-mode-badge">Текстовая игра</div>
+
+    <div class="input-area text-game-only">
       <input
         type="text"
         class="country-input"
@@ -102,6 +108,15 @@
       <button class="submit-btn" id="submit-btn">Ввести</button>
     </div>
 
+    <div class="voice-game-panel voice-game-only">
+      <div class="voice-big-icon" id="voice-big-icon">🎙️</div>
+      <div class="voice-status" id="voice-status">Микрофон выключен</div>
+      <button class="mic-btn" id="mic-btn" type="button" title="Включить или выключить микрофон">
+        <span class="mic-icon">🎙️</span>
+        <span class="mic-label">Слушаю</span>
+      </button>
+    </div>
+
     <div class="feedback-toast" id="feedback-toast"></div>
 
     <div class="answered-section">
@@ -109,14 +124,10 @@
       <div class="answered-grid" id="answered-grid"></div>
     </div>
   </div>
-
-  <!-- ════ RESULT SCREEN ════ -->
   <div id="result-screen" class="screen">
     <div class="result-trophy" id="result-trophy">🏆</div>
     <h2 class="result-title" id="result-title">Время вышло!</h2>
     <p class="result-subtitle" id="result-subtitle"></p>
-
-    <!-- Баннер нового рекорда -->
     <div class="new-record-banner" id="new-record-banner">
       🎉 Новый личный рекорд!
     </div>
@@ -159,7 +170,7 @@
 
 </div>
 
-<script src="v2.js"></script>
+<script src="v2.js?v=3"></script>
 <script src="swimming-cat.js"></script>
 
 </body>
