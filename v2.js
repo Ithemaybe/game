@@ -155,7 +155,7 @@ function matchCountry(raw) {
 
 // ── Constants ─────────────────────────────────────────────────────
 const TOTAL_COUNTRIES = 195;
-const DURATION_SECS   = 10; // тест: 10 секунд; для релиза поставь 10 * 60
+const DURATION_SECS   = 10 * 60;
 const CIRCUMFERENCE   = 2 * Math.PI * 50; // r=50
 const RECORD_KEY      = 'v2_record';
 
