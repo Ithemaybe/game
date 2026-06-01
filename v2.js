@@ -155,14 +155,18 @@ function matchCountry(raw) {
 
 // ── Constants ─────────────────────────────────────────────────────
 const TOTAL_COUNTRIES = 195;
-const DURATION_SECS   = 10 * 60; // 10 minutes
+const DURATION_SECS   = 10; // тест: 10 секунд; для релиза поставь 10 * 60
 const CIRCUMFERENCE   = 2 * Math.PI * 50; // r=50
+const RECORD_KEY      = 'v2_record';
 
 // ── State ─────────────────────────────────────────────────────────
 let answered   = new Set();  // canonical names entered correctly
 let timeLeft   = DURATION_SECS;
 let timerInterval = null;
+let timerFrame = null;
+let timerDeadline = 0;
 let gameActive = false;
+let gameEnded = false;
 
 // ── DOM refs ──────────────────────────────────────────────────────
 const screens = {
@@ -216,17 +220,39 @@ function updateRing(secs) {
     frac > .2 ? '#f5c842' : '#f4536a';
 }
 
-function startTimer() {
-  timeLeft = DURATION_SECS;
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  if (timerFrame) cancelAnimationFrame(timerFrame);
+  timerFrame = null;
+}
+
+function renderTimer(secs) {
+  timeLeft = Math.max(0, secs);
   timerTextEl.textContent = formatTime(timeLeft);
   updateRing(timeLeft);
-  clearInterval(timerInterval);
-  timerInterval = setInterval(() => {
-    timeLeft--;
-    timerTextEl.textContent = formatTime(timeLeft);
-    updateRing(timeLeft);
-    if (timeLeft <= 0) endGame();
-  }, 1000);
+}
+
+function tickTimer() {
+  if (!gameActive || gameEnded) return;
+
+  const msLeft = Math.max(0, timerDeadline - Date.now());
+  const secsLeft = Math.ceil(msLeft / 1000);
+  renderTimer(secsLeft);
+
+  if (msLeft <= 0) {
+    endGame(false);
+    return;
+  }
+
+  timerFrame = requestAnimationFrame(tickTimer);
+}
+
+function startTimer() {
+  stopTimer();
+  timerDeadline = Date.now() + DURATION_SECS * 1000;
+  renderTimer(DURATION_SECS);
+  timerFrame = requestAnimationFrame(tickTimer);
 }
 
 // ── Stats update ──────────────────────────────────────────────────
@@ -260,6 +286,37 @@ function showFeedback(msg, type) {
     feedbackEl.textContent = '';
     feedbackEl.className = 'feedback-toast';
   }, 1800);
+}
+
+// ── Records ───────────────────────────────────────────────────────
+function renderStartRecord() {
+  const saved = JSON.parse(localStorage.getItem(RECORD_KEY) || 'null');
+  const countEl = document.getElementById('record-count');
+  const subEl = document.getElementById('record-sub');
+
+  if (!countEl || !subEl) return;
+
+  if (saved) {
+    countEl.textContent = saved.count + ' стран';
+    subEl.textContent = saved.pct + '% от всех · ' + saved.date;
+  } else {
+    countEl.textContent = '—';
+    subEl.textContent = 'Сыграй первую партию!';
+  }
+}
+
+function saveRecord(count, pct) {
+  const saved = JSON.parse(localStorage.getItem(RECORD_KEY) || 'null');
+  const isNew = !saved || count > saved.count;
+  const banner = document.getElementById('new-record-banner');
+
+  if (isNew) {
+    const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+    localStorage.setItem(RECORD_KEY, JSON.stringify({ count, pct, date }));
+    banner?.classList.add('show');
+  } else {
+    banner?.classList.remove('show');
+  }
 }
 
 // ── Handle submission ─────────────────────────────────────────────
@@ -303,13 +360,18 @@ function handleSubmit() {
 
 // ── Start game ────────────────────────────────────────────────────
 function startGame() {
+  stopTimer();
   answered.clear();
   answeredGrid.innerHTML = '';
+  resultTagsEl.innerHTML = '';
   inputEl.value = '';
+  inputEl.disabled = false;
+  submitBtn.disabled = false;
   feedbackEl.textContent = '';
   feedbackEl.className = 'feedback-toast';
-  updateStats();
+  gameEnded = false;
   gameActive = true;
+  updateStats();
   showScreen('game');
   startTimer();
   setTimeout(() => inputEl.focus(), 100);
@@ -317,8 +379,13 @@ function startGame() {
 
 // ── End game ──────────────────────────────────────────────────────
 function endGame(allDone = false) {
-  clearInterval(timerInterval);
+  if (gameEnded) return;
+  gameEnded = true;
   gameActive = false;
+  stopTimer();
+  renderTimer(0);
+  inputEl.disabled = true;
+  submitBtn.disabled = true;
   showScreen('result');
 
   const n = answered.size;
@@ -326,6 +393,7 @@ function endGame(allDone = false) {
 
   resCorrectEl.textContent = n;
   resPctEl.textContent = pct + '%';
+  saveRecord(n, pct);
 
   // Trophy & title
   let trophy, title, subtitle;
@@ -361,7 +429,7 @@ function endGame(allDone = false) {
   const now = new Date().toISOString().slice(0, 16).replace('T', '+');
   const hash = `n=${n}&pct=${pct}&d=${encodeURIComponent(now)}`;
   const base = location.href.replace(/\/[^/]*$/, '/');
-  shareUrlEl.value = base + 'result-v2.html#' + hash;
+  shareUrlEl.value = base + 'v2.html#' + hash;
 }
 
 // ── Events ────────────────────────────────────────────────────────
@@ -382,3 +450,5 @@ copyBtnEl?.addEventListener('click', () => {
   copyBtnEl.classList.add('copied');
   setTimeout(() => copyBtnEl.classList.remove('copied'), 1500);
 });
+
+renderStartRecord();
