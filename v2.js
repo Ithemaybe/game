@@ -152,7 +152,7 @@ function extractCountriesFromSpeech(raw) {
 }
 
 const TOTAL_COUNTRIES = 195;
-const DURATION_SECS   = 10 * 6;
+const DURATION_SECS   = 10 * 60;
 const CIRCUMFERENCE   = 2 * Math.PI * 50;
 const RECORD_KEYS     = { text: 'v2_record_text', voice: 'v2_record_voice' };
 
