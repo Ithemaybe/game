@@ -39,6 +39,48 @@ const COUNTRIES = new Set([
   "Микронезия","Палау","Маршалловы Острова","Науру","Тувалу",
 ]);
 
+const COUNTRY_CODES = {"Россия":"ru","Германия":"de","Франция":"fr","Италия":"it","Испания":"es","Великобритания":"gb","Польша":"pl","Нидерланды":"nl","Швеция":"se","Норвегия":"no","Финляндия":"fi","Швейцария":"ch","Австрия":"at","Бельгия":"be","Португалия":"pt","Греция":"gr","Румыния":"ro","Венгрия":"hu","Чехия":"cz","Дания":"dk","Украина":"ua","Беларусь":"by","Словакия":"sk","Болгария":"bg","Сербия":"rs","Хорватия":"hr","Босния и Герцеговина":"ba","Словения":"si","Литва":"lt","Латвия":"lv","Эстония":"ee","Молдова":"md","Албания":"al","Северная Македония":"mk","Черногория":"me","Ирландия":"ie","Исландия":"is","Люксембург":"lu","Мальта":"mt","Кипр":"cy","Лихтенштейн":"li","Монако":"mc","Андорра":"ad","Сан-Марино":"sm","Ватикан":"va","Китай":"cn","Япония":"jp","Индия":"in","Южная Корея":"kr","Индонезия":"id","Таиланд":"th","Вьетнам":"vn","Филиппины":"ph","Малайзия":"my","Сингапур":"sg","Казахстан":"kz","Саудовская Аравия":"sa","ОАЭ":"ae","Иран":"ir","Ирак":"iq","Пакистан":"pk","Бангладеш":"bd","Израиль":"il","Иордания":"jo","Сирия":"sy","Турция":"tr","Афганистан":"af","Мьянма":"mm","Камбоджа":"kh","Лаос":"la","Монголия":"mn","Северная Корея":"kp","Непал":"np","Шри-Ланка":"lk","Мальдивы":"mv","Бутан":"bt","Узбекистан":"uz","Туркменистан":"tm","Таджикистан":"tj","Кыргызстан":"kg","Азербайджан":"az","Армения":"am","Грузия":"ge","Ливан":"lb","Кувейт":"kw","Катар":"qa","Бахрейн":"bh","Оман":"om","Йемен":"ye","Бруней":"bn","Восточный Тимор":"tl","Палестина":"ps","Египет":"eg","ЮАР":"za","Нигерия":"ng","Кения":"ke","Марокко":"ma","Эфиопия":"et","Танзания":"tz","Гана":"gh","Алжир":"dz","Тунис":"tn","Ливия":"ly","Судан":"sd","Южный Судан":"ss","Конго":"cg","ДР Конго":"cd","Ангола":"ao","Мозамбик":"mz","Замбия":"zm","Зимбабве":"zw","Уганда":"ug","Руанда":"rw","Бурунди":"bi","Камерун":"cm","Кот-д'Ивуар":"ci","Сенегал":"sn","Мали":"ml","Буркина-Фасо":"bf","Нигер":"ne","Чад":"td","Мавритания":"mr","Гвинея":"gn","Бенин":"bj","Того":"tg","Сьерра-Леоне":"sl","Либерия":"lr","Гамбия":"gm","Гвинея-Бисау":"gw","Кабо-Верде":"cv","Сомали":"so","Джибути":"dj","Эритрея":"er","Экваториальная Гвинея":"gq","Габон":"ga","ЦАР":"cf","Намибия":"na","Ботсвана":"bw","Лесото":"ls","Эсватини":"sz","Малави":"mw","Мадагаскар":"mg","Маврикий":"mu","Сейшелы":"sc","Коморы":"km","Сан-Томе и Принсипи":"st","США":"us","Канада":"ca","Мексика":"mx","Куба":"cu","Гаити":"ht","Доминиканская Республика":"do","Ямайка":"jm","Тринидад и Тобаго":"tt","Панама":"pa","Коста-Рика":"cr","Никарагуа":"ni","Гондурас":"hn","Сальвадор":"sv","Гватемала":"gt","Белиз":"bz","Багамы":"bs","Барбадос":"bb","Сент-Люсия":"lc","Гренада":"gd","Антигуа и Барбуда":"ag","Доминика":"dm","Сент-Китс и Невис":"kn","Сент-Винсент и Гренадины":"vc","Бразилия":"br","Аргентина":"ar","Колумбия":"co","Перу":"pe","Чили":"cl","Венесуэла":"ve","Боливия":"bo","Парагвай":"py","Уругвай":"uy","Эквадор":"ec","Гайана":"gy","Суринам":"sr","Австралия":"au","Новая Зеландия":"nz","Папуа — Новая Гвинея":"pg","Фиджи":"fj","Соломоновы Острова":"sb","Вануату":"vu","Самоа":"ws","Кирибати":"ki","Тонга":"to","Микронезия":"fm","Палау":"pw","Маршалловы Острова":"mh","Науру":"nr","Тувалу":"tv"};
+let flagsMap = null;
+let optimizeFlags = localStorage.getItem('v2_optimize_flags') === '1';
+
+async function getFlagsMap() {
+  if (flagsMap) return flagsMap;
+  const res = await fetch('flags.json', { cache: 'force-cache' });
+  if (!res.ok) throw new Error('Не удалось загрузить flags.json');
+  const flags = await res.json();
+  flagsMap = new Map(flags.map(f => [f.name, f]));
+  return flagsMap;
+}
+
+function createCountryFlagNode(name) {
+  if (optimizeFlags) {
+    const span = document.createElement('span');
+    span.className = 'country-flag-emoji';
+    span.textContent = flagsMap?.get(name)?.emoji || '🏳️';
+    span.setAttribute('aria-hidden', 'true');
+    return span;
+  }
+
+  const code = COUNTRY_CODES[name];
+  if (!code) return null;
+  const img = document.createElement('img');
+  img.className = 'country-flag';
+  img.src = `https://flagcdn.com/w40/${code}.png`;
+  img.srcset = `https://flagcdn.com/w80/${code}.png 2x`;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  return img;
+}
+
+function fillCountryTag(tag, name) {
+  const flag = createCountryFlagNode(name);
+  if (flag) tag.appendChild(flag);
+  const text = document.createElement('span');
+  text.textContent = name;
+  tag.appendChild(text);
+}
+
 const ALIASES = {
   "рф": "Россия", "российская федерация": "Россия",
   "сша": "США", "америка": "США", "соединённые штаты": "США",
@@ -197,6 +239,15 @@ const shareUrlEl      = document.getElementById('share-url');
 const copyBtnEl       = document.getElementById('copy-btn');
 const gameModeBadge   = document.getElementById('game-mode-badge');
 const voiceBigIconEl  = document.getElementById('voice-big-icon');
+const optimizeToggle   = document.getElementById('optimize-flags-v2');
+
+if (optimizeToggle) {
+  optimizeToggle.checked = optimizeFlags;
+  optimizeToggle.addEventListener('change', () => {
+    optimizeFlags = optimizeToggle.checked;
+    localStorage.setItem('v2_optimize_flags', optimizeFlags ? '1' : '0');
+  });
+}
 
 const btnStartText  = document.getElementById('btn-start-text');
 const btnStartVoice = document.getElementById('btn-start-voice');
@@ -269,7 +320,7 @@ function updateStats() {
 function addTag(name) {
   const tag = document.createElement('span');
   tag.className = 'answered-tag';
-  tag.textContent = name;
+  fillCountryTag(tag, name);
   answeredGrid.appendChild(tag);
   const section = answeredGrid.closest('.answered-section');
   section.scrollTop = section.scrollHeight;
@@ -421,7 +472,7 @@ function applyGameMode(mode) {
   );
 }
 
-function startGame(mode = currentMode || 'text') {
+async function startGame(mode = currentMode || 'text') {
   stopVoiceInput();
   stopTimer();
   applyGameMode(mode);
@@ -435,6 +486,9 @@ function startGame(mode = currentMode || 'text') {
   gameActive = true;
   updateStats();
   showScreen('game');
+  if (optimizeFlags) {
+    try { await getFlagsMap(); } catch (err) { console.warn(err); }
+  }
   startTimer();
 
   if (currentMode === 'voice') {
@@ -486,7 +540,7 @@ function endGame(allDone = false) {
   for (const c of sorted) {
     const tag = document.createElement('span');
     tag.className = 'result-tag';
-    tag.textContent = c;
+    fillCountryTag(tag, c);
     resultTagsEl.appendChild(tag);
   }
 

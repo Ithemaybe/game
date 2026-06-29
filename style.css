@@ -390,3 +390,54 @@ html, body {
   will-change: transform;
   border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
 }
+
+
+.optimize-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  color: var(--muted);
+  font-size: .82rem;
+  cursor: pointer;
+  user-select: none;
+}
+.optimize-toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.toggle-ui {
+  width: 46px; height: 25px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  position: relative;
+  transition: var(--transition);
+  flex: 0 0 auto;
+}
+.toggle-ui::after {
+  content: '';
+  position: absolute;
+  width: 19px; height: 19px;
+  left: 3px; top: 2px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: var(--transition);
+}
+.optimize-toggle input:checked + .toggle-ui {
+  border-color: rgba(34,211,163,.55);
+  background: rgba(34,211,163,.16);
+}
+.optimize-toggle input:checked + .toggle-ui::after {
+  transform: translateX(20px);
+  background: var(--correct);
+}
+.flag-emoji {
+  display: none;
+  font-size: 6.2rem;
+  line-height: 1;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,.35));
+  transition: transform .18s ease, opacity .18s ease;
+}
+.flag-stage.optimized .flag-img { display: none; }
+.flag-stage.optimized .flag-emoji { display: block; }
+.flag-stage.flip .flag-emoji { transform: scale(.1); opacity: 0; }
+@media (max-width: 520px) { .flag-emoji { font-size: 5rem; } }

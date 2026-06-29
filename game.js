@@ -132,7 +132,9 @@ const screens = {
 };
 
 const flagImg    = document.getElementById('flag-img');
+const flagEmoji  = document.getElementById('flag-emoji');
 const flagStage  = document.getElementById('flag-stage');
+const optimizeToggle = document.getElementById('optimize-flags-v1');
 const optBtns    = [...document.querySelectorAll('.opt-btn')];
 const feedback   = document.getElementById('feedback');
 const timerText  = document.getElementById('timer-text');
@@ -157,6 +159,46 @@ let timerInterval   = null;
 let currentQuestion = null;
 let answered        = false;
 let queue           = [];
+let flagsMap        = null;
+let optimizeFlags   = localStorage.getItem('v1_optimize_flags') === '1';
+
+if (optimizeToggle) {
+  optimizeToggle.checked = optimizeFlags;
+  optimizeToggle.addEventListener('change', () => {
+    optimizeFlags = optimizeToggle.checked;
+    localStorage.setItem('v1_optimize_flags', optimizeFlags ? '1' : '0');
+  });
+}
+
+async function getFlagsMap() {
+  if (flagsMap) return flagsMap;
+  const res = await fetch('flags.json', { cache: 'force-cache' });
+  if (!res.ok) throw new Error('Не удалось загрузить flags.json');
+  const flags = await res.json();
+  flagsMap = new Map(flags.map(f => [f.code, f]));
+  return flagsMap;
+}
+
+async function applyFlag(code, alt) {
+  flagStage?.classList.toggle('optimized', optimizeFlags);
+
+  if (optimizeFlags) {
+    try {
+      const map = await getFlagsMap();
+      flagEmoji.textContent = map.get(code)?.emoji || '🏳️';
+      flagImg.removeAttribute('src');
+      flagImg.alt = alt;
+      return;
+    } catch (err) {
+      console.warn(err);
+      flagStage?.classList.remove('optimized');
+    }
+  }
+
+  flagEmoji.textContent = '';
+  flagImg.src = `https://flagcdn.com/w320/${code}.png`;
+  flagImg.alt = alt;
+}
 
 function show(name) {
   Object.values(screens).forEach(s => s.classList.remove('active'));
@@ -212,8 +254,7 @@ async function loadQuestion() {
 
   currentQuestion = q;
 
-  flagImg.src = `https://flagcdn.com/w320/${currentQuestion.code}.png`;
-  flagImg.alt = currentQuestion.correct;
+  await applyFlag(currentQuestion.code, currentQuestion.correct);
 
   currentQuestion.options.forEach((opt, i) => {
     optBtns[i].querySelector('.opt-text').textContent = opt;
@@ -316,13 +357,16 @@ function endGame(allDone = false) {
   }
 }
 
-function startGame() {
+async function startGame() {
   correct = 0; wrong = 0;
   queue   = shuffle(COUNTRIES);
   scoreC.textContent = '0';
   scoreW.textContent = '0';
   show('game');
   startTimer();
+  if (optimizeFlags) {
+    try { await getFlagsMap(); } catch (err) { console.warn(err); }
+  }
   loadQuestion();
 }
 

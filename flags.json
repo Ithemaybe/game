@@ -1,0 +1,977 @@
+[
+  {
+    "name": "Россия",
+    "code": "ru",
+    "emoji": "🇷🇺"
+  },
+  {
+    "name": "Германия",
+    "code": "de",
+    "emoji": "🇩🇪"
+  },
+  {
+    "name": "Франция",
+    "code": "fr",
+    "emoji": "🇫🇷"
+  },
+  {
+    "name": "Италия",
+    "code": "it",
+    "emoji": "🇮🇹"
+  },
+  {
+    "name": "Испания",
+    "code": "es",
+    "emoji": "🇪🇸"
+  },
+  {
+    "name": "Великобритания",
+    "code": "gb",
+    "emoji": "🇬🇧"
+  },
+  {
+    "name": "Польша",
+    "code": "pl",
+    "emoji": "🇵🇱"
+  },
+  {
+    "name": "Нидерланды",
+    "code": "nl",
+    "emoji": "🇳🇱"
+  },
+  {
+    "name": "Швеция",
+    "code": "se",
+    "emoji": "🇸🇪"
+  },
+  {
+    "name": "Норвегия",
+    "code": "no",
+    "emoji": "🇳🇴"
+  },
+  {
+    "name": "Финляндия",
+    "code": "fi",
+    "emoji": "🇫🇮"
+  },
+  {
+    "name": "Швейцария",
+    "code": "ch",
+    "emoji": "🇨🇭"
+  },
+  {
+    "name": "Австрия",
+    "code": "at",
+    "emoji": "🇦🇹"
+  },
+  {
+    "name": "Бельгия",
+    "code": "be",
+    "emoji": "🇧🇪"
+  },
+  {
+    "name": "Португалия",
+    "code": "pt",
+    "emoji": "🇵🇹"
+  },
+  {
+    "name": "Греция",
+    "code": "gr",
+    "emoji": "🇬🇷"
+  },
+  {
+    "name": "Румыния",
+    "code": "ro",
+    "emoji": "🇷🇴"
+  },
+  {
+    "name": "Венгрия",
+    "code": "hu",
+    "emoji": "🇭🇺"
+  },
+  {
+    "name": "Чехия",
+    "code": "cz",
+    "emoji": "🇨🇿"
+  },
+  {
+    "name": "Дания",
+    "code": "dk",
+    "emoji": "🇩🇰"
+  },
+  {
+    "name": "Украина",
+    "code": "ua",
+    "emoji": "🇺🇦"
+  },
+  {
+    "name": "Беларусь",
+    "code": "by",
+    "emoji": "🇧🇾"
+  },
+  {
+    "name": "Словакия",
+    "code": "sk",
+    "emoji": "🇸🇰"
+  },
+  {
+    "name": "Болгария",
+    "code": "bg",
+    "emoji": "🇧🇬"
+  },
+  {
+    "name": "Сербия",
+    "code": "rs",
+    "emoji": "🇷🇸"
+  },
+  {
+    "name": "Хорватия",
+    "code": "hr",
+    "emoji": "🇭🇷"
+  },
+  {
+    "name": "Босния и Герцеговина",
+    "code": "ba",
+    "emoji": "🇧🇦"
+  },
+  {
+    "name": "Словения",
+    "code": "si",
+    "emoji": "🇸🇮"
+  },
+  {
+    "name": "Литва",
+    "code": "lt",
+    "emoji": "🇱🇹"
+  },
+  {
+    "name": "Латвия",
+    "code": "lv",
+    "emoji": "🇱🇻"
+  },
+  {
+    "name": "Эстония",
+    "code": "ee",
+    "emoji": "🇪🇪"
+  },
+  {
+    "name": "Молдова",
+    "code": "md",
+    "emoji": "🇲🇩"
+  },
+  {
+    "name": "Албания",
+    "code": "al",
+    "emoji": "🇦🇱"
+  },
+  {
+    "name": "Северная Македония",
+    "code": "mk",
+    "emoji": "🇲🇰"
+  },
+  {
+    "name": "Черногория",
+    "code": "me",
+    "emoji": "🇲🇪"
+  },
+  {
+    "name": "Ирландия",
+    "code": "ie",
+    "emoji": "🇮🇪"
+  },
+  {
+    "name": "Исландия",
+    "code": "is",
+    "emoji": "🇮🇸"
+  },
+  {
+    "name": "Люксембург",
+    "code": "lu",
+    "emoji": "🇱🇺"
+  },
+  {
+    "name": "Мальта",
+    "code": "mt",
+    "emoji": "🇲🇹"
+  },
+  {
+    "name": "Кипр",
+    "code": "cy",
+    "emoji": "🇨🇾"
+  },
+  {
+    "name": "Лихтенштейн",
+    "code": "li",
+    "emoji": "🇱🇮"
+  },
+  {
+    "name": "Монако",
+    "code": "mc",
+    "emoji": "🇲🇨"
+  },
+  {
+    "name": "Андорра",
+    "code": "ad",
+    "emoji": "🇦🇩"
+  },
+  {
+    "name": "Сан-Марино",
+    "code": "sm",
+    "emoji": "🇸🇲"
+  },
+  {
+    "name": "Ватикан",
+    "code": "va",
+    "emoji": "🇻🇦"
+  },
+  {
+    "name": "Китай",
+    "code": "cn",
+    "emoji": "🇨🇳"
+  },
+  {
+    "name": "Япония",
+    "code": "jp",
+    "emoji": "🇯🇵"
+  },
+  {
+    "name": "Индия",
+    "code": "in",
+    "emoji": "🇮🇳"
+  },
+  {
+    "name": "Южная Корея",
+    "code": "kr",
+    "emoji": "🇰🇷"
+  },
+  {
+    "name": "Индонезия",
+    "code": "id",
+    "emoji": "🇮🇩"
+  },
+  {
+    "name": "Таиланд",
+    "code": "th",
+    "emoji": "🇹🇭"
+  },
+  {
+    "name": "Вьетнам",
+    "code": "vn",
+    "emoji": "🇻🇳"
+  },
+  {
+    "name": "Филиппины",
+    "code": "ph",
+    "emoji": "🇵🇭"
+  },
+  {
+    "name": "Малайзия",
+    "code": "my",
+    "emoji": "🇲🇾"
+  },
+  {
+    "name": "Сингапур",
+    "code": "sg",
+    "emoji": "🇸🇬"
+  },
+  {
+    "name": "Казахстан",
+    "code": "kz",
+    "emoji": "🇰🇿"
+  },
+  {
+    "name": "Саудовская Аравия",
+    "code": "sa",
+    "emoji": "🇸🇦"
+  },
+  {
+    "name": "ОАЭ",
+    "code": "ae",
+    "emoji": "🇦🇪"
+  },
+  {
+    "name": "Иран",
+    "code": "ir",
+    "emoji": "🇮🇷"
+  },
+  {
+    "name": "Ирак",
+    "code": "iq",
+    "emoji": "🇮🇶"
+  },
+  {
+    "name": "Пакистан",
+    "code": "pk",
+    "emoji": "🇵🇰"
+  },
+  {
+    "name": "Бангладеш",
+    "code": "bd",
+    "emoji": "🇧🇩"
+  },
+  {
+    "name": "Израиль",
+    "code": "il",
+    "emoji": "🇮🇱"
+  },
+  {
+    "name": "Иордания",
+    "code": "jo",
+    "emoji": "🇯🇴"
+  },
+  {
+    "name": "Сирия",
+    "code": "sy",
+    "emoji": "🇸🇾"
+  },
+  {
+    "name": "Турция",
+    "code": "tr",
+    "emoji": "🇹🇷"
+  },
+  {
+    "name": "Афганистан",
+    "code": "af",
+    "emoji": "🇦🇫"
+  },
+  {
+    "name": "Мьянма",
+    "code": "mm",
+    "emoji": "🇲🇲"
+  },
+  {
+    "name": "Камбоджа",
+    "code": "kh",
+    "emoji": "🇰🇭"
+  },
+  {
+    "name": "Лаос",
+    "code": "la",
+    "emoji": "🇱🇦"
+  },
+  {
+    "name": "Монголия",
+    "code": "mn",
+    "emoji": "🇲🇳"
+  },
+  {
+    "name": "Северная Корея",
+    "code": "kp",
+    "emoji": "🇰🇵"
+  },
+  {
+    "name": "Непал",
+    "code": "np",
+    "emoji": "🇳🇵"
+  },
+  {
+    "name": "Шри-Ланка",
+    "code": "lk",
+    "emoji": "🇱🇰"
+  },
+  {
+    "name": "Мальдивы",
+    "code": "mv",
+    "emoji": "🇲🇻"
+  },
+  {
+    "name": "Бутан",
+    "code": "bt",
+    "emoji": "🇧🇹"
+  },
+  {
+    "name": "Узбекистан",
+    "code": "uz",
+    "emoji": "🇺🇿"
+  },
+  {
+    "name": "Туркменистан",
+    "code": "tm",
+    "emoji": "🇹🇲"
+  },
+  {
+    "name": "Таджикистан",
+    "code": "tj",
+    "emoji": "🇹🇯"
+  },
+  {
+    "name": "Кыргызстан",
+    "code": "kg",
+    "emoji": "🇰🇬"
+  },
+  {
+    "name": "Азербайджан",
+    "code": "az",
+    "emoji": "🇦🇿"
+  },
+  {
+    "name": "Армения",
+    "code": "am",
+    "emoji": "🇦🇲"
+  },
+  {
+    "name": "Грузия",
+    "code": "ge",
+    "emoji": "🇬🇪"
+  },
+  {
+    "name": "Ливан",
+    "code": "lb",
+    "emoji": "🇱🇧"
+  },
+  {
+    "name": "Кувейт",
+    "code": "kw",
+    "emoji": "🇰🇼"
+  },
+  {
+    "name": "Катар",
+    "code": "qa",
+    "emoji": "🇶🇦"
+  },
+  {
+    "name": "Бахрейн",
+    "code": "bh",
+    "emoji": "🇧🇭"
+  },
+  {
+    "name": "Оман",
+    "code": "om",
+    "emoji": "🇴🇲"
+  },
+  {
+    "name": "Йемен",
+    "code": "ye",
+    "emoji": "🇾🇪"
+  },
+  {
+    "name": "Бруней",
+    "code": "bn",
+    "emoji": "🇧🇳"
+  },
+  {
+    "name": "Восточный Тимор",
+    "code": "tl",
+    "emoji": "🇹🇱"
+  },
+  {
+    "name": "Палестина",
+    "code": "ps",
+    "emoji": "🇵🇸"
+  },
+  {
+    "name": "Египет",
+    "code": "eg",
+    "emoji": "🇪🇬"
+  },
+  {
+    "name": "ЮАР",
+    "code": "za",
+    "emoji": "🇿🇦"
+  },
+  {
+    "name": "Нигерия",
+    "code": "ng",
+    "emoji": "🇳🇬"
+  },
+  {
+    "name": "Кения",
+    "code": "ke",
+    "emoji": "🇰🇪"
+  },
+  {
+    "name": "Марокко",
+    "code": "ma",
+    "emoji": "🇲🇦"
+  },
+  {
+    "name": "Эфиопия",
+    "code": "et",
+    "emoji": "🇪🇹"
+  },
+  {
+    "name": "Танзания",
+    "code": "tz",
+    "emoji": "🇹🇿"
+  },
+  {
+    "name": "Гана",
+    "code": "gh",
+    "emoji": "🇬🇭"
+  },
+  {
+    "name": "Алжир",
+    "code": "dz",
+    "emoji": "🇩🇿"
+  },
+  {
+    "name": "Тунис",
+    "code": "tn",
+    "emoji": "🇹🇳"
+  },
+  {
+    "name": "Ливия",
+    "code": "ly",
+    "emoji": "🇱🇾"
+  },
+  {
+    "name": "Судан",
+    "code": "sd",
+    "emoji": "🇸🇩"
+  },
+  {
+    "name": "Южный Судан",
+    "code": "ss",
+    "emoji": "🇸🇸"
+  },
+  {
+    "name": "Конго",
+    "code": "cg",
+    "emoji": "🇨🇬"
+  },
+  {
+    "name": "ДР Конго",
+    "code": "cd",
+    "emoji": "🇨🇩"
+  },
+  {
+    "name": "Ангола",
+    "code": "ao",
+    "emoji": "🇦🇴"
+  },
+  {
+    "name": "Мозамбик",
+    "code": "mz",
+    "emoji": "🇲🇿"
+  },
+  {
+    "name": "Замбия",
+    "code": "zm",
+    "emoji": "🇿🇲"
+  },
+  {
+    "name": "Зимбабве",
+    "code": "zw",
+    "emoji": "🇿🇼"
+  },
+  {
+    "name": "Уганда",
+    "code": "ug",
+    "emoji": "🇺🇬"
+  },
+  {
+    "name": "Руанда",
+    "code": "rw",
+    "emoji": "🇷🇼"
+  },
+  {
+    "name": "Бурунди",
+    "code": "bi",
+    "emoji": "🇧🇮"
+  },
+  {
+    "name": "Камерун",
+    "code": "cm",
+    "emoji": "🇨🇲"
+  },
+  {
+    "name": "Кот-д'Ивуар",
+    "code": "ci",
+    "emoji": "🇨🇮"
+  },
+  {
+    "name": "Сенегал",
+    "code": "sn",
+    "emoji": "🇸🇳"
+  },
+  {
+    "name": "Мали",
+    "code": "ml",
+    "emoji": "🇲🇱"
+  },
+  {
+    "name": "Буркина-Фасо",
+    "code": "bf",
+    "emoji": "🇧🇫"
+  },
+  {
+    "name": "Нигер",
+    "code": "ne",
+    "emoji": "🇳🇪"
+  },
+  {
+    "name": "Чад",
+    "code": "td",
+    "emoji": "🇹🇩"
+  },
+  {
+    "name": "Мавритания",
+    "code": "mr",
+    "emoji": "🇲🇷"
+  },
+  {
+    "name": "Гвинея",
+    "code": "gn",
+    "emoji": "🇬🇳"
+  },
+  {
+    "name": "Бенин",
+    "code": "bj",
+    "emoji": "🇧🇯"
+  },
+  {
+    "name": "Того",
+    "code": "tg",
+    "emoji": "🇹🇬"
+  },
+  {
+    "name": "Сьерра-Леоне",
+    "code": "sl",
+    "emoji": "🇸🇱"
+  },
+  {
+    "name": "Либерия",
+    "code": "lr",
+    "emoji": "🇱🇷"
+  },
+  {
+    "name": "Гамбия",
+    "code": "gm",
+    "emoji": "🇬🇲"
+  },
+  {
+    "name": "Гвинея-Бисау",
+    "code": "gw",
+    "emoji": "🇬🇼"
+  },
+  {
+    "name": "Кабо-Верде",
+    "code": "cv",
+    "emoji": "🇨🇻"
+  },
+  {
+    "name": "Сомали",
+    "code": "so",
+    "emoji": "🇸🇴"
+  },
+  {
+    "name": "Джибути",
+    "code": "dj",
+    "emoji": "🇩🇯"
+  },
+  {
+    "name": "Эритрея",
+    "code": "er",
+    "emoji": "🇪🇷"
+  },
+  {
+    "name": "Экваториальная Гвинея",
+    "code": "gq",
+    "emoji": "🇬🇶"
+  },
+  {
+    "name": "Габон",
+    "code": "ga",
+    "emoji": "🇬🇦"
+  },
+  {
+    "name": "ЦАР",
+    "code": "cf",
+    "emoji": "🇨🇫"
+  },
+  {
+    "name": "Намибия",
+    "code": "na",
+    "emoji": "🇳🇦"
+  },
+  {
+    "name": "Ботсвана",
+    "code": "bw",
+    "emoji": "🇧🇼"
+  },
+  {
+    "name": "Лесото",
+    "code": "ls",
+    "emoji": "🇱🇸"
+  },
+  {
+    "name": "Эсватини",
+    "code": "sz",
+    "emoji": "🇸🇿"
+  },
+  {
+    "name": "Малави",
+    "code": "mw",
+    "emoji": "🇲🇼"
+  },
+  {
+    "name": "Мадагаскар",
+    "code": "mg",
+    "emoji": "🇲🇬"
+  },
+  {
+    "name": "Маврикий",
+    "code": "mu",
+    "emoji": "🇲🇺"
+  },
+  {
+    "name": "Сейшелы",
+    "code": "sc",
+    "emoji": "🇸🇨"
+  },
+  {
+    "name": "Коморы",
+    "code": "km",
+    "emoji": "🇰🇲"
+  },
+  {
+    "name": "Сан-Томе и Принсипи",
+    "code": "st",
+    "emoji": "🇸🇹"
+  },
+  {
+    "name": "США",
+    "code": "us",
+    "emoji": "🇺🇸"
+  },
+  {
+    "name": "Канада",
+    "code": "ca",
+    "emoji": "🇨🇦"
+  },
+  {
+    "name": "Мексика",
+    "code": "mx",
+    "emoji": "🇲🇽"
+  },
+  {
+    "name": "Куба",
+    "code": "cu",
+    "emoji": "🇨🇺"
+  },
+  {
+    "name": "Гаити",
+    "code": "ht",
+    "emoji": "🇭🇹"
+  },
+  {
+    "name": "Доминиканская Республика",
+    "code": "do",
+    "emoji": "🇩🇴"
+  },
+  {
+    "name": "Ямайка",
+    "code": "jm",
+    "emoji": "🇯🇲"
+  },
+  {
+    "name": "Тринидад и Тобаго",
+    "code": "tt",
+    "emoji": "🇹🇹"
+  },
+  {
+    "name": "Панама",
+    "code": "pa",
+    "emoji": "🇵🇦"
+  },
+  {
+    "name": "Коста-Рика",
+    "code": "cr",
+    "emoji": "🇨🇷"
+  },
+  {
+    "name": "Никарагуа",
+    "code": "ni",
+    "emoji": "🇳🇮"
+  },
+  {
+    "name": "Гондурас",
+    "code": "hn",
+    "emoji": "🇭🇳"
+  },
+  {
+    "name": "Сальвадор",
+    "code": "sv",
+    "emoji": "🇸🇻"
+  },
+  {
+    "name": "Гватемала",
+    "code": "gt",
+    "emoji": "🇬🇹"
+  },
+  {
+    "name": "Белиз",
+    "code": "bz",
+    "emoji": "🇧🇿"
+  },
+  {
+    "name": "Багамы",
+    "code": "bs",
+    "emoji": "🇧🇸"
+  },
+  {
+    "name": "Барбадос",
+    "code": "bb",
+    "emoji": "🇧🇧"
+  },
+  {
+    "name": "Сент-Люсия",
+    "code": "lc",
+    "emoji": "🇱🇨"
+  },
+  {
+    "name": "Гренада",
+    "code": "gd",
+    "emoji": "🇬🇩"
+  },
+  {
+    "name": "Антигуа и Барбуда",
+    "code": "ag",
+    "emoji": "🇦🇬"
+  },
+  {
+    "name": "Доминика",
+    "code": "dm",
+    "emoji": "🇩🇲"
+  },
+  {
+    "name": "Сент-Китс и Невис",
+    "code": "kn",
+    "emoji": "🇰🇳"
+  },
+  {
+    "name": "Сент-Винсент и Гренадины",
+    "code": "vc",
+    "emoji": "🇻🇨"
+  },
+  {
+    "name": "Бразилия",
+    "code": "br",
+    "emoji": "🇧🇷"
+  },
+  {
+    "name": "Аргентина",
+    "code": "ar",
+    "emoji": "🇦🇷"
+  },
+  {
+    "name": "Колумбия",
+    "code": "co",
+    "emoji": "🇨🇴"
+  },
+  {
+    "name": "Перу",
+    "code": "pe",
+    "emoji": "🇵🇪"
+  },
+  {
+    "name": "Чили",
+    "code": "cl",
+    "emoji": "🇨🇱"
+  },
+  {
+    "name": "Венесуэла",
+    "code": "ve",
+    "emoji": "🇻🇪"
+  },
+  {
+    "name": "Боливия",
+    "code": "bo",
+    "emoji": "🇧🇴"
+  },
+  {
+    "name": "Парагвай",
+    "code": "py",
+    "emoji": "🇵🇾"
+  },
+  {
+    "name": "Уругвай",
+    "code": "uy",
+    "emoji": "🇺🇾"
+  },
+  {
+    "name": "Эквадор",
+    "code": "ec",
+    "emoji": "🇪🇨"
+  },
+  {
+    "name": "Гайана",
+    "code": "gy",
+    "emoji": "🇬🇾"
+  },
+  {
+    "name": "Суринам",
+    "code": "sr",
+    "emoji": "🇸🇷"
+  },
+  {
+    "name": "Австралия",
+    "code": "au",
+    "emoji": "🇦🇺"
+  },
+  {
+    "name": "Новая Зеландия",
+    "code": "nz",
+    "emoji": "🇳🇿"
+  },
+  {
+    "name": "Папуа — Новая Гвинея",
+    "code": "pg",
+    "emoji": "🇵🇬"
+  },
+  {
+    "name": "Фиджи",
+    "code": "fj",
+    "emoji": "🇫🇯"
+  },
+  {
+    "name": "Соломоновы Острова",
+    "code": "sb",
+    "emoji": "🇸🇧"
+  },
+  {
+    "name": "Вануату",
+    "code": "vu",
+    "emoji": "🇻🇺"
+  },
+  {
+    "name": "Самоа",
+    "code": "ws",
+    "emoji": "🇼🇸"
+  },
+  {
+    "name": "Кирибати",
+    "code": "ki",
+    "emoji": "🇰🇮"
+  },
+  {
+    "name": "Тонга",
+    "code": "to",
+    "emoji": "🇹🇴"
+  },
+  {
+    "name": "Микронезия",
+    "code": "fm",
+    "emoji": "🇫🇲"
+  },
+  {
+    "name": "Палау",
+    "code": "pw",
+    "emoji": "🇵🇼"
+  },
+  {
+    "name": "Маршалловы Острова",
+    "code": "mh",
+    "emoji": "🇲🇭"
+  },
+  {
+    "name": "Науру",
+    "code": "nr",
+    "emoji": "🇳🇷"
+  },
+  {
+    "name": "Тувалу",
+    "code": "tv",
+    "emoji": "🇹🇻"
+  }
+]

@@ -16,7 +16,7 @@
 <meta name="twitter:image" content="https://flagcdn.com/w640/un.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=4">
 <style>
   .record-card {
     width: 100%;
@@ -85,6 +85,12 @@
       <div class="record-icon">🏆</div>
     </div>
 
+    <label class="optimize-toggle">
+      <input type="checkbox" id="optimize-flags-v1">
+      <span class="toggle-ui" aria-hidden="true"></span>
+      <span>Оптимизировать загрузку флагов</span>
+    </label>
+
     <button class="btn-start" id="btn-start">Начать игру</button>
     <div class="hero-hint">← → кнопки 1–4 для ответа</div>
   </div>
@@ -112,6 +118,7 @@
 
     <div class="flag-stage" id="flag-stage">
       <img class="flag-img" id="flag-img" src="" alt="" draggable="false">
+      <div class="flag-emoji" id="flag-emoji" aria-hidden="true"></div>
       <div class="flag-shine"></div>
     </div>
 
@@ -176,7 +183,7 @@
 
 </div>
 
-<script src="game.js"></script>
+<script src="game.js?v=4"></script>
 <script src="swimming-cat.js"></script>
 
 <script>
