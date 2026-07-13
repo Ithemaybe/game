@@ -61,16 +61,17 @@
 <img id="swimming-cat" src="" alt="">
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
+<nav class="mode-pills" aria-label="Режим игры">
+  <a href="index.html" class="active" aria-current="page">V1</a>
+  <a href="v2.html">V2</a>
+  <a href="v3.html">V3</a>
+</nav>
+
 
 <div class="wrapper">
 
   
   <div id="start-screen" class="screen active">
-    <a href="v2.html" class="btn-v2-mode" title="V2 режим — угадай страны по названию">
-      <span class="btn-v2-badge">V2</span>
-      <span class="btn-v2-label">Режим</span>
-      <span class="btn-v2-arrow">→</span>
-    </a>
     <div class="hero-icon">🌍</div>
     <h1 class="hero-title">Флаги<br><span>Мира</span></h1>
     <p class="hero-sub">Угадай страну по флагу.<br>60 секунд — сколько успеешь?</p>
@@ -210,5 +211,6 @@
 })();
 </script>
 
+<script src="mode-switcher.js?v=1"></script>
 </body>
 </html>

@@ -441,3 +441,29 @@ html, body {
 .flag-stage.optimized .flag-emoji { display: block; }
 .flag-stage.flip .flag-emoji { transform: scale(.1); opacity: 0; }
 @media (max-width: 520px) { .flag-emoji { font-size: 5rem; } }
+
+
+/* Global mode switch */
+.mode-pills { position:fixed;z-index:20;top:max(14px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:flex;gap:.3rem;padding:.3rem;background:rgba(17,21,32,.82);border:1px solid var(--border);border-radius:999px;backdrop-filter:blur(14px);box-shadow:0 8px 30px rgba(0,0,0,.25); }
+.mode-pills a { min-width:54px;padding:.55rem .9rem;border-radius:999px;text-decoration:none;text-align:center;color:var(--muted);font:700 .72rem 'Unbounded',sans-serif;transition:var(--transition); }
+.mode-pills a:hover { color:var(--text);background:rgba(255,255,255,.06); }
+.mode-pills a.active { color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 16px rgba(79,140,255,.35); }
+.wrapper { padding-top:6rem; }
+@media(max-width:520px){.mode-pills a{min-width:48px;padding:.5rem .72rem}.wrapper{padding-top:5.5rem}}
+
+/* Переключатель режимов: клик или горизонтальное перетаскивание */
+.mode-pills { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.mode-pills a { -webkit-user-drag: none; }
+.mode-pills.is-dragging { cursor: grabbing; }
+.mode-pills.is-dragging a { pointer-events: none; }
+.mode-pills a.drag-target {
+  color: #fff;
+  background: linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow: 0 4px 18px rgba(79,140,255,.45);
+  transform: scale(1.04);
+}
+.mode-pills.is-dragging a.active:not(.drag-target) {
+  color: var(--muted);
+  background: transparent;
+  box-shadow: none;
+}

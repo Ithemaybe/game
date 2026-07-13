@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Флаги Мира — V3 Без таймера</title>
+<meta name="description" content="Угадай все флаги мира без ограничения по времени.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ithemaybe.github.io/game/v3.html">
+<meta property="og:title" content="Флаги Мира 🌍 — V3 Без таймера">
+<meta property="og:description" content="Пиши название страны по флагу. Без таймера — заверши когда захочешь или угадай все страны.">
+<meta property="og:image" content="https://flagcdn.com/w640/un.png">
+<meta property="og:locale" content="ru_RU">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-v3.css?v=1">
+</head>
+<body>
+<img id="swimming-cat" src="" alt="">
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<nav class="mode-pills" aria-label="Режим игры">
+  <a href="index.html">V1</a>
+  <a href="v2.html">V2</a>
+  <a href="v3.html" class="active" aria-current="page">V3</a>
+</nav>
+
+<div class="wrapper">
+  <div id="start-screen" class="screen active">
+    <div class="badge-v3">✦ V3 РЕЖИМ</div>
+    <div class="hero-icon">🏳️</div>
+    <h1 class="hero-title">Флаги<br><span>Без таймера</span></h1>
+    <p class="hero-sub">Смотри на флаг и пиши название страны.<br>Заверши игру в любой момент или угадай все флаги.</p>
+
+    <div class="record-card">
+      <div class="record-left">
+        <div class="record-label">🏅 Лучший результат</div>
+        <div class="record-value" id="record-count">—</div>
+        <div class="record-sub" id="record-sub">Сыграй первую партию!</div>
+      </div>
+      <div class="record-icon">🏆</div>
+    </div>
+
+    <label class="optimize-toggle">
+      <input type="checkbox" id="optimize-flags-v3">
+      <span class="toggle-ui" aria-hidden="true"></span>
+      <span>Оптимизировать загрузку флагов</span>
+    </label>
+
+    <button class="btn-primary" id="btn-start" type="button">Начать игру</button>
+    <div class="hero-hint">Enter — проверить ответ</div>
+  </div>
+
+  <div id="game-screen" class="screen">
+    <div class="game-header">
+      <div class="stat-box">
+        <span class="stat-label">Угадано</span>
+        <span class="stat-val count-correct" id="score-correct">0</span>
+      </div>
+      <div class="progress-center">
+        <span class="progress-number" id="progress-number">1 / 195</span>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Ошибок</span>
+        <span class="stat-val count-wrong" id="score-wrong">0</span>
+      </div>
+    </div>
+
+    <div class="flag-stage" id="flag-stage">
+      <img class="flag-img" id="flag-img" src="" alt="Флаг страны" draggable="false">
+      <div class="flag-emoji" id="flag-emoji" aria-hidden="true"></div>
+      <div class="flag-shine"></div>
+    </div>
+
+    <form class="input-area" id="answer-form">
+      <input class="country-input" id="country-input" type="text" placeholder="Название страны..." autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="submit-btn" type="submit">Ответить</button>
+    </form>
+
+    <div class="feedback-toast" id="feedback-toast" aria-live="polite"></div>
+    <div class="game-actions">
+      <button class="skip-btn" id="btn-skip" type="button">Пропустить флаг</button>
+      <button class="finish-btn" id="btn-finish" type="button">Завершить игру</button>
+    </div>
+  </div>
+
+  <div id="result-screen" class="screen">
+    <div class="result-trophy" id="result-trophy">🏆</div>
+    <h2 class="result-title" id="result-title">Результат</h2>
+    <p class="result-subtitle" id="result-subtitle"></p>
+    <div class="new-record-banner" id="new-record-banner">🎉 Новый личный рекорд!</div>
+
+    <div class="result-stats">
+      <div class="rs-box rs-correct"><div class="rs-num" id="res-correct">0</div><div class="rs-label">Угадано</div></div>
+      <div class="rs-divider">|</div>
+      <div class="rs-box rs-wrong"><div class="rs-num" id="res-wrong">0</div><div class="rs-label">Ошибок</div></div>
+      <div class="rs-divider">|</div>
+      <div class="rs-box rs-total"><div class="rs-num" id="res-pct">0%</div><div class="rs-label">Точность</div></div>
+    </div>
+
+    <div class="share-box">
+      <span class="share-label">Поделиться результатом:</span>
+      <div class="share-row">
+        <input class="share-input" id="share-url" readonly>
+        <button class="copy-btn" id="copy-btn" type="button" title="Скопировать">⧉</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn-again" type="button">Играть снова</button>
+  </div>
+</div>
+<script src="v3.js?v=1"></script>
+<script src="swimming-cat.js"></script>
+<script src="mode-switcher.js?v=1"></script>
+</body>
+</html>
