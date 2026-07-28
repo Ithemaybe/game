@@ -45,6 +45,17 @@ function canonicalAnswer(value) {
   return alias ? normalize(alias) : normalized;
 }
 
+// Windows-based browsers have no flag glyphs in the system emoji font, so a
+// flag emoji renders as plain letters instead of a flag. Twemoji SVGs render
+// the same tiny flag image on every platform.
+function emojiToTwemojiUrl(emoji) {
+  const codepoints = [...emoji]
+    .map(ch => ch.codePointAt(0).toString(16))
+    .filter(cp => cp !== 'fe0f')
+    .join('-');
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${codepoints}.svg`;
+}
+
 function shuffle(items) {
   const copy = [...items];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -70,10 +81,15 @@ function renderRecord() {
 function setFlag(country) {
   flagStage.classList.toggle('optimized', optimizeFlags);
   if (optimizeFlags) {
-    flagEmoji.textContent = country.emoji || '🏳️';
+    flagEmoji.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = emojiToTwemojiUrl(country.emoji || '🏳️');
+    img.alt = '';
+    img.decoding = 'async';
+    flagEmoji.appendChild(img);
     flagImg.removeAttribute('src');
   } else {
-    flagEmoji.textContent = '';
+    flagEmoji.innerHTML = '';
     flagImg.src = `https://flagcdn.com/w640/${country.code}.png`;
     flagImg.srcset = `https://flagcdn.com/w1280/${country.code}.png 2x`;
   }

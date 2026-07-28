@@ -125,6 +125,18 @@ function shuffle(arr) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// Windows-based browsers (Chrome/Edge on Windows) have no flag glyphs in the
+// system emoji font, so a flag emoji like 🇴🇲 renders as plain letters ("OM")
+// instead of a flag. Twemoji SVGs render the same tiny flag image on every
+// platform, so we use those instead of relying on the OS font.
+function emojiToTwemojiUrl(emoji) {
+  const codepoints = [...emoji]
+    .map(ch => ch.codePointAt(0).toString(16))
+    .filter(cp => cp !== 'fe0f')
+    .join('-');
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${codepoints}.svg`;
+}
+
 const screens = {
   start:  document.getElementById('start-screen'),
   game:   document.getElementById('game-screen'),
@@ -185,7 +197,13 @@ async function applyFlag(code, alt) {
   if (optimizeFlags) {
     try {
       const map = await getFlagsMap();
-      flagEmoji.textContent = map.get(code)?.emoji || '🏳️';
+      const emoji = map.get(code)?.emoji || '🏳️';
+      flagEmoji.innerHTML = '';
+      const img = document.createElement('img');
+      img.src = emojiToTwemojiUrl(emoji);
+      img.alt = alt;
+      img.decoding = 'async';
+      flagEmoji.appendChild(img);
       flagImg.removeAttribute('src');
       flagImg.alt = alt;
       return;
@@ -195,7 +213,7 @@ async function applyFlag(code, alt) {
     }
   }
 
-  flagEmoji.textContent = '';
+  flagEmoji.innerHTML = '';
   flagImg.src = `https://flagcdn.com/w320/${code}.png`;
   flagImg.alt = alt;
 }

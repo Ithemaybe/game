@@ -52,13 +52,27 @@ async function getFlagsMap() {
   return flagsMap;
 }
 
+// Windows-based browsers have no flag glyphs in the system emoji font, so a
+// flag emoji renders as plain letters instead of a flag. Twemoji SVGs render
+// the same tiny flag image on every platform.
+function emojiToTwemojiUrl(emoji) {
+  const codepoints = [...emoji]
+    .map(ch => ch.codePointAt(0).toString(16))
+    .filter(cp => cp !== 'fe0f')
+    .join('-');
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${codepoints}.svg`;
+}
+
 function createCountryFlagNode(name) {
   if (optimizeFlags) {
-    const span = document.createElement('span');
-    span.className = 'country-flag-emoji';
-    span.textContent = flagsMap?.get(name)?.emoji || '🏳️';
-    span.setAttribute('aria-hidden', 'true');
-    return span;
+    const emoji = flagsMap?.get(name)?.emoji || '🏳️';
+    const img = document.createElement('img');
+    img.className = 'country-flag-emoji';
+    img.src = emojiToTwemojiUrl(emoji);
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    return img;
   }
 
   const code = COUNTRY_CODES[name];

@@ -432,15 +432,23 @@ html, body {
 }
 .flag-emoji {
   display: none;
-  font-size: 6.2rem;
-  line-height: 1;
+  width: 68%;
+  max-width: 260px;
+  aspect-ratio: 3 / 2;
+  align-items: center;
+  justify-content: center;
   filter: drop-shadow(0 12px 24px rgba(0,0,0,.35));
   transition: transform .18s ease, opacity .18s ease;
 }
+.flag-emoji img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .flag-stage.optimized .flag-img { display: none; }
-.flag-stage.optimized .flag-emoji { display: block; }
+.flag-stage.optimized .flag-emoji { display: flex; }
 .flag-stage.flip .flag-emoji { transform: scale(.1); opacity: 0; }
-@media (max-width: 520px) { .flag-emoji { font-size: 5rem; } }
+@media (max-width: 520px) { .flag-emoji { width: 58%; } }
 
 
 /* Global mode switch */
