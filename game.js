@@ -12,6 +12,14 @@
   svg.prepend(defs);
 })();
 
+function encodeResultV1(data) {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach((b) => { binary += String.fromCharCode(b); });
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
 const COUNTRIES = [
   {name:"Россия",code:"ru"},{name:"Германия",code:"de"},
   {name:"Франция",code:"fr"},{name:"Италия",code:"it"},
@@ -125,10 +133,6 @@ function shuffle(arr) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// Windows-based browsers (Chrome/Edge on Windows) have no flag glyphs in the
-// system emoji font, so a flag emoji like 🇴🇲 renders as plain letters ("OM")
-// instead of a flag. Twemoji SVGs render the same tiny flag image on every
-// platform, so we use those instead of relying on the OS font.
 function emojiToTwemojiUrl(emoji) {
   const codepoints = [...emoji]
     .map(ch => ch.codePointAt(0).toString(16))
@@ -350,14 +354,10 @@ function endGame(allDone = false) {
   const banner = document.getElementById('new-record-banner');
   if (banner) banner.style.display = isNewRecord ? 'flex' : 'none';
 
-  const key = Array.from(crypto.getRandomValues(new Uint8Array(5)))
-    .map(b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36])
-    .join('');
-  localStorage.setItem('v1_result_' + key, JSON.stringify({ correct, wrong, total, pct, date }));
-
+  const encoded  = encodeResultV1({ correct, wrong, total, pct, date });
   const base     = location.href.replace(/\/[^/]*(\?.*)?$/, '/');
   const shareUrl = document.getElementById('share-url');
-  if (shareUrl) shareUrl.value = base + 'result.html#' + key;
+  if (shareUrl) shareUrl.value = base + 'result.html#' + encoded;
 
   const copyBtn = document.getElementById('copy-btn');
   if (copyBtn) {

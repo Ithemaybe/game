@@ -17,7 +17,6 @@
     const direct = document.elementFromPoint(x, y)?.closest('.mode-pills a');
     if (direct && nav.contains(direct)) return direct;
 
-    // Разрешаем вести пальцем немного выше/ниже переключателя.
     return links.reduce((best, link) => {
       const rect = link.getBoundingClientRect();
       const center = rect.left + rect.width / 2;

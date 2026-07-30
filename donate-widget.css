@@ -1,0 +1,124 @@
+
+.ton-donate-btn {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .7rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, #232a42);
+  background: var(--card, #161b2e);
+  color: #f5c842;
+  font-family: 'Unbounded', sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .35);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.ton-donate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .45);
+}
+
+.ton-donate-panel {
+  position: fixed;
+  right: 1rem;
+  bottom: 4.5rem;
+  z-index: 1000;
+  width: min(300px, calc(100vw - 2rem));
+  background: var(--card, #161b2e);
+  border: 1px solid var(--border, #232a42);
+  border-radius: 16px;
+  padding: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: .6rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .4);
+  font-family: 'Inter', sans-serif;
+}
+
+.ton-donate-panel.open {
+  display: flex;
+}
+
+.ton-donate-panel p {
+  margin: 0;
+  font-size: .8rem;
+  line-height: 1.4;
+  color: var(--muted, #6b7494);
+}
+
+.ton-donate-row {
+  display: flex;
+  gap: .5rem;
+}
+
+.ton-donate-input {
+  flex: 1;
+  min-width: 0;
+  background: #0d1120;
+  border: 1px solid var(--border, #232a42);
+  border-radius: 10px;
+  padding: .5rem .6rem;
+  color: #e8ecf7;
+  font-size: .72rem;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+}
+
+.ton-donate-copy,
+.ton-donate-open {
+  border: 1px solid var(--border, #232a42);
+  background: transparent;
+  color: #e8ecf7;
+  border-radius: 10px;
+  padding: .5rem .7rem;
+  font-size: .78rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+}
+
+.ton-donate-open {
+  display: block;
+  background: linear-gradient(135deg, #4f8cff, #a78bfa);
+  border: none;
+  color: #0b0e1a;
+  font-weight: 700;
+}
+
+.ton-donate-copy.copied {
+  background: #2ecc71;
+  color: #08110b;
+  border-color: #2ecc71;
+}
+
+.ton-donate-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: var(--muted, #6b7494);
+  cursor: pointer;
+  font-size: .95rem;
+  line-height: 1;
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  .ton-donate-btn {
+    right: .75rem;
+    bottom: .75rem;
+    padding: .6rem .9rem;
+    font-size: .75rem;
+  }
+  .ton-donate-panel {
+    right: .75rem;
+    bottom: 4rem;
+  }
+}

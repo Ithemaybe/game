@@ -733,7 +733,6 @@ html, body {
   gap: .38rem;
 }
 
-/* V3 */
 .mode-pills {
   position: fixed; z-index: 20; top: max(14px, env(safe-area-inset-top)); left: 50%;
   transform: translateX(-50%); display: flex; gap: .3rem; padding: .3rem;
@@ -771,7 +770,6 @@ html, body {
 .rs-wrong .rs-num { color:var(--wrong); }
 @media (max-width:520px) { .wrapper{padding:5.5rem 1rem 1.25rem}.game-header{gap:.55rem}.stat-box{padding:.6rem .75rem;min-width:68px}.input-area{flex-direction:column}.submit-btn{width:100%}.mode-pills a{min-width:48px;padding:.5rem .72rem}.flag-stage{aspect-ratio:4/3} }
 
-/* Переключатель режимов: клик или горизонтальное перетаскивание */
 .mode-pills { touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .mode-pills a { -webkit-user-drag: none; }
 .mode-pills.is-dragging { cursor: grabbing; }

@@ -212,6 +212,22 @@ const DURATION_SECS   = 10 * 60;
 const CIRCUMFERENCE   = 2 * Math.PI * 50;
 const RECORD_KEYS     = { text: 'v2_record_text', voice: 'v2_record_voice' };
 
+function encodeResultV2(data) {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach((b) => { binary += String.fromCharCode(b); });
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function decodeResultV2(encoded) {
+  const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+  const binary = atob(b64 + pad);
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
 let answered   = new Set();
 let timeLeft   = DURATION_SECS;
 let timerInterval = null;
@@ -558,10 +574,10 @@ function endGame(allDone = false) {
     resultTagsEl.appendChild(tag);
   }
 
-  const now = new Date().toISOString().slice(0, 16).replace('T', '+');
-  const hash = `mode=${currentMode}&n=${n}&pct=${pct}&d=${encodeURIComponent(now)}`;
+  const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  const encoded = encodeResultV2({ mode: currentMode, n, pct, total: TOTAL_COUNTRIES, date });
   const base = location.href.replace(/\/[^/]*$/, '/');
-  shareUrlEl.value = base + 'v2.html#' + hash;
+  shareUrlEl.value = base + 'v2.html#' + encoded;
 }
 
 function setVoiceStatus(text, state = '') {
@@ -713,3 +729,40 @@ copyBtnEl?.addEventListener('click', () => {
 
 initVoiceInput();
 renderStartRecord();
+
+function renderSharedResult(data) {
+  const { mode, n, pct, total, date } = data;
+  const totalCount = total || TOTAL_COUNTRIES;
+  const computedPct = typeof pct === 'number' ? pct : Math.round((n / totalCount) * 100);
+
+  resCorrectEl.textContent = n;
+  resPctEl.textContent = computedPct + '%';
+  resultTrophyEl.textContent =
+    computedPct >= 70 ? '🏆' : computedPct >= 50 ? '🥇' : computedPct >= 30 ? '🥈' : '🌍';
+  resultTitleEl.textContent = 'Результат друга';
+  resultSubEl.textContent =
+    `${mode === 'voice' ? 'Голосовая игра' : 'Текстовая игра'} · ${n} стран из ${totalCount}` +
+    (date ? ` · ${date}` : '');
+
+  resultTagsEl.innerHTML = '';
+  const note = document.createElement('p');
+  note.className = 'hero-sub';
+  note.style.opacity = '.6';
+  note.textContent = 'Список названных стран виден только в браузере автора результата.';
+  resultTagsEl.appendChild(note);
+
+  document.getElementById('new-record-banner')?.classList.remove('show');
+  shareUrlEl.value = location.href;
+  showScreen('result');
+}
+
+(function initFromShareV2() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  try {
+    const data = decodeResultV2(hash);
+    if (data && typeof data.n === 'number') renderSharedResult(data);
+  } catch (e) {
+
+  }
+})();

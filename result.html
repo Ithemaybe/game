@@ -125,9 +125,24 @@
 
 <script>
 (function () {
-  const key    = location.hash.slice(1);
-  const stored = key ? localStorage.getItem('v1_result_' + key) : null;
-  const data   = stored ? JSON.parse(stored) : null;
+  function decodeResultV1(encoded) {
+    const b64  = encoded.replace(/-/g, '+').replace(/_/g, '/');
+    const pad  = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+    const binary = atob(b64 + pad);
+    const bytes  = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+
+  const key = location.hash.slice(1);
+  let data = null;
+  if (key) {
+    try {
+      data = decodeResultV1(key);
+    } catch (e) {
+      const legacy = localStorage.getItem('v1_result_' + key);
+      data = legacy ? JSON.parse(legacy) : null;
+    }
+  }
 
   const foundEl    = document.getElementById('found-state');
   const notfoundEl = document.getElementById('notfound-state');

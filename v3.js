@@ -21,6 +21,22 @@ let skipped = 0;
 let active = false;
 let optimizeFlags = localStorage.getItem('v3_optimize_flags') === '1';
 
+function encodeResultV3(data) {
+  const json = JSON.stringify(data);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach((b) => { binary += String.fromCharCode(b); });
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function decodeResultV3(encoded) {
+  const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+  const binary = atob(b64 + pad);
+  const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
 const $ = id => document.getElementById(id);
 const screens = { start:$('start-screen'), game:$('game-screen'), result:$('result-screen') };
 const flagStage = $('flag-stage');
@@ -45,9 +61,6 @@ function canonicalAnswer(value) {
   return alias ? normalize(alias) : normalized;
 }
 
-// Windows-based browsers have no flag glyphs in the system emoji font, so a
-// flag emoji renders as plain letters instead of a flag. Twemoji SVGs render
-// the same tiny flag image on every platform.
 function emojiToTwemojiUrl(emoji) {
   const codepoints = [...emoji]
     .map(ch => ch.codePointAt(0).toString(16))
@@ -182,9 +195,13 @@ function endGame(allDone = false) {
   $('result-trophy').textContent = allDone ? '🌍' : correct >= 100 ? '🏆' : correct >= 30 ? '🥇' : '🎯';
   $('new-record-banner').classList.toggle('show', isRecord);
 
+  const shareData = {
+    correct, wrong, total: deck.length, pct, allDone,
+    date: new Date().toLocaleDateString('ru-RU'),
+  };
   const url = new URL(location.href);
   url.search = '';
-  url.hash = `v3=${correct}-${wrong}`;
+  url.hash = encodeResultV3(shareData);
   $('share-url').value = url.toString();
   showScreen('result');
   renderRecord();
@@ -209,3 +226,29 @@ $('copy-btn').addEventListener('click', async () => {
 });
 
 renderRecord();
+
+function renderSharedResult(data) {
+  const { correct, wrong, total, pct, allDone, date } = data;
+  $('res-correct').textContent = correct;
+  $('res-wrong').textContent = wrong;
+  $('res-pct').textContent = `${pct}%`;
+  $('result-title').textContent = 'Результат друга';
+  $('result-subtitle').textContent = allDone
+    ? `Друг прошёл весь набор флагов мира.${date ? ' ' + date + '.' : ''}`
+    : `Друг угадал ${correct} из ${total} флагов (${pct}%).${date ? ' ' + date + '.' : ''}`;
+  $('result-trophy').textContent = allDone ? '🌍' : correct >= 100 ? '🏆' : correct >= 30 ? '🥇' : '🎯';
+  $('new-record-banner')?.classList.remove('show');
+  $('share-url').value = location.href;
+  showScreen('result');
+}
+
+(function initFromShareV3() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  try {
+    const data = decodeResultV3(hash);
+    if (data && typeof data.correct === 'number') renderSharedResult(data);
+  } catch (e) {
+
+  }
+})();
