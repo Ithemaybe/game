@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ithemaybe.github.io/quiz-game-of-country/sitemap.xml

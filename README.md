@@ -2,7 +2,7 @@
 
 Браузерная игра о странах мира с тремя режимами. Никакого бэкенда — чистый HTML, CSS и JavaScript, задеплоено через GitHub Pages.
 
-**[▶ Играть →](https://ithemaybe.github.io/game/)**
+**[▶ Играть →](https://ithemaybe.github.io/quiz-game-of-country/)**
 
 ---
 
