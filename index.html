@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Флаги Мира — Угадай Страну | Игра в флаги, угадывание стран</title>
+<meta name="theme-color" content="#161b2e">
+<link rel="manifest" href="manifest.json">
 <meta name="description" content="Бесплатная онлайн-игра в флаги: угадывание стран мира на время. 190+ флагов, проверь себя за 60 секунд и кинь вызов другу!">
 <meta name="keywords" content="игра в флаги, угадывание стран, флаги мира, угадай флаг, викторина флаги, quiz флаги стран">
 <link rel="canonical" href="https://ithemaybe.github.io/quiz-game-of-country/">
@@ -22,9 +24,12 @@
 <meta name="twitter:description" content="60 секунд — сколько флагов угадаешь? 190+ стран мира.">
 <meta name="twitter:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css?v=4">
 <link rel="stylesheet" href="donate-widget.css">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap"></noscript>
 <style>
   .record-card {
     width: 100%;
@@ -63,6 +68,25 @@
     width: 100%;
   }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Флаги Мира — Угадай Страну",
+  "description": "Онлайн-игра на угадывание стран по флагу. 190+ флагов мира, режим на время.",
+  "url": "https://ithemaybe.github.io/quiz-game-of-country/",
+  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.png",
+  "genre": "Викторина",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "inLanguage": "ru",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "RUB"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -205,11 +229,11 @@
   </p>
 </section>
 
-<script src="game.js?v=4"></script>
-<script src="swimming-cat.js"></script>
+<script src="game.js?v=4" defer></script>
+<script src="swimming-cat.js" defer></script>
 
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   function renderRecord() {
     const rec = JSON.parse(localStorage.getItem('v1_record') || 'null');
     const countEl = document.getElementById('record-count');
@@ -229,10 +253,10 @@
   document.getElementById('btn-again')?.addEventListener('click', () => {
     setTimeout(renderRecord, 50);
   });
-})();
+});
 </script>
 
-<script src="mode-switcher.js?v=1"></script>
-<script src="donate-widget.js"></script>
+<script src="mode-switcher.js?v=1" defer></script>
+<script src="donate-widget.js" defer></script>
 </body>
 </html>

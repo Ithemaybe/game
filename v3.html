@@ -6,6 +6,7 @@
 <title>Игра в Флаги без Таймера — Угадывание Стран Мира | V3</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<meta name="theme-color" content="#0a0c12">
 <meta name="description" content="Угадывание стран по флагу без ограничения по времени. Спокойный режим игры в флаги — угадай все 190+ стран мира в своём темпе.">
 <meta name="keywords" content="игра в флаги без таймера, угадывание стран, флаги мира, угадай флаг спокойно">
 <link rel="canonical" href="https://ithemaybe.github.io/quiz-game-of-country/v3.html">
@@ -18,9 +19,31 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style-v3.css?v=1">
 <link rel="stylesheet" href="donate-widget.css">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap"></noscript>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Флаги Мира — Без Таймера",
+  "description": "Угадывание стран по флагу без ограничения по времени. Угадай все 190+ стран мира в своём темпе.",
+  "url": "https://ithemaybe.github.io/quiz-game-of-country/v3.html",
+  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.png",
+  "genre": "Викторина",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "inLanguage": "ru",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "RUB"
+  }
+}
+</script>
 </head>
 <body>
 <img id="swimming-cat" src="" alt="">
@@ -118,9 +141,9 @@
     <button class="btn-primary" id="btn-again" type="button">Играть снова</button>
   </div>
 </div>
-<script src="v3.js?v=1"></script>
-<script src="swimming-cat.js"></script>
-<script src="mode-switcher.js?v=1"></script>
-<script src="donate-widget.js"></script>
+<script src="v3.js?v=1" defer></script>
+<script src="swimming-cat.js" defer></script>
+<script src="mode-switcher.js?v=1" defer></script>
+<script src="donate-widget.js" defer></script>
 </body>
 </html>

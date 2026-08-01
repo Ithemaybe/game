@@ -1,0 +1,17 @@
+{
+  "name": "Флаги Мира — Угадай Страну",
+  "short_name": "Флаги Мира",
+  "description": "Игра на угадывание стран по флагу",
+  "start_url": "https://ithemaybe.github.io/quiz-game-of-country/",
+  "display": "standalone",
+  "background_color": "#0a0c12",
+  "theme_color": "#161b2e",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
