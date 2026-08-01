@@ -160,7 +160,7 @@ function shuffle(items) {
 
 async function loadCountries() {
   if (countries.length) return;
-  const response = await fetch('flags.json', { cache:'force-cache' });
+  const response = await fetch('flags.json?v=2', { cache:'force-cache' });
   if (!response.ok) throw new Error('Не удалось загрузить flags.json');
   countries = await response.json();
   buildCountryLookup();

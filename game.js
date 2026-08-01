@@ -107,7 +107,7 @@ if (optimizeToggle) {
 
 async function getFlagsMap() {
   if (flagsMap) return flagsMap;
-  const res = await fetch('flags.json', { cache: 'force-cache' });
+  const res = await fetch('flags.json?v=2', { cache: 'force-cache' });
   if (!res.ok) throw new Error('Не удалось загрузить flags.json');
   const flags = await res.json();
   flagsMap = new Map(flags.map(f => [f.code, f]));
