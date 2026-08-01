@@ -216,8 +216,111 @@
 
 </div>
 
-<section class="seo-text" aria-label="О игре" style="max-width:640px;margin:40px auto 0;padding:0 20px 40px;color:var(--text-dim,#8a90a8);font-size:14px;line-height:1.6;text-align:center;">
-  <h2 style="font-size:16px;color:var(--text,#e8eaf5);margin-bottom:8px;">Игра в флаги — угадывание стран мира онлайн</h2>
+<style>
+  .seo-text {
+    max-width: 640px;
+    margin: 48px auto 0;
+    padding: 0 20px 40px;
+  }
+  .seo-text h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text, #e8ecf7);
+    margin: 0 0 12px;
+    text-align: center;
+  }
+  .seo-text p {
+    color: var(--muted, #6b7494);
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: center;
+  }
+  .seo-text a {
+    color: var(--accent, #4f8cff);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(79,140,255,.35);
+    transition: border-color .2s;
+  }
+  .seo-text a:hover {
+    border-color: var(--accent, #4f8cff);
+  }
+  .seo-text strong {
+    color: var(--text, #e8ecf7);
+    font-weight: 600;
+  }
+
+  .faq-section {
+    max-width: 560px;
+    margin: 0 auto 48px;
+    padding: 0 20px;
+  }
+  .faq-section h2 {
+    font-family: 'Unbounded', sans-serif;
+    color: var(--text, #e8ecf7);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    text-align: center;
+  }
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .faq-item {
+    background: var(--card, #161b2e);
+    border: 1px solid var(--border, #232a42);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .faq-item:hover {
+    border-color: var(--accent, #4f8cff);
+  }
+  .faq-item summary {
+    cursor: pointer;
+    color: var(--text, #e8ecf7);
+    font-size: 14.5px;
+    font-weight: 500;
+    padding: 15px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary::after {
+    content: '+';
+    color: var(--accent, #4f8cff);
+    font-size: 18px;
+    font-weight: 400;
+    margin-left: 12px;
+    flex-shrink: 0;
+    transition: transform .2s;
+  }
+  .faq-item[open] summary::after {
+    transform: rotate(45deg);
+  }
+  .faq-item[open] summary {
+    border-bottom: 1px solid var(--border, #232a42);
+  }
+  .faq-item p {
+    color: var(--muted, #6b7494);
+    font-size: 13.5px;
+    line-height: 1.6;
+    padding: 14px 18px;
+    margin: 0;
+  }
+  .faq-item strong {
+    color: var(--text, #e8ecf7);
+  }
+</style>
+
+<section class="seo-text" aria-label="О игре">
+  <h2>Игра в флаги — угадывание стран мира онлайн</h2>
   <p>
     Флаги Мира — это бесплатная <strong>игра в флаги</strong> для проверки знаний по географии.
     Твоя задача — <strong>угадывание стран</strong> по изображению флага за ограниченное время.
@@ -229,24 +332,24 @@
   </p>
 </section>
 
-<section class="faq-section" aria-label="Часто задаваемые вопросы" style="max-width:560px;margin:0 auto 40px;padding:0 20px;">
-  <h2 style="color:var(--text,#e8ecf7);font-size:18px;font-weight:600;margin:0 0 16px;text-align:center;">Часто задаваемые вопросы</h2>
-  <div class="faq-list" style="display:flex;flex-direction:column;gap:10px;">
-    <details class="faq-item" style="background:var(--card,#161b2e);border:1px solid var(--border,#232a42);border-radius:12px;padding:14px 16px;">
-      <summary style="cursor:pointer;color:var(--text,#e8ecf7);font-size:14px;font-weight:500;">Сколько флагов в игре?</summary>
-      <p style="color:var(--muted,#6b7494);font-size:13px;line-height:1.5;margin:10px 0 0;">В базе более 190 флагов государств мира — от популярных до самых редких.</p>
+<section class="faq-section" aria-label="Часто задаваемые вопросы">
+  <h2>Часто задаваемые вопросы</h2>
+  <div class="faq-list">
+    <details class="faq-item">
+      <summary>Сколько флагов в игре?</summary>
+      <p>В базе более 190 флагов государств мира — от популярных до самых редких.</p>
     </details>
-    <details class="faq-item" style="background:var(--card,#161b2e);border:1px solid var(--border,#232a42);border-radius:12px;padding:14px 16px;">
-      <summary style="cursor:pointer;color:var(--text,#e8ecf7);font-size:14px;font-weight:500;">Игра бесплатна?</summary>
-      <p style="color:var(--muted,#6b7494);font-size:13px;line-height:1.5;margin:10px 0 0;">Да, играть можно бесплатно, без регистрации и скачивания.</p>
+    <details class="faq-item">
+      <summary>Игра бесплатна?</summary>
+      <p>Да, играть можно бесплатно, без регистрации и скачивания.</p>
     </details>
-    <details class="faq-item" style="background:var(--card,#161b2e);border:1px solid var(--border,#232a42);border-radius:12px;padding:14px 16px;">
-      <summary style="cursor:pointer;color:var(--text,#e8ecf7);font-size:14px;font-weight:500;">Сколько режимов в игре?</summary>
-      <p style="color:var(--muted,#6b7494);font-size:13px;line-height:1.5;margin:10px 0 0;">В игре 3 режима: <strong>V1</strong> — угадай страну по флагу на скорость за 60 секунд, <strong>V2</strong> — напиши как можно больше названий стран мира за 10 минут, <strong>V3</strong> — угадывание флагов без ограничения по времени, в своём темпе.</p>
+    <details class="faq-item">
+      <summary>Сколько режимов в игре?</summary>
+      <p>В игре 3 режима: <strong>V1</strong> — угадай страну по флагу на скорость за 60 секунд, <strong>V2</strong> — напиши как можно больше названий стран мира за 10 минут, <strong>V3</strong> — угадывание флагов без ограничения по времени, в своём темпе.</p>
     </details>
-    <details class="faq-item" style="background:var(--card,#161b2e);border:1px solid var(--border,#232a42);border-radius:12px;padding:14px 16px;">
-      <summary style="cursor:pointer;color:var(--text,#e8ecf7);font-size:14px;font-weight:500;">На каких устройствах можно играть?</summary>
-      <p style="color:var(--muted,#6b7494);font-size:13px;line-height:1.5;margin:10px 0 0;">Игра работает в браузере на телефоне, планшете и компьютере.</p>
+    <details class="faq-item">
+      <summary>На каких устройствах можно играть?</summary>
+      <p>Игра работает в браузере на телефоне, планшете и компьютере.</p>
     </details>
   </div>
 </section>
