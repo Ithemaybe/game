@@ -15,18 +15,19 @@
 <meta property="og:url" content="https://ithemaybe.github.io/quiz-game-of-country/">
 <meta property="og:title" content="Флаги Мира 🌍 — Угадай Страну">
 <meta property="og:description" content="60 секунд — сколько флагов угадаешь? 190+ стран мира. Сыграй и кинь вызов другу!">
-<meta property="og:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.png">
+<meta property="og:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Флаги Мира 🌍 — Угадай Страну">
 <meta name="twitter:description" content="60 секунд — сколько флагов угадаешь? 190+ стран мира.">
-<meta name="twitter:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.png">
+<meta name="twitter:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style.css?v=4">
 <link rel="stylesheet" href="donate-widget.css">
+<link rel="stylesheet" href="lang-switcher.css">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap"></noscript>
@@ -75,7 +76,7 @@
   "name": "Флаги Мира — Угадай Страну",
   "description": "Онлайн-игра на угадывание стран по флагу. 190+ флагов мира, режим на время.",
   "url": "https://ithemaybe.github.io/quiz-game-of-country/",
-  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.png",
+  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg",
   "genre": "Викторина",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
@@ -105,15 +106,15 @@
   
   <div id="start-screen" class="screen active">
     <div class="hero-icon">🌍</div>
-    <h1 class="hero-title">Флаги<br><span>Мира</span></h1>
-    <p class="hero-sub">Угадай страну по флагу.<br>60 секунд — сколько успеешь?</p>
+    <h1 class="hero-title" data-i18n-html="hero_title">Флаги<br><span>Мира</span></h1>
+    <p class="hero-sub" data-i18n-html="hero_sub">Угадай страну по флагу.<br>60 секунд — сколько успеешь?</p>
 
     
     <div class="record-card" id="record-card">
       <div class="record-left">
-        <div class="record-label">🏅 Личный рекорд</div>
+        <div class="record-label" data-i18n="record_label">🏅 Личный рекорд</div>
         <div class="record-value" id="record-count">—</div>
-        <div class="record-sub"  id="record-sub">Сыграй первую партию!</div>
+        <div class="record-sub"  id="record-sub" data-i18n="record_empty">Сыграй первую партию!</div>
       </div>
       <div class="record-icon">🏆</div>
     </div>
@@ -121,18 +122,18 @@
     <label class="optimize-toggle">
       <input type="checkbox" id="optimize-flags-v1">
       <span class="toggle-ui" aria-hidden="true"></span>
-      <span>Оптимизировать загрузку флагов</span>
+      <span data-i18n="optimize_toggle">Оптимизировать загрузку флагов</span>
     </label>
 
-    <button class="btn-start" id="btn-start">Начать игру</button>
-    <div class="hero-hint">← → кнопки 1–4 для ответа</div>
+    <button class="btn-start" id="btn-start" data-i18n="btn_start">Начать игру</button>
+    <div class="hero-hint" data-i18n="hero_hint">← → кнопки 1–4 для ответа</div>
   </div>
 
   
   <div id="game-screen" class="screen">
     <div class="game-header">
       <div class="stat-box">
-        <span class="stat-label">Верно</span>
+        <span class="stat-label" data-i18n="stat_correct">Верно</span>
         <span class="stat-val correct-count" id="score-correct">0</span>
       </div>
       <div class="timer-ring" id="timer-ring">
@@ -144,7 +145,7 @@
         <span id="timer-text">60</span>
       </div>
       <div class="stat-box">
-        <span class="stat-label">Ошибок</span>
+        <span class="stat-label" data-i18n="stat_wrong">Ошибок</span>
         <span class="stat-val wrong-count" id="score-wrong">0</span>
       </div>
     </div>
@@ -168,27 +169,27 @@
   
   <div id="result-screen" class="screen">
     <div class="result-trophy" id="result-trophy">🏆</div>
-    <h2 class="result-title">Игра окончена!</h2>
+    <h2 class="result-title" data-i18n="result_title">Игра окончена!</h2>
 
     
     <div class="new-record-banner" id="new-record-banner" style="display:none;">
-      🎉 Новый личный рекорд!
+      <span data-i18n="new_record">🎉 Новый личный рекорд!</span>
     </div>
 
     <div class="result-stats">
       <div class="rs-box rs-correct">
         <div class="rs-num" id="res-correct">0</div>
-        <div class="rs-label">Угадано</div>
+        <div class="rs-label" data-i18n="rs_correct">Угадано</div>
       </div>
       <div class="rs-divider">|</div>
       <div class="rs-box rs-wrong">
         <div class="rs-num" id="res-wrong">0</div>
-        <div class="rs-label">Ошибок</div>
+        <div class="rs-label" data-i18n="rs_wrong">Ошибок</div>
       </div>
       <div class="rs-divider">|</div>
       <div class="rs-box rs-total">
         <div class="rs-num" id="res-total">0</div>
-        <div class="rs-label">Всего</div>
+        <div class="rs-label" data-i18n="rs_total">Всего</div>
       </div>
     </div>
 
@@ -199,7 +200,7 @@
 
     
     <div class="share-box">
-      <span class="share-label">Ссылка на результат:</span>
+      <span class="share-label" data-i18n="share_label">Ссылка на результат:</span>
       <div class="share-row">
         <input class="share-input" id="share-url" readonly>
         <button class="copy-btn" id="copy-btn" title="Скопировать">
@@ -211,7 +212,7 @@
       </div>
     </div>
 
-    <button class="btn-start" id="btn-again">Играть снова</button>
+    <button class="btn-start" id="btn-again" data-i18n="btn_again">Играть снова</button>
   </div>
 
 </div>
@@ -320,8 +321,8 @@
 </style>
 
 <section class="seo-text" aria-label="О игре">
-  <h2>Игра в флаги — угадывание стран мира онлайн</h2>
-  <p>
+  <h2 data-i18n="seo_heading">Игра в флаги — угадывание стран мира онлайн</h2>
+  <p data-i18n-html="seo_text">
     Флаги Мира — это бесплатная <strong>игра в флаги</strong> для проверки знаний по географии.
     Твоя задача — <strong>угадывание стран</strong> по изображению флага за ограниченное время.
     В базе более 190 флагов государств мира: от популярных до самых редких.
@@ -333,23 +334,23 @@
 </section>
 
 <section class="faq-section" aria-label="Часто задаваемые вопросы">
-  <h2>Часто задаваемые вопросы</h2>
+  <h2 data-i18n="faq_heading">Часто задаваемые вопросы</h2>
   <div class="faq-list">
     <details class="faq-item">
-      <summary>Сколько флагов в игре?</summary>
-      <p>В базе более 190 флагов государств мира — от популярных до самых редких.</p>
+      <summary data-i18n="faq1_q">Сколько флагов в игре?</summary>
+      <p data-i18n="faq1_a">В базе более 190 флагов государств мира — от популярных до самых редких.</p>
     </details>
     <details class="faq-item">
-      <summary>Игра бесплатна?</summary>
-      <p>Да, играть можно бесплатно, без регистрации и скачивания.</p>
+      <summary data-i18n="faq2_q">Игра бесплатна?</summary>
+      <p data-i18n="faq2_a">Да, играть можно бесплатно, без регистрации и скачивания.</p>
     </details>
     <details class="faq-item">
-      <summary>Сколько режимов в игре?</summary>
-      <p>В игре 3 режима: <strong>V1</strong> — угадай страну по флагу на скорость за 60 секунд, <strong>V2</strong> — напиши как можно больше названий стран мира за 10 минут, <strong>V3</strong> — угадывание флагов без ограничения по времени, в своём темпе.</p>
+      <summary data-i18n="faq3_q">Сколько режимов в игре?</summary>
+      <p data-i18n-html="faq3_a">В игре 3 режима: <strong>V1</strong> — угадай страну по флагу на скорость за 60 секунд, <strong>V2</strong> — напиши как можно больше названий стран мира за 10 минут, <strong>V3</strong> — угадывание флагов без ограничения по времени, в своём темпе.</p>
     </details>
     <details class="faq-item">
-      <summary>На каких устройствах можно играть?</summary>
-      <p>Игра работает в браузере на телефоне, планшете и компьютере.</p>
+      <summary data-i18n="faq4_q">На каких устройствах можно играть?</summary>
+      <p data-i18n="faq4_a">Игра работает в браузере на телефоне, планшете и компьютере.</p>
     </details>
   </div>
 </section>
@@ -400,17 +401,26 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+  function curLang() {
+    var l = localStorage.getItem('site_lang');
+    return (window.__I18N__ && window.__I18N__[l]) ? l : 'ru';
+  }
   function renderRecord() {
     const rec = JSON.parse(localStorage.getItem('v1_record') || 'null');
     const countEl = document.getElementById('record-count');
     const subEl   = document.getElementById('record-sub');
     if (!countEl || !subEl) return;
+    const t = (window.__I18N__ && window.__I18N__[curLang()]) || {};
     if (rec) {
-      countEl.textContent = rec.correct + ' из ' + rec.total;
-      subEl.textContent   = rec.pct + '% точность · ' + (rec.date || '');
+      const outOf = t.record_out_of || 'из';
+      const acc   = t.record_accuracy || '% точность ·';
+      countEl.textContent = rec.correct + ' ' + outOf + ' ' + rec.total;
+      subEl.removeAttribute('data-i18n');
+      subEl.textContent   = rec.pct + acc + ' ' + (rec.date || '');
     } else {
       countEl.textContent = '—';
-      subEl.textContent   = 'Сыграй первую партию!';
+      subEl.setAttribute('data-i18n', 'record_empty');
+      subEl.textContent   = t.record_empty || 'Сыграй первую партию!';
     }
   }
 
@@ -419,8 +429,95 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('btn-again')?.addEventListener('click', () => {
     setTimeout(renderRecord, 50);
   });
+  document.addEventListener('langchange', renderRecord);
 });
 </script>
+
+<script>
+window.__I18N__ = {
+  ru: {
+    __title: 'Флаги Мира — Угадай Страну | Игра в флаги, угадывание стран',
+    hero_title: 'Флаги<br><span>Мира</span>',
+    hero_sub: 'Угадай страну по флагу.<br>60 секунд — сколько успеешь?',
+    record_label: '🏅 Личный рекорд',
+    record_empty: 'Сыграй первую партию!',
+    record_out_of: 'из',
+    record_accuracy: '% точность ·',
+    optimize_toggle: 'Оптимизировать загрузку флагов',
+    btn_start: 'Начать игру',
+    hero_hint: '← → кнопки 1–4 для ответа',
+    stat_correct: 'Верно',
+    stat_wrong: 'Ошибок',
+    result_title: 'Игра окончена!',
+    new_record: '🎉 Новый личный рекорд!',
+    rs_correct: 'Угадано',
+    rs_wrong: 'Ошибок',
+    rs_total: 'Всего',
+    share_label: 'Ссылка на результат:',
+    btn_again: 'Играть снова',
+    seo_heading: 'Игра в флаги — угадывание стран мира онлайн',
+    seo_text: 'Флаги Мира — это бесплатная <strong>игра в флаги</strong> для проверки знаний по географии. ' +
+      'Твоя задача — <strong>угадывание стран</strong> по изображению флага за ограниченное время. ' +
+      'В базе более 190 флагов государств мира: от популярных до самых редких. ' +
+      'Есть три режима: <a href="index.html">игра на скорость (60 секунд)</a>, ' +
+      '<a href="v2.html">напиши как можно больше стран мира</a> и ' +
+      '<a href="v3.html">угадывание флагов без таймера</a>. ' +
+      'Подходит для школьников, студентов и всех, кто любит викторины и хочет улучшить знание карты мира.',
+    faq_heading: 'Часто задаваемые вопросы',
+    faq1_q: 'Сколько флагов в игре?',
+    faq1_a: 'В базе более 190 флагов государств мира — от популярных до самых редких.',
+    faq2_q: 'Игра бесплатна?',
+    faq2_a: 'Да, играть можно бесплатно, без регистрации и скачивания.',
+    faq3_q: 'Сколько режимов в игре?',
+    faq3_a: 'В игре 3 режима: <strong>V1</strong> — угадай страну по флагу на скорость за 60 секунд, ' +
+      '<strong>V2</strong> — напиши как можно больше названий стран мира за 10 минут, ' +
+      '<strong>V3</strong> — угадывание флагов без ограничения по времени, в своём темпе.',
+    faq4_q: 'На каких устройствах можно играть?',
+    faq4_a: 'Игра работает в браузере на телефоне, планшете и компьютере.'
+  },
+  en: {
+    __title: 'World Flags — Guess the Country | Flag Quiz Game',
+    hero_title: 'World<br><span>Flags</span>',
+    hero_sub: 'Guess the country by its flag.<br>60 seconds — how many will you get?',
+    record_label: '🏅 Personal best',
+    record_empty: 'Play your first round!',
+    record_out_of: 'out of',
+    record_accuracy: '% accuracy ·',
+    optimize_toggle: 'Optimize flag loading',
+    btn_start: 'Start game',
+    hero_hint: '← → or keys 1–4 to answer',
+    stat_correct: 'Correct',
+    stat_wrong: 'Wrong',
+    result_title: 'Game over!',
+    new_record: '🎉 New personal best!',
+    rs_correct: 'Correct',
+    rs_wrong: 'Wrong',
+    rs_total: 'Total',
+    share_label: 'Link to your result:',
+    btn_again: 'Play again',
+    seo_heading: 'Flag guessing game — learn the world\u2019s countries online',
+    seo_text: 'World Flags is a free <strong>flag guessing game</strong> for testing your geography knowledge. ' +
+      'Your task is to <strong>identify the country</strong> from its flag before time runs out. ' +
+      'The database includes 190+ national flags, from the most famous to the rarest. ' +
+      'Three modes are available: <a href="index.html">speed round (60 seconds)</a>, ' +
+      '<a href="v2.html">name as many countries as you can</a>, and ' +
+      '<a href="v3.html">untimed flag guessing</a>. ' +
+      'Great for students and anyone who enjoys quizzes and wants to sharpen their world map knowledge.',
+    faq_heading: 'Frequently asked questions',
+    faq1_q: 'How many flags are in the game?',
+    faq1_a: 'The database includes 190+ national flags — from the most famous to the rarest.',
+    faq2_q: 'Is the game free?',
+    faq2_a: 'Yes, it\u2019s free to play, no sign-up or download required.',
+    faq3_q: 'How many modes are there?',
+    faq3_a: 'There are 3 modes: <strong>V1</strong> — guess the country from its flag against a 60-second clock, ' +
+      '<strong>V2</strong> — name as many countries as you can in 10 minutes, ' +
+      '<strong>V3</strong> — untimed flag guessing at your own pace.',
+    faq4_q: 'What devices can I play on?',
+    faq4_a: 'The game runs in any browser — on phone, tablet, or desktop.'
+  }
+};
+</script>
+<script src="lang-switcher.js"></script>
 
 <script src="mode-switcher.js?v=1" defer></script>
 <script src="donate-widget.js" defer></script>

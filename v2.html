@@ -14,18 +14,19 @@
 <meta property="og:url" content="https://ithemaybe.github.io/quiz-game-of-country/v2.html">
 <meta property="og:title" content="Страны Мира 🌍 — V2 Режим">
 <meta property="og:description" content="10 минут — сколько стран назовёшь? Напиши максимум!">
-<meta property="og:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.png">
+<meta property="og:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Страны Мира 🌍 — V2 Режим">
 <meta name="twitter:description" content="10 минут — сколько стран назовёшь?">
-<meta name="twitter:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.png">
+<meta name="twitter:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style-v2.css?v=4">
 <link rel="stylesheet" href="donate-widget.css">
+<link rel="stylesheet" href="lang-switcher.css">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap"></noscript>
@@ -36,7 +37,7 @@
   "name": "Страны Мира — Назови все страны",
   "description": "Игра на знание стран мира: напиши как можно больше названий стран за 10 минут.",
   "url": "https://ithemaybe.github.io/quiz-game-of-country/v2.html",
-  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.png",
+  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg",
   "genre": "Викторина",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
@@ -63,25 +64,25 @@
 
 <div class="wrapper">
   <div id="start-screen" class="screen active">
-    <div class="badge-v2">✦ V2 РЕЖИМ</div>
+    <div class="badge-v2" data-i18n="badge_v2">✦ V2 РЕЖИМ</div>
     <div class="hero-icon">🗺️</div>
-    <h1 class="hero-title">Страны<br><span>Мира</span></h1>
-    <p class="hero-sub">Выбери режим игры.</p>
+    <h1 class="hero-title" data-i18n-html="hero_title">Страны<br><span>Мира</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Выбери режим игры.</p>
 
     <div class="mode-records">
       <div class="record-card record-card-small" id="record-card-text">
         <div class="record-left">
-          <div class="record-label">⌨️ Рекорд текста</div>
+          <div class="record-label" data-i18n="record_label_text">⌨️ Рекорд текста</div>
           <div class="record-value" id="record-count-text">—</div>
-          <div class="record-sub" id="record-sub-text">—</div>
+          <div class="record-sub" id="record-sub-text" data-i18n="record_empty_dash">—</div>
         </div>
         <div class="record-icon">🏆</div>
       </div>
       <div class="record-card record-card-small" id="record-card-voice">
         <div class="record-left">
-          <div class="record-label">🎙️ Рекорд голоса</div>
+          <div class="record-label" data-i18n="record_label_voice">🎙️ Рекорд голоса</div>
           <div class="record-value" id="record-count-voice">—</div>
-          <div class="record-sub" id="record-sub-voice">—</div>
+          <div class="record-sub" id="record-sub-voice" data-i18n="record_empty_dash">—</div>
         </div>
         <div class="record-icon">🎤</div>
       </div>
@@ -90,17 +91,17 @@
     <label class="optimize-toggle optimize-toggle-v2">
       <input type="checkbox" id="optimize-flags-v2">
       <span class="toggle-ui" aria-hidden="true"></span>
-      <span>Оптимизировать загрузку флагов</span>
+      <span data-i18n="optimize_toggle">Оптимизировать загрузку флагов</span>
     </label>
 
     <div class="mode-select">
       <button class="mode-card" id="btn-start-text" type="button">
         <span class="mode-card-icon">⌨️</span>
-        <span class="mode-card-title">1. Текстовая игра</span>
+        <span class="mode-card-title" data-i18n="mode_text">1. Текстовая игра</span>
       </button>
       <button class="mode-card mode-card-voice" id="btn-start-voice" type="button">
         <span class="mode-card-icon">🎙️</span>
-        <span class="mode-card-title">2. Голосовая игра</span>
+        <span class="mode-card-title" data-i18n="mode_voice">2. Голосовая игра</span>
       </button>
     </div>
 
@@ -108,7 +109,7 @@
   <div id="game-screen" class="screen">
     <div class="game-header">
       <div class="stat-box">
-        <span class="stat-label">Угадано</span>
+        <span class="stat-label" data-i18n="stat_correct">Угадано</span>
         <span class="stat-val count-correct" id="count-correct">0</span>
       </div>
       <div class="timer-ring" id="timer-ring">
@@ -126,7 +127,7 @@
         <span id="timer-text">10:00</span>
       </div>
       <div class="stat-box">
-        <span class="stat-label">Из 195</span>
+        <span class="stat-label" data-i18n="stat_of195">Из 195</span>
         <span class="stat-val count-dup" id="pct-val">0%</span>
       </div>
     </div>
@@ -135,64 +136,64 @@
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
 
-    <div class="mode-game-badge" id="game-mode-badge">Текстовая игра</div>
+    <div class="mode-game-badge" id="game-mode-badge" data-i18n="mode_text_short">Текстовая игра</div>
 
     <div class="input-area text-game-only">
       <input
         type="text"
         class="country-input"
         id="country-input"
-        placeholder="Введи страну..."
+        placeholder="Введи страну..." data-i18n-placeholder="answer_placeholder"
         autocomplete="off"
         autocorrect="off"
         spellcheck="false"
       >
-      <button class="submit-btn" id="submit-btn">Ввести</button>
+      <button class="submit-btn" id="submit-btn" data-i18n="btn_submit">Ввести</button>
     </div>
 
     <div class="voice-game-panel voice-game-only">
       <div class="voice-big-icon" id="voice-big-icon">🎙️</div>
-      <div class="voice-status" id="voice-status">Микрофон выключен</div>
+      <div class="voice-status" id="voice-status" data-i18n="voice_off">Микрофон выключен</div>
       <button class="mic-btn" id="mic-btn" type="button" title="Включить или выключить микрофон">
         <span class="mic-icon">🎙️</span>
-        <span class="mic-label">Слушаю</span>
+        <span class="mic-label" data-i18n="mic_label">Слушаю</span>
       </button>
     </div>
 
     <div class="feedback-toast" id="feedback-toast"></div>
 
     <div class="answered-section">
-      <div class="answered-header" id="answered-header">Принятые страны (0)</div>
+      <div class="answered-header" id="answered-header" data-i18n="answered_header0">Принятые страны (0)</div>
       <div class="answered-grid" id="answered-grid"></div>
     </div>
   </div>
   <div id="result-screen" class="screen">
     <div class="result-trophy" id="result-trophy">🏆</div>
-    <h2 class="result-title" id="result-title">Время вышло!</h2>
+    <h2 class="result-title" id="result-title" data-i18n="result_title">Время вышло!</h2>
     <p class="result-subtitle" id="result-subtitle"></p>
-    <div class="new-record-banner" id="new-record-banner">
+    <div class="new-record-banner" id="new-record-banner" data-i18n="new_record">
       🎉 Новый личный рекорд!
     </div>
 
     <div class="result-stats">
       <div class="rs-box rs-correct">
         <div class="rs-num" id="res-correct">0</div>
-        <div class="rs-label">Названо стран</div>
+        <div class="rs-label" data-i18n="rs_named">Названо стран</div>
       </div>
       <div class="rs-divider">|</div>
       <div class="rs-box rs-total">
         <div class="rs-num" id="res-pct">0%</div>
-        <div class="rs-label">От всех стран</div>
+        <div class="rs-label" data-i18n="rs_ofall">От всех стран</div>
       </div>
     </div>
 
     <div class="result-countries" id="result-countries-block">
-      <div class="result-countries-header">Твои страны</div>
+      <div class="result-countries-header" data-i18n="your_countries">Твои страны</div>
       <div class="result-tags" id="result-tags"></div>
     </div>
 
     <div class="share-box">
-      <span class="share-label">Поделиться результатом:</span>
+      <span class="share-label" data-i18n="share_label_v3">Поделиться результатом:</span>
       <div class="share-row">
         <input class="share-input" id="share-url" readonly>
         <button class="copy-btn" id="copy-btn" title="Скопировать">
@@ -205,8 +206,8 @@
     </div>
 
     <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;">
-      <button class="btn-primary" id="btn-again">Играть снова</button>
-      <a href="index.html" class="btn-secondary" style="text-decoration:none;display:flex;align-items:center;">← V1 Флаги</a>
+      <button class="btn-primary" id="btn-again" data-i18n="btn_again">Играть снова</button>
+      <a href="index.html" class="btn-secondary" style="text-decoration:none;display:flex;align-items:center;" data-i18n="back_v1">← V1 Флаги</a>
     </div>
   </div>
 
@@ -214,6 +215,68 @@
 
 <script src="v2.js?v=4" defer></script>
 <script src="swimming-cat.js" defer></script>
+
+<script>
+window.__I18N__ = {
+  ru: {
+    __title: 'Игра "Назови страну" — Список Стран Мира на время | V2',
+    hero_title: 'Страны<br><span>Мира</span>',
+    hero_sub: 'Выбери режим игры.',
+    badge_v2: '✦ V2 РЕЖИМ',
+    record_label_text: '⌨️ Рекорд текста',
+    record_label_voice: '🎙️ Рекорд голоса',
+    record_empty_dash: '—',
+    optimize_toggle: 'Оптимизировать загрузку флагов',
+    mode_text: '1. Текстовая игра',
+    mode_voice: '2. Голосовая игра',
+    stat_correct: 'Угадано',
+    stat_of195: 'Из 195',
+    mode_text_short: 'Текстовая игра',
+    answer_placeholder: 'Введи страну...',
+    btn_submit: 'Ввести',
+    voice_off: 'Микрофон выключен',
+    mic_label: 'Слушаю',
+    answered_header0: 'Принятые страны (0)',
+    result_title: 'Время вышло!',
+    new_record: '🎉 Новый личный рекорд!',
+    rs_named: 'Названо стран',
+    rs_ofall: 'От всех стран',
+    your_countries: 'Твои страны',
+    share_label_v3: 'Поделиться результатом:',
+    btn_again: 'Играть снова',
+    back_v1: '← V1 Флаги'
+  },
+  en: {
+    __title: 'Name the Country — World Countries Time Challenge | V2',
+    hero_title: 'World<br><span>Countries</span>',
+    hero_sub: 'Choose a game mode.',
+    badge_v2: '✦ V2 MODE',
+    record_label_text: '⌨️ Text best',
+    record_label_voice: '🎙️ Voice best',
+    record_empty_dash: '—',
+    optimize_toggle: 'Optimize flag loading',
+    mode_text: '1. Text mode',
+    mode_voice: '2. Voice mode',
+    stat_correct: 'Named',
+    stat_of195: 'Out of 195',
+    mode_text_short: 'Text mode',
+    answer_placeholder: 'Type a country...',
+    btn_submit: 'Submit',
+    voice_off: 'Microphone off',
+    mic_label: 'Listening',
+    answered_header0: 'Accepted countries (0)',
+    result_title: 'Time\u2019s up!',
+    new_record: '🎉 New personal best!',
+    rs_named: 'Countries named',
+    rs_ofall: 'Of all countries',
+    your_countries: 'Your countries',
+    share_label_v3: 'Share your result:',
+    btn_again: 'Play again',
+    back_v1: '← V1 Flags'
+  }
+};
+</script>
+<script src="lang-switcher.js"></script>
 
 <script src="mode-switcher.js?v=1" defer></script>
 <script src="donate-widget.js" defer></script>

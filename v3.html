@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://ithemaybe.github.io/quiz-game-of-country/v3.html">
 <meta property="og:title" content="Флаги Мира 🌍 — V3 Без таймера">
 <meta property="og:description" content="Пиши название страны по флагу. Без таймера — заверши когда захочешь или угадай все страны.">
-<meta property="og:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.png">
+<meta property="og:image" content="https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
@@ -22,6 +22,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style-v3.css?v=1">
 <link rel="stylesheet" href="donate-widget.css">
+<link rel="stylesheet" href="lang-switcher.css">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap"></noscript>
@@ -32,7 +33,7 @@
   "name": "Флаги Мира — Без Таймера",
   "description": "Угадывание стран по флагу без ограничения по времени. Угадай все 190+ стран мира в своём темпе.",
   "url": "https://ithemaybe.github.io/quiz-game-of-country/v3.html",
-  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.png",
+  "image": "https://ithemaybe.github.io/quiz-game-of-country/Preview.jpg",
   "genre": "Викторина",
   "applicationCategory": "Game",
   "operatingSystem": "Any",
@@ -60,14 +61,14 @@
   <div id="start-screen" class="screen active">
     <div class="badge-v3">✦ V3 РЕЖИМ</div>
     <div class="hero-icon">🏳️</div>
-    <h1 class="hero-title">Флаги<br><span>Без таймера</span></h1>
-    <p class="hero-sub">Смотри на флаг и пиши название страны.<br>Заверши игру в любой момент или угадай все флаги.</p>
+    <h1 class="hero-title" data-i18n-html="hero_title">Флаги<br><span>Без таймера</span></h1>
+    <p class="hero-sub" data-i18n-html="hero_sub">Смотри на флаг и пиши название страны.<br>Заверши игру в любой момент или угадай все флаги.</p>
 
     <div class="record-card">
       <div class="record-left">
-        <div class="record-label">🏅 Лучший результат</div>
+        <div class="record-label" data-i18n="record_label">🏅 Лучший результат</div>
         <div class="record-value" id="record-count">—</div>
-        <div class="record-sub" id="record-sub">Сыграй первую партию!</div>
+        <div class="record-sub" id="record-sub" data-i18n="record_empty">Сыграй первую партию!</div>
       </div>
       <div class="record-icon">🏆</div>
     </div>
@@ -75,17 +76,17 @@
     <label class="optimize-toggle">
       <input type="checkbox" id="optimize-flags-v3">
       <span class="toggle-ui" aria-hidden="true"></span>
-      <span>Оптимизировать загрузку флагов</span>
+      <span data-i18n="optimize_toggle">Оптимизировать загрузку флагов</span>
     </label>
 
-    <button class="btn-primary" id="btn-start" type="button">Начать игру</button>
-    <div class="hero-hint">Enter — проверить ответ</div>
+    <button class="btn-primary" id="btn-start" type="button" data-i18n="btn_start">Начать игру</button>
+    <div class="hero-hint" data-i18n="hero_hint">Enter — проверить ответ</div>
   </div>
 
   <div id="game-screen" class="screen">
     <div class="game-header">
       <div class="stat-box">
-        <span class="stat-label">Угадано</span>
+        <span class="stat-label" data-i18n="stat_correct">Угадано</span>
         <span class="stat-val count-correct" id="score-correct">0</span>
       </div>
       <div class="progress-center">
@@ -93,7 +94,7 @@
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
       <div class="stat-box">
-        <span class="stat-label">Ошибок</span>
+        <span class="stat-label" data-i18n="stat_wrong">Ошибок</span>
         <span class="stat-val count-wrong" id="score-wrong">0</span>
       </div>
     </div>
@@ -105,14 +106,14 @@
     </div>
 
     <form class="input-area" id="answer-form">
-      <input class="country-input" id="country-input" type="text" placeholder="Название страны..." autocomplete="off" autocorrect="off" spellcheck="false">
-      <button class="submit-btn" type="submit">Ответить</button>
+      <input class="country-input" id="country-input" type="text" placeholder="Название страны..." data-i18n-placeholder="answer_placeholder" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="submit-btn" type="submit" data-i18n="btn_answer">Ответить</button>
     </form>
 
     <div class="feedback-toast" id="feedback-toast" aria-live="polite"></div>
     <div class="game-actions">
-      <button class="skip-btn" id="btn-skip" type="button">Пропустить флаг</button>
-      <button class="finish-btn" id="btn-finish" type="button">Завершить игру</button>
+      <button class="skip-btn" id="btn-skip" type="button" data-i18n="btn_skip">Пропустить флаг</button>
+      <button class="finish-btn" id="btn-finish" type="button" data-i18n="btn_finish">Завершить игру</button>
     </div>
   </div>
 
@@ -120,29 +121,80 @@
     <div class="result-trophy" id="result-trophy">🏆</div>
     <h2 class="result-title" id="result-title">Результат</h2>
     <p class="result-subtitle" id="result-subtitle"></p>
-    <div class="new-record-banner" id="new-record-banner">🎉 Новый личный рекорд!</div>
+    <div class="new-record-banner" id="new-record-banner" data-i18n="new_record">🎉 Новый личный рекорд!</div>
 
     <div class="result-stats">
-      <div class="rs-box rs-correct"><div class="rs-num" id="res-correct">0</div><div class="rs-label">Угадано</div></div>
+      <div class="rs-box rs-correct"><div class="rs-num" id="res-correct">0</div><div class="rs-label" data-i18n="rs_correct">Угадано</div></div>
       <div class="rs-divider">|</div>
-      <div class="rs-box rs-wrong"><div class="rs-num" id="res-wrong">0</div><div class="rs-label">Ошибок</div></div>
+      <div class="rs-box rs-wrong"><div class="rs-num" id="res-wrong">0</div><div class="rs-label" data-i18n="rs_wrong">Ошибок</div></div>
       <div class="rs-divider">|</div>
-      <div class="rs-box rs-total"><div class="rs-num" id="res-pct">0%</div><div class="rs-label">Точность</div></div>
+      <div class="rs-box rs-total"><div class="rs-num" id="res-pct">0%</div><div class="rs-label" data-i18n="rs_accuracy">Точность</div></div>
     </div>
 
     <div class="share-box">
-      <span class="share-label">Поделиться результатом:</span>
+      <span class="share-label" data-i18n="share_label_v3">Поделиться результатом:</span>
       <div class="share-row">
         <input class="share-input" id="share-url" readonly>
         <button class="copy-btn" id="copy-btn" type="button" title="Скопировать">⧉</button>
       </div>
     </div>
 
-    <button class="btn-primary" id="btn-again" type="button">Играть снова</button>
+    <button class="btn-primary" id="btn-again" type="button" data-i18n="btn_again">Играть снова</button>
   </div>
 </div>
 <script src="v3.js?v=1" defer></script>
 <script src="swimming-cat.js" defer></script>
+
+<script>
+window.__I18N__ = {
+  ru: {
+    __title: 'Игра в Флаги без Таймера — Угадывание Стран Мира | V3',
+    hero_title: 'Флаги<br><span>Без таймера</span>',
+    hero_sub: 'Смотри на флаг и пиши название страны.<br>Заверши игру в любой момент или угадай все флаги.',
+    record_label: '🏅 Лучший результат',
+    record_empty: 'Сыграй первую партию!',
+    optimize_toggle: 'Оптимизировать загрузку флагов',
+    btn_start: 'Начать игру',
+    hero_hint: 'Enter — проверить ответ',
+    stat_correct: 'Угадано',
+    stat_wrong: 'Ошибок',
+    answer_placeholder: 'Название страны...',
+    btn_answer: 'Ответить',
+    btn_skip: 'Пропустить флаг',
+    btn_finish: 'Завершить игру',
+    new_record: '🎉 Новый личный рекорд!',
+    rs_correct: 'Угадано',
+    rs_wrong: 'Ошибок',
+    rs_accuracy: 'Точность',
+    share_label_v3: 'Поделиться результатом:',
+    btn_again: 'Играть снова'
+  },
+  en: {
+    __title: 'Flag Game Without a Timer — Guess the Country | V3',
+    hero_title: 'Flags<br><span>No Timer</span>',
+    hero_sub: 'Look at the flag and type the country name.<br>Finish anytime or guess every flag.',
+    record_label: '🏅 Best result',
+    record_empty: 'Play your first round!',
+    optimize_toggle: 'Optimize flag loading',
+    btn_start: 'Start game',
+    hero_hint: 'Enter — check answer',
+    stat_correct: 'Correct',
+    stat_wrong: 'Wrong',
+    answer_placeholder: 'Country name...',
+    btn_answer: 'Answer',
+    btn_skip: 'Skip flag',
+    btn_finish: 'Finish game',
+    new_record: '🎉 New personal best!',
+    rs_correct: 'Correct',
+    rs_wrong: 'Wrong',
+    rs_accuracy: 'Accuracy',
+    share_label_v3: 'Share your result:',
+    btn_again: 'Play again'
+  }
+};
+</script>
+<script src="lang-switcher.js"></script>
+
 <script src="mode-switcher.js?v=1" defer></script>
 <script src="donate-widget.js" defer></script>
 </body>
