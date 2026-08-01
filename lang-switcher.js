@@ -9,6 +9,29 @@
   var langs = Object.keys(dict);
   if (!langs.length) return;
 
+  // Windows browsers ship no color flag glyphs in the system emoji font, so a
+  // flag emoji renders as plain "RU"/"GB" letters instead of a flag icon.
+  // Twemoji SVGs render the same flag image on every platform/OS.
+  function emojiToTwemojiUrl(emoji) {
+    var codepoints = Array.from(emoji)
+      .map(function (ch) { return ch.codePointAt(0).toString(16); })
+      .filter(function (cp) { return cp !== 'fe0f'; })
+      .join('-');
+    return 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/' + codepoints + '.svg';
+  }
+
+  function setFlagIcon(el, emoji) {
+    if (!el) return;
+    el.innerHTML = '';
+    var img = document.createElement('img');
+    img.src = emojiToTwemojiUrl(emoji);
+    img.alt = '';
+    img.className = 'lang-flag-img';
+    img.decoding = 'async';
+    img.loading = 'lazy';
+    el.appendChild(img);
+  }
+
   var current = localStorage.getItem(STORAGE_KEY);
   if (langs.indexOf(current) === -1) current = langs.indexOf('ru') !== -1 ? 'ru' : langs[0];
 
@@ -41,7 +64,7 @@
     var flagEl = document.getElementById('lang-current-flag');
     var codeEl = document.getElementById('lang-current-code');
     var meta = LANG_META[lang] || { flag: '🏳️', code: lang.toUpperCase() };
-    if (flagEl) flagEl.textContent = meta.flag;
+    setFlagIcon(flagEl, meta.flag);
     if (codeEl) codeEl.textContent = meta.code;
 
     document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: lang } }));
@@ -74,7 +97,13 @@
       btn.className = 'lang-btn';
       btn.setAttribute('data-lang', lang);
       btn.setAttribute('role', 'option');
-      btn.innerHTML = '<span class="lang-flag">' + meta.flag + '</span><span>' + meta.code + '</span>';
+      var flagSpan = document.createElement('span');
+      flagSpan.className = 'lang-flag';
+      setFlagIcon(flagSpan, meta.flag);
+      var codeSpan = document.createElement('span');
+      codeSpan.textContent = meta.code;
+      btn.appendChild(flagSpan);
+      btn.appendChild(codeSpan);
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
         applyLang(lang);

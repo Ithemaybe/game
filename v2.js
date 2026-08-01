@@ -1,54 +1,44 @@
 'use strict';
 
-const COUNTRIES = new Set([
-  "Россия","Германия","Франция","Италия","Испания","Великобритания",
-  "Польша","Нидерланды","Швеция","Норвегия","Финляндия","Швейцария",
-  "Австрия","Бельгия","Португалия","Греция","Румыния","Венгрия",
-  "Чехия","Дания","Украина","Беларусь","Словакия","Болгария",
-  "Сербия","Хорватия","Босния и Герцеговина","Словения","Литва",
-  "Латвия","Эстония","Молдова","Албания","Северная Македония",
-  "Черногория","Ирландия","Исландия","Люксембург","Мальта","Кипр",
-  "Лихтенштейн","Монако","Андорра","Сан-Марино","Ватикан",
-  "Китай","Япония","Индия","Южная Корея","Индонезия","Таиланд",
-  "Вьетнам","Филиппины","Малайзия","Сингапур","Казахстан",
-  "Саудовская Аравия","ОАЭ","Иран","Ирак","Пакистан","Бангладеш",
-  "Израиль","Иордания","Сирия","Турция","Афганистан","Мьянма",
-  "Камбоджа","Лаос","Монголия","Северная Корея","Непал","Шри-Ланка",
-  "Мальдивы","Бутан","Узбекистан","Туркменистан","Таджикистан",
-  "Кыргызстан","Азербайджан","Армения","Грузия","Ливан","Кувейт",
-  "Катар","Бахрейн","Оман","Йемен","Бруней","Восточный Тимор",
-  "Палестина",
-  "Египет","ЮАР","Нигерия","Кения","Марокко","Эфиопия","Танзания",
-  "Гана","Алжир","Тунис","Ливия","Судан","Южный Судан","Конго",
-  "ДР Конго","Ангола","Мозамбик","Замбия","Зимбабве","Уганда",
-  "Руанда","Бурунди","Камерун","Кот-д'Ивуар","Сенегал","Мали",
-  "Буркина-Фасо","Нигер","Чад","Мавритания","Гвинея","Бенин",
-  "Того","Сьерра-Леоне","Либерия","Гамбия","Гвинея-Бисау",
-  "Кабо-Верде","Сомали","Джибути","Эритрея","Экваториальная Гвинея",
-  "Габон","ЦАР","Намибия","Ботсвана","Лесото","Эсватини","Малави",
-  "Мадагаскар","Маврикий","Сейшелы","Коморы","Сан-Томе и Принсипи",
-  "США","Канада","Мексика","Куба","Гаити","Доминиканская Республика",
-  "Ямайка","Тринидад и Тобаго","Панама","Коста-Рика","Никарагуа",
-  "Гондурас","Сальвадор","Гватемала","Белиз","Багамы","Барбадос",
-  "Сент-Люсия","Гренада","Антигуа и Барбуда","Доминика",
-  "Сент-Китс и Невис","Сент-Винсент и Гренадины",
-  "Бразилия","Аргентина","Колумбия","Перу","Чили","Венесуэла",
-  "Боливия","Парагвай","Уругвай","Эквадор","Гайана","Суринам",
-  "Австралия","Новая Зеландия","Папуа — Новая Гвинея","Фиджи",
-  "Соломоновы Острова","Вануату","Самоа","Кирибати","Тонга",
-  "Микронезия","Палау","Маршалловы Острова","Науру","Тувалу",
-]);
-
-const COUNTRY_CODES = {"Россия":"ru","Германия":"de","Франция":"fr","Италия":"it","Испания":"es","Великобритания":"gb","Польша":"pl","Нидерланды":"nl","Швеция":"se","Норвегия":"no","Финляндия":"fi","Швейцария":"ch","Австрия":"at","Бельгия":"be","Португалия":"pt","Греция":"gr","Румыния":"ro","Венгрия":"hu","Чехия":"cz","Дания":"dk","Украина":"ua","Беларусь":"by","Словакия":"sk","Болгария":"bg","Сербия":"rs","Хорватия":"hr","Босния и Герцеговина":"ba","Словения":"si","Литва":"lt","Латвия":"lv","Эстония":"ee","Молдова":"md","Албания":"al","Северная Македония":"mk","Черногория":"me","Ирландия":"ie","Исландия":"is","Люксембург":"lu","Мальта":"mt","Кипр":"cy","Лихтенштейн":"li","Монако":"mc","Андорра":"ad","Сан-Марино":"sm","Ватикан":"va","Китай":"cn","Япония":"jp","Индия":"in","Южная Корея":"kr","Индонезия":"id","Таиланд":"th","Вьетнам":"vn","Филиппины":"ph","Малайзия":"my","Сингапур":"sg","Казахстан":"kz","Саудовская Аравия":"sa","ОАЭ":"ae","Иран":"ir","Ирак":"iq","Пакистан":"pk","Бангладеш":"bd","Израиль":"il","Иордания":"jo","Сирия":"sy","Турция":"tr","Афганистан":"af","Мьянма":"mm","Камбоджа":"kh","Лаос":"la","Монголия":"mn","Северная Корея":"kp","Непал":"np","Шри-Ланка":"lk","Мальдивы":"mv","Бутан":"bt","Узбекистан":"uz","Туркменистан":"tm","Таджикистан":"tj","Кыргызстан":"kg","Азербайджан":"az","Армения":"am","Грузия":"ge","Ливан":"lb","Кувейт":"kw","Катар":"qa","Бахрейн":"bh","Оман":"om","Йемен":"ye","Бруней":"bn","Восточный Тимор":"tl","Палестина":"ps","Египет":"eg","ЮАР":"za","Нигерия":"ng","Кения":"ke","Марокко":"ma","Эфиопия":"et","Танзания":"tz","Гана":"gh","Алжир":"dz","Тунис":"tn","Ливия":"ly","Судан":"sd","Южный Судан":"ss","Конго":"cg","ДР Конго":"cd","Ангола":"ao","Мозамбик":"mz","Замбия":"zm","Зимбабве":"zw","Уганда":"ug","Руанда":"rw","Бурунди":"bi","Камерун":"cm","Кот-д'Ивуар":"ci","Сенегал":"sn","Мали":"ml","Буркина-Фасо":"bf","Нигер":"ne","Чад":"td","Мавритания":"mr","Гвинея":"gn","Бенин":"bj","Того":"tg","Сьерра-Леоне":"sl","Либерия":"lr","Гамбия":"gm","Гвинея-Бисау":"gw","Кабо-Верде":"cv","Сомали":"so","Джибути":"dj","Эритрея":"er","Экваториальная Гвинея":"gq","Габон":"ga","ЦАР":"cf","Намибия":"na","Ботсвана":"bw","Лесото":"ls","Эсватини":"sz","Малави":"mw","Мадагаскар":"mg","Маврикий":"mu","Сейшелы":"sc","Коморы":"km","Сан-Томе и Принсипи":"st","США":"us","Канада":"ca","Мексика":"mx","Куба":"cu","Гаити":"ht","Доминиканская Республика":"do","Ямайка":"jm","Тринидад и Тобаго":"tt","Панама":"pa","Коста-Рика":"cr","Никарагуа":"ni","Гондурас":"hn","Сальвадор":"sv","Гватемала":"gt","Белиз":"bz","Багамы":"bs","Барбадос":"bb","Сент-Люсия":"lc","Гренада":"gd","Антигуа и Барбуда":"ag","Доминика":"dm","Сент-Китс и Невис":"kn","Сент-Винсент и Гренадины":"vc","Бразилия":"br","Аргентина":"ar","Колумбия":"co","Перу":"pe","Чили":"cl","Венесуэла":"ve","Боливия":"bo","Парагвай":"py","Уругвай":"uy","Эквадор":"ec","Гайана":"gy","Суринам":"sr","Австралия":"au","Новая Зеландия":"nz","Папуа — Новая Гвинея":"pg","Фиджи":"fj","Соломоновы Острова":"sb","Вануату":"vu","Самоа":"ws","Кирибати":"ki","Тонга":"to","Микронезия":"fm","Палау":"pw","Маршалловы Острова":"mh","Науру":"nr","Тувалу":"tv"};
-let flagsMap = null;
+// All country data (Russian name, English name, ISO code, flag emoji) comes
+// from flags.json — the single source of truth shared with V1/V3. The
+// "canonical" identifier used internally throughout this file is the ISO
+// country code (e.g. "ru", "fr"), NOT a display name, precisely so the game
+// works the same regardless of which language is selected. Until flags.json
+// has loaded, these stay empty and getFlagsMap() must be awaited first.
+const COUNTRIES = new Set();       // Set of codes, e.g. "ru", "fr", ...
+const CODE_TO_ENTRY = new Map();   // code -> { name, name_en, code, emoji }
+let flagsMap = null;               // resolves once flags.json is loaded
 let optimizeFlags = localStorage.getItem('v2_optimize_flags') === '1';
+
+function getLang() {
+  const l = localStorage.getItem('site_lang');
+  return (window.__I18N__ && window.__I18N__[l]) ? l : 'ru';
+}
+
+function t(key, fallback) {
+  const dict = (window.__I18N__ && window.__I18N__[getLang()]) || {};
+  return dict[key] !== undefined ? dict[key] : fallback;
+}
+
+// Localized display name for a country code in whatever language is active.
+function displayName(code) {
+  const entry = CODE_TO_ENTRY.get(code);
+  if (!entry) return code;
+  return getLang() === 'en' ? (entry.name_en || entry.name) : entry.name;
+}
 
 async function getFlagsMap() {
   if (flagsMap) return flagsMap;
   const res = await fetch('flags.json', { cache: 'force-cache' });
   if (!res.ok) throw new Error('Не удалось загрузить flags.json');
   const flags = await res.json();
-  flagsMap = new Map(flags.map(f => [f.name, f]));
+  flagsMap = new Map(flags.map(f => [f.code, f]));
+  flags.forEach(f => {
+    COUNTRIES.add(f.code);
+    CODE_TO_ENTRY.set(f.code, f);
+  });
+  buildCountryLookup();
   return flagsMap;
 }
 
@@ -63,9 +53,9 @@ function emojiToTwemojiUrl(emoji) {
   return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/${codepoints}.svg`;
 }
 
-function createCountryFlagNode(name) {
+function createCountryFlagNode(code) {
   if (optimizeFlags) {
-    const emoji = flagsMap?.get(name)?.emoji || '🏳️';
+    const emoji = CODE_TO_ENTRY.get(code)?.emoji || '🏳️';
     const img = document.createElement('img');
     img.className = 'country-flag-emoji';
     img.src = emojiToTwemojiUrl(emoji);
@@ -75,7 +65,6 @@ function createCountryFlagNode(name) {
     return img;
   }
 
-  const code = COUNTRY_CODES[name];
   if (!code) return null;
   const img = document.createElement('img');
   img.className = 'country-flag';
@@ -87,59 +76,89 @@ function createCountryFlagNode(name) {
   return img;
 }
 
-function fillCountryTag(tag, name) {
-  const flag = createCountryFlagNode(name);
+// `code` is the canonical ISO country code; the visible label is always
+// resolved through displayName() so it follows the current site language.
+function fillCountryTag(tag, code) {
+  const flag = createCountryFlagNode(code);
   if (flag) tag.appendChild(flag);
   const text = document.createElement('span');
-  text.textContent = name;
+  text.textContent = displayName(code);
   tag.appendChild(text);
 }
 
-const ALIASES = {
-  "рф": "Россия", "российская федерация": "Россия",
-  "сша": "США", "америка": "США", "соединённые штаты": "США",
-  "соединенные штаты": "США", "штаты": "США",
-  "великобритания": "Великобритания", "британия": "Великобритания",
-  "англия": "Великобритания", "великая британия": "Великобритания",
-  "uk": "Великобритания",
-  "оаэ": "ОАЭ", "объединённые арабские эмираты": "ОАЭ",
-  "объединенные арабские эмираты": "ОАЭ", "эмираты": "ОАЭ",
-  "дрк": "ДР Конго", "демократическая республика конго": "ДР Конго",
-  "конго-киншаса": "ДР Конго", "заир": "ДР Конго",
-  "юар": "ЮАР", "южная африка": "ЮАР",
-  "цар": "ЦАР", "центральноафриканская республика": "ЦАР",
-  "чехия": "Чехия", "чешская республика": "Чехия", "чехословакия": "Чехия",
-  "северная корея": "Северная Корея", "кндр": "Северная Корея",
-  "южная корея": "Южная Корея", "корея": "Южная Корея",
-  "мьянма": "Мьянма", "бирма": "Мьянма",
-  "эсватини": "Эсватини", "свазиленд": "Эсватини",
-  "северная македония": "Северная Македония", "македония": "Северная Македония",
-  "восточный тимор": "Восточный Тимор", "тимор-лесте": "Восточный Тимор",
-  "папуа новая гвинея": "Папуа — Новая Гвинея",
-  "папуа-новая гвинея": "Папуа — Новая Гвинея",
-  "кот д'ивуар": "Кот-д'Ивуар", "кот дивуар": "Кот-д'Ивуар",
-  "берег слоновой кости": "Кот-д'Ивуар",
-  "босния": "Босния и Герцеговина", "герцеговина": "Босния и Герцеговина",
-  "тринидад": "Тринидад и Тобаго",
-  "антигуа": "Антигуа и Барбуда",
-  "сент китс": "Сент-Китс и Невис", "сент-китс": "Сент-Китс и Невис",
-  "сент винсент": "Сент-Винсент и Гренадины",
-  "сент-винсент": "Сент-Винсент и Гренадины",
-  "сан томе": "Сан-Томе и Принсипи",
-  "сан-томе": "Сан-Томе и Принсипи",
-  "соломоновы острова": "Соломоновы Острова",
-  "маршалловы острова": "Маршалловы Острова",
-  "федеративные штаты микронезии": "Микронезия",
-  "палестинская автономия": "Палестина",
-  "голландия": "Нидерланды", "нидерланды": "Нидерланды",
-  "белоруссия": "Беларусь",
-  "молдавия": "Молдова",
-  "киргизия": "Кыргызстан", "киргизстан": "Кыргызстан",
+// Russian aliases/spelling variants, keyed by ISO code.
+const ALIASES_RU = {
+  ru: ["рф", "российская федерация"],
+  us: ["сша", "америка", "соединённые штаты", "соединенные штаты", "штаты"],
+  gb: ["великобритания", "британия", "англия", "великая британия", "uk"],
+  ae: ["оаэ", "объединённые арабские эмираты", "объединенные арабские эмираты", "эмираты"],
+  cd: ["дрк", "демократическая республика конго", "конго-киншаса", "заир"],
+  za: ["юар", "южная африка"],
+  cf: ["цар", "центральноафриканская республика"],
+  cz: ["чехия", "чешская республика", "чехословакия"],
+  kp: ["северная корея", "кндр"],
+  kr: ["южная корея", "корея"],
+  mm: ["мьянма", "бирма"],
+  sz: ["эсватини", "свазиленд"],
+  mk: ["северная македония", "македония"],
+  tl: ["восточный тимор", "тимор-лесте"],
+  pg: ["папуа новая гвинея", "папуа-новая гвинея"],
+  ci: ["кот д'ивуар", "кот дивуар", "берег слоновой кости"],
+  ba: ["босния", "герцеговина"],
+  tt: ["тринидад"],
+  ag: ["антигуа"],
+  kn: ["сент китс", "сент-китс"],
+  vc: ["сент винсент", "сент-винсент"],
+  st: ["сан томе", "сан-томе"],
+  sb: ["соломоновы острова"],
+  mh: ["маршалловы острова"],
+  fm: ["федеративные штаты микронезии"],
+  ps: ["палестинская автономия"],
+  nl: ["голландия"],
+  by: ["белоруссия"],
+  md: ["молдавия"],
+  kg: ["киргизия", "киргизстан"],
 };
 
-const CANONICAL_LOWER = new Map();
-const COUNTRY_LOOKUP = new Map();
+// English aliases/spelling variants, keyed by ISO code. This is what lets
+// people type country names in English in the text/voice modes.
+const ALIASES_EN = {
+  ru: ["russian federation"],
+  us: ["usa", "america", "united states", "united states of america", "the states"],
+  gb: ["uk", "britain", "great britain", "england", "united kingdom of great britain"],
+  ae: ["uae", "emirates", "united arab emirates"],
+  cd: ["drc", "democratic republic of congo", "democratic republic of the congo", "congo kinshasa", "zaire"],
+  cg: ["congo brazzaville", "republic of congo"],
+  za: ["south africa", "rsa"],
+  cf: ["car", "central african republic"],
+  cz: ["czech republic", "czechoslovakia"],
+  kp: ["north korea", "dprk"],
+  kr: ["south korea", "korea"],
+  mm: ["burma"],
+  sz: ["swaziland"],
+  mk: ["macedonia"],
+  tl: ["east timor", "timor leste"],
+  pg: ["papua new guinea"],
+  ci: ["cote d'ivoire", "cote divoire", "ivory coast"],
+  ba: ["bosnia", "herzegovina", "bosnia and herzegovina"],
+  tt: ["trinidad"],
+  ag: ["antigua"],
+  kn: ["st kitts", "saint kitts"],
+  vc: ["st vincent", "saint vincent"],
+  st: ["sao tome"],
+  sb: ["solomon islands"],
+  mh: ["marshall islands"],
+  fm: ["micronesia", "federated states of micronesia"],
+  ps: ["palestine", "palestinian territories"],
+  nl: ["holland"],
+  by: ["belarus"],
+  md: ["moldova"],
+  kg: ["kyrgyzstan", "kirghizia"],
+};
+
+const COUNTRY_LOOKUP = new Map(); // normalized phrase (ru or en) -> country code
 let MAX_COUNTRY_WORDS = 1;
+let lookupBuilt = false;
 
 function normalizeText(raw) {
   return String(raw || '')
@@ -151,20 +170,33 @@ function normalizeText(raw) {
     .trim();
 }
 
-function registerCountryPhrase(phrase, canonical) {
+function registerCountryPhrase(phrase, code) {
   const normalized = normalizeText(phrase);
-  if (!normalized || !COUNTRIES.has(canonical)) return;
-  COUNTRY_LOOKUP.set(normalized, canonical);
+  if (!normalized || !COUNTRIES.has(code)) return;
+  COUNTRY_LOOKUP.set(normalized, code);
   MAX_COUNTRY_WORDS = Math.max(MAX_COUNTRY_WORDS, normalized.split(' ').length);
 }
 
-for (const c of COUNTRIES) {
-  CANONICAL_LOWER.set(c.toLowerCase(), c);
-  registerCountryPhrase(c, c);
-}
+// Registers both the Russian and English name/aliases for every country, so
+// answers can be matched (and spoken/typed) in either language regardless of
+// which language the UI is currently showing.
+function buildCountryLookup() {
+  if (lookupBuilt) return;
+  lookupBuilt = true;
 
-for (const [alias, canonical] of Object.entries(ALIASES)) {
-  if (COUNTRIES.has(canonical)) registerCountryPhrase(alias, canonical);
+  for (const code of COUNTRIES) {
+    const entry = CODE_TO_ENTRY.get(code);
+    if (!entry) continue;
+    registerCountryPhrase(entry.name, code);
+    if (entry.name_en) registerCountryPhrase(entry.name_en, code);
+  }
+
+  for (const [code, aliases] of Object.entries(ALIASES_RU)) {
+    aliases.forEach(a => registerCountryPhrase(a, code));
+  }
+  for (const [code, aliases] of Object.entries(ALIASES_EN)) {
+    aliases.forEach(a => registerCountryPhrase(a, code));
+  }
 }
 
 function matchCountry(raw) {
@@ -344,16 +376,32 @@ function updateStats() {
   countCorrectEl.textContent = n;
   pctValEl.textContent = pct + '%';
   progressFillEl.style.width = pct + '%';
-  answeredHeader.textContent = `Принятые страны (${n})`;
+  answeredHeader.textContent = `${t('answered_header_prefix', 'Принятые страны')} (${n})`;
 }
 
-function addTag(name) {
+// `code` is the canonical ISO country code — fillCountryTag() resolves it to
+// the localized display name at render time.
+function addTag(code) {
   const tag = document.createElement('span');
   tag.className = 'answered-tag';
-  fillCountryTag(tag, name);
+  tag.dataset.code = code;
+  fillCountryTag(tag, code);
   answeredGrid.appendChild(tag);
   const section = answeredGrid.closest('.answered-section');
   section.scrollTop = section.scrollHeight;
+}
+
+// Re-renders every already-answered tag's label/flag in the current
+// language. Called on 'langchange' so a mid-game language switch updates
+// the whole accepted-countries list immediately instead of just new tags.
+function relabelAnsweredTags() {
+  answeredGrid.querySelectorAll('.answered-tag').forEach(tag => {
+    const code = tag.dataset.code;
+    if (!code) return;
+    tag.innerHTML = '';
+    fillCountryTag(tag, code);
+  });
+  updateStats();
 }
 
 let feedbackTimer = null;
@@ -375,11 +423,11 @@ function renderOneRecord(mode) {
   if (!countEl || !subEl) return;
 
   if (saved) {
-    countEl.textContent = saved.count + ' стран';
-    subEl.textContent = saved.pct + '% от всех · ' + saved.date;
+    countEl.textContent = saved.count + ' ' + t('record_countries_suffix', 'стран');
+    subEl.textContent = saved.pct + t('record_pct_suffix', '% от всех · ') + saved.date;
   } else {
     countEl.textContent = '—';
-    subEl.textContent = 'Сыграй первую партию!';
+    subEl.textContent = t('record_empty', 'Сыграй первую партию!');
   }
 }
 
@@ -397,7 +445,9 @@ function saveRecord(count, pct) {
   if (isNew) {
     const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
     localStorage.setItem(key, JSON.stringify({ count, pct, date }));
-    banner.textContent = currentMode === 'voice' ? '🎉 Новый рекорд голосовой игры!' : '🎉 Новый рекорд текстовой игры!';
+    banner.textContent = currentMode === 'voice'
+      ? t('new_record_voice', '🎉 Новый рекорд голосовой игры!')
+      : t('new_record_text', '🎉 Новый рекорд текстовой игры!');
     banner?.classList.add('show');
   } else {
     banner?.classList.remove('show');
@@ -412,12 +462,12 @@ function flashInput(className, ms = 320) {
 function addCountry(raw, source = 'typed') {
   if (!gameActive || gameEnded) return { status: 'inactive' };
 
-  const canonical = COUNTRIES.has(raw) ? raw : matchCountry(raw);
+  const canonical = matchCountry(raw);
 
   if (!canonical) {
     if (source === 'typed') {
       flashInput('shake');
-      showFeedback('❌ Неизвестная страна', 'err');
+      showFeedback(t('feedback_unknown', '❌ Неизвестная страна'), 'err');
     }
     return { status: 'unknown', raw };
   }
@@ -425,7 +475,7 @@ function addCountry(raw, source = 'typed') {
   if (answered.has(canonical)) {
     if (source === 'typed') {
       flashInput('shake');
-      showFeedback(`🔁 «${canonical}» уже есть!`, 'dup');
+      showFeedback(`🔁 «${displayName(canonical)}» ${t('feedback_dup_suffix', 'уже есть!')}`, 'dup');
       inputEl.value = '';
     }
     return { status: 'duplicate', canonical };
@@ -437,7 +487,7 @@ function addCountry(raw, source = 'typed') {
 
   flashInput('glow-correct', 400);
   if (source === 'typed') {
-    showFeedback(`✓ ${canonical}`, 'ok');
+    showFeedback(`✓ ${displayName(canonical)}`, 'ok');
     inputEl.value = '';
   }
 
@@ -470,13 +520,13 @@ function handleSpeechText(text) {
   if (countries.length) {
     inputEl.value = '';
     const parts = [];
-    if (added) parts.push(`✓ добавлено: ${added}`);
-    if (duplicated) parts.push(`🔁 уже были: ${duplicated}`);
-    if (unknown.length) parts.push(`не распознано: ${unknown.length}`);
+    if (added) parts.push(`✓ ${t('voice_added', 'добавлено')}: ${added}`);
+    if (duplicated) parts.push(`🔁 ${t('voice_duplicated', 'уже были')}: ${duplicated}`);
+    if (unknown.length) parts.push(`${t('voice_unrecognized', 'не распознано')}: ${unknown.length}`);
     showFeedback(parts.join(' · '), added ? 'ok' : 'dup');
-    setVoiceStatus(`🎙️ Слушаю... ${parts.join(' · ')}`, 'listening');
+    setVoiceStatus(`🎙️ ${t('voice_listening', 'Слушаю')}... ${parts.join(' · ')}`, 'listening');
   } else if (unknown.length) {
-    setVoiceStatus('🎙️ Слушаю... стран не найдено', 'err');
+    setVoiceStatus(`🎙️ ${t('voice_listening', 'Слушаю')}... ${t('voice_none_found', 'стран не найдено')}`, 'err');
   }
 }
 
@@ -486,7 +536,9 @@ function applyGameMode(mode) {
   screens.game.classList.toggle('mode-text', currentMode === 'text');
 
   if (gameModeBadge) {
-    gameModeBadge.textContent = currentMode === 'voice' ? '🎙️ Голосовая игра' : '⌨️ Текстовая игра';
+    gameModeBadge.textContent = currentMode === 'voice'
+      ? t('mode_voice_badge', '🎙️ Голосовая игра')
+      : t('mode_text_badge', '⌨️ Текстовая игра');
   }
 
   if (inputEl) {
@@ -497,12 +549,13 @@ function applyGameMode(mode) {
 
   setVoiceStatus(
     currentMode === 'voice'
-      ? 'Запрашиваю доступ к микрофону...'
-      : 'Голосовой ввод доступен только в отдельной голосовой игре'
+      ? t('voice_requesting', 'Запрашиваю доступ к микрофону...')
+      : t('voice_text_only', 'Голосовой ввод доступен только в отдельной голосовой игре')
   );
 }
 
 async function startGame(mode = currentMode || 'text') {
+  try { await getFlagsMap(); } catch (err) { console.warn(err); }
   stopVoiceInput();
   stopTimer();
   applyGameMode(mode);
@@ -516,9 +569,6 @@ async function startGame(mode = currentMode || 'text') {
   gameActive = true;
   updateStats();
   showScreen('game');
-  if (optimizeFlags) {
-    try { await getFlagsMap(); } catch (err) { console.warn(err); }
-  }
   startTimer();
 
   if (currentMode === 'voice') {
@@ -548,28 +598,30 @@ function endGame(allDone = false) {
 
   let trophy, title, subtitle;
   if (allDone) {
-    trophy = '🌍'; title = 'Все страны!'; subtitle = 'Невероятный результат! Ты знаешь все 195 стран мира!';
+    trophy = '🌍'; title = t('rt_all', 'Все страны!'); subtitle = t('rs_all', 'Невероятный результат! Ты знаешь все 195 стран мира!');
   } else if (pct >= 70) {
-    trophy = '🏆'; title = 'Легенда географии!'; subtitle = `${n} стран — это потрясающе! Ты настоящий эксперт.`;
+    trophy = '🏆'; title = t('rt_70', 'Легенда географии!'); subtitle = `${n} ${t('rs_70', 'стран — это потрясающе! Ты настоящий эксперт.')}`;
   } else if (pct >= 50) {
-    trophy = '🥇'; title = 'Отличный результат!'; subtitle = `${n} стран из 195 — больше половины! Достойно.`;
+    trophy = '🥇'; title = t('rt_50', 'Отличный результат!'); subtitle = `${n} ${t('rs_50', 'стран из 195 — больше половины! Достойно.')}`;
   } else if (pct >= 30) {
-    trophy = '🥈'; title = 'Хороший результат!'; subtitle = `${n} стран — неплохо, но есть куда расти!`;
+    trophy = '🥈'; title = t('rt_30', 'Хороший результат!'); subtitle = `${n} ${t('rs_30', 'стран — неплохо, но есть куда расти!')}`;
   } else if (pct >= 15) {
-    trophy = '🌐'; title = 'Неплохое начало!'; subtitle = `${n} стран — попробуй ещё раз, ты можешь лучше!`;
+    trophy = '🌐'; title = t('rt_15', 'Неплохое начало!'); subtitle = `${n} ${t('rs_15', 'стран — попробуй ещё раз, ты можешь лучше!')}`;
   } else {
-    trophy = '🗺️'; title = 'Время вышло!'; subtitle = `${n} стран — в следующий раз узнаешь больше!`;
+    trophy = '🗺️'; title = t('rt_0', 'Время вышло!'); subtitle = `${n} ${t('rs_0', 'стран — в следующий раз узнаешь больше!')}`;
   }
 
   resultTrophyEl.textContent = trophy;
   resultTitleEl.textContent  = title;
-  resultSubEl.textContent    = (currentMode === 'voice' ? 'Голосовая игра · ' : 'Текстовая игра · ') + subtitle;
+  resultSubEl.textContent    = (currentMode === 'voice' ? t('mode_voice_prefix', 'Голосовая игра · ') : t('mode_text_prefix', 'Текстовая игра · ')) + subtitle;
 
   resultTagsEl.innerHTML = '';
-  const sorted = [...answered].sort((a, b) => a.localeCompare(b, 'ru'));
+  const lang = getLang();
+  const sorted = [...answered].sort((a, b) => displayName(a).localeCompare(displayName(b), lang));
   for (const c of sorted) {
     const tag = document.createElement('span');
     tag.className = 'result-tag';
+    tag.dataset.code = c;
     fillCountryTag(tag, c);
     resultTagsEl.appendChild(tag);
   }
@@ -730,6 +782,12 @@ copyBtnEl?.addEventListener('click', () => {
 initVoiceInput();
 renderStartRecord();
 
+document.addEventListener('langchange', () => {
+  relabelAnsweredTags();
+  renderStartRecord();
+  if (gameActive && !gameEnded) applyGameMode(currentMode);
+});
+
 function renderSharedResult(data) {
   const { mode, n, pct, total, date } = data;
   const totalCount = total || TOTAL_COUNTRIES;
@@ -739,16 +797,17 @@ function renderSharedResult(data) {
   resPctEl.textContent = computedPct + '%';
   resultTrophyEl.textContent =
     computedPct >= 70 ? '🏆' : computedPct >= 50 ? '🥇' : computedPct >= 30 ? '🥈' : '🌍';
-  resultTitleEl.textContent = 'Результат друга';
+  resultTitleEl.textContent = t('friend_result', 'Результат друга');
+  const modeLabel = mode === 'voice' ? t('mode_voice_short_plain', 'Голосовая игра') : t('mode_text_short_plain', 'Текстовая игра');
   resultSubEl.textContent =
-    `${mode === 'voice' ? 'Голосовая игра' : 'Текстовая игра'} · ${n} стран из ${totalCount}` +
+    `${modeLabel} · ${n} ${t('record_countries_suffix', 'стран')} ${t('record_out_of_prep', 'из')} ${totalCount}` +
     (date ? ` · ${date}` : '');
 
   resultTagsEl.innerHTML = '';
   const note = document.createElement('p');
   note.className = 'hero-sub';
   note.style.opacity = '.6';
-  note.textContent = 'Список названных стран виден только в браузере автора результата.';
+  note.textContent = t('friend_result_note', 'Список названных стран виден только в браузере автора результата.');
   resultTagsEl.appendChild(note);
 
   document.getElementById('new-record-banner')?.classList.remove('show');

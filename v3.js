@@ -1,15 +1,65 @@
 'use strict';
 
-const ALIASES = {
-  'рф':'Россия','российская федерация':'Россия','сша':'США','америка':'США','соединенные штаты':'США','соединённые штаты':'США',
-  'британия':'Великобритания','англия':'Великобритания','великая британия':'Великобритания','uk':'Великобритания',
-  'оаэ':'ОАЭ','объединенные арабские эмираты':'ОАЭ','объединённые арабские эмираты':'ОАЭ','эмираты':'ОАЭ',
-  'дрк':'ДР Конго','демократическая республика конго':'ДР Конго','конго киншаса':'ДР Конго','заир':'ДР Конго',
-  'юар':'ЮАР','южная африка':'ЮАР','цар':'ЦАР','центральноафриканская республика':'ЦАР',
-  'чешская республика':'Чехия','кндр':'Северная Корея','корея':'Южная Корея','бирма':'Мьянма','свазиленд':'Эсватини',
-  'македония':'Северная Македония','тимор лесте':'Восточный Тимор','папуа новая гвинея':'Папуа — Новая Гвинея',
-  'кот дивуар':"Кот-д'Ивуар",'берег слоновой кости':"Кот-д'Ивуар",'босния':'Босния и Герцеговина',
-  'голландия':'Нидерланды','белоруссия':'Беларусь','молдавия':'Молдова','киргизия':'Кыргызстан','киргизстан':'Кыргызстан'
+function getLang() {
+  const l = localStorage.getItem('site_lang');
+  return (window.__I18N__ && window.__I18N__[l]) ? l : 'ru';
+}
+
+function t(key, fallback) {
+  const dict = (window.__I18N__ && window.__I18N__[getLang()]) || {};
+  return dict[key] !== undefined ? dict[key] : fallback;
+}
+
+// Russian aliases/spelling variants, keyed by ISO code.
+const ALIASES_RU = {
+  ru: ['рф', 'российская федерация'],
+  us: ['сша', 'америка', 'соединенные штаты', 'соединённые штаты'],
+  gb: ['британия', 'англия', 'великая британия', 'uk'],
+  ae: ['оаэ', 'объединенные арабские эмираты', 'объединённые арабские эмираты', 'эмираты'],
+  cd: ['дрк', 'демократическая республика конго', 'конго киншаса', 'заир'],
+  za: ['юар', 'южная африка'],
+  cf: ['цар', 'центральноафриканская республика'],
+  cz: ['чешская республика'],
+  kp: ['кндр'],
+  kr: ['корея'],
+  mm: ['бирма'],
+  sz: ['свазиленд'],
+  mk: ['македония'],
+  tl: ['тимор лесте'],
+  pg: ['папуа новая гвинея'],
+  ci: ['кот дивуар', 'берег слоновой кости'],
+  ba: ['босния'],
+  nl: ['голландия'],
+  by: ['белоруссия'],
+  md: ['молдавия'],
+  kg: ['киргизия', 'киргизстан'],
+};
+
+// English aliases/spelling variants, keyed by ISO code — lets people type
+// country names in English too.
+const ALIASES_EN = {
+  ru: ['russian federation'],
+  us: ['usa', 'america', 'united states', 'united states of america'],
+  gb: ['uk', 'britain', 'great britain', 'england'],
+  ae: ['uae', 'emirates', 'united arab emirates'],
+  cd: ['drc', 'democratic republic of congo', 'democratic republic of the congo', 'congo kinshasa', 'zaire'],
+  cg: ['congo brazzaville', 'republic of congo'],
+  za: ['south africa', 'rsa'],
+  cf: ['car', 'central african republic'],
+  cz: ['czech republic'],
+  kp: ['north korea', 'dprk'],
+  kr: ['south korea', 'korea'],
+  mm: ['burma'],
+  sz: ['swaziland'],
+  mk: ['macedonia'],
+  tl: ['east timor', 'timor leste'],
+  pg: ['papua new guinea'],
+  ci: ["cote d'ivoire", 'cote divoire', 'ivory coast'],
+  ba: ['bosnia', 'herzegovina', 'bosnia and herzegovina'],
+  nl: ['holland'],
+  by: ['belarus'],
+  md: ['moldova'],
+  kg: ['kyrgyzstan', 'kirghizia'],
 };
 
 let countries = [];
@@ -20,6 +70,15 @@ let wrong = 0;
 let skipped = 0;
 let active = false;
 let optimizeFlags = localStorage.getItem('v3_optimize_flags') === '1';
+
+// normalized phrase (ru or en) -> country code, built once countries load
+const COUNTRY_LOOKUP = new Map();
+let lookupBuilt = false;
+
+function displayName(country) {
+  if (!country) return '';
+  return getLang() === 'en' ? (country.name_en || country.name) : country.name;
+}
 
 function encodeResultV3(data) {
   const json = JSON.stringify(data);
@@ -54,11 +113,32 @@ function normalize(value) {
   return String(value || '').toLowerCase().replace(/ё/g,'е').replace(/[—–-]/g,' ').replace(/[^a-zа-я0-9\s']/gi,' ').replace(/\s+/g,' ').trim();
 }
 
-function canonicalAnswer(value) {
+function registerPhrase(phrase, code) {
+  const normalized = normalize(phrase);
+  if (normalized) COUNTRY_LOOKUP.set(normalized, code);
+}
+
+function buildCountryLookup() {
+  if (lookupBuilt) return;
+  lookupBuilt = true;
+  for (const c of countries) {
+    registerPhrase(c.name, c.code);
+    if (c.name_en) registerPhrase(c.name_en, c.code);
+  }
+  for (const [code, aliases] of Object.entries(ALIASES_RU)) {
+    aliases.forEach(a => registerPhrase(a, code));
+  }
+  for (const [code, aliases] of Object.entries(ALIASES_EN)) {
+    aliases.forEach(a => registerPhrase(a, code));
+  }
+}
+
+// Returns the matched country's ISO code (or '' if the typed text — in
+// Russian or English — doesn't match any known country/alias).
+function matchCountry(value) {
   const normalized = normalize(value);
   if (!normalized) return '';
-  const alias = ALIASES[normalized];
-  return alias ? normalize(alias) : normalized;
+  return COUNTRY_LOOKUP.get(normalized) || '';
 }
 
 function emojiToTwemojiUrl(emoji) {
@@ -83,12 +163,13 @@ async function loadCountries() {
   const response = await fetch('flags.json', { cache:'force-cache' });
   if (!response.ok) throw new Error('Не удалось загрузить flags.json');
   countries = await response.json();
+  buildCountryLookup();
 }
 
 function renderRecord() {
   const record = JSON.parse(localStorage.getItem('v3_record') || 'null');
-  $('record-count').textContent = record ? `${record.correct} из ${record.total}` : '—';
-  $('record-sub').textContent = record ? `${record.pct}% точность · ${record.date}` : 'Сыграй первую партию!';
+  $('record-count').textContent = record ? `${record.correct} ${t('record_out_of_prep_v3', 'из')} ${record.total}` : '—';
+  $('record-sub').textContent = record ? `${record.pct}${t('record_accuracy_suffix', '% точность · ')}${record.date}` : t('record_empty', 'Сыграй первую партию!');
 }
 
 function setFlag(country) {
@@ -125,7 +206,7 @@ async function startGame() {
   try {
     await loadCountries();
   } catch (error) {
-    showFeedback('Не удалось загрузить список флагов. Обнови страницу.', 'wrong');
+    showFeedback(t('load_error', 'Не удалось загрузить список флагов. Обнови страницу.'), 'wrong');
     return;
   }
   deck = shuffle(countries);
@@ -140,12 +221,12 @@ async function startGame() {
 function submitAnswer(event) {
   event.preventDefault();
   if (!active || !deck[index]) return;
-  const answer = canonicalAnswer(input.value);
-  if (!answer) return;
-  const expected = normalize(deck[index].name);
-  if (answer === expected) {
+  const answerCode = matchCountry(input.value);
+  if (!answerCode) return;
+  const expectedCode = deck[index].code;
+  if (answerCode === expectedCode) {
     correct += 1;
-    showFeedback(`Верно — ${deck[index].name}!`, 'correct');
+    showFeedback(`${t('feedback_right_prefix', 'Верно —')} ${displayName(deck[index])}!`, 'correct');
     index += 1;
     input.value = '';
     if (index >= deck.length) {
@@ -156,18 +237,18 @@ function submitAnswer(event) {
   } else {
     wrong += 1;
     $('score-wrong').textContent = wrong;
-    showFeedback('Не угадано. Попробуй ещё раз.', 'wrong');
+    showFeedback(t('feedback_wrong_try_again', 'Не угадано. Попробуй ещё раз.'), 'wrong');
     input.select();
   }
 }
 
 function skipFlag() {
   if (!active || !deck[index]) return;
-  const skippedCountry = deck[index].name;
+  const skippedCountry = displayName(deck[index]);
   skipped += 1;
   index += 1;
   input.value = '';
-  showFeedback(`Пропущено — ${skippedCountry}`, 'skip');
+  showFeedback(`${t('feedback_skipped_prefix', 'Пропущено —')} ${skippedCountry}`, 'skip');
   if (index >= deck.length) {
     endGame(true);
     return;
@@ -190,8 +271,10 @@ function endGame(allDone = false) {
   $('res-correct').textContent = correct;
   $('res-wrong').textContent = wrong;
   $('res-pct').textContent = `${pct}%`;
-  $('result-title').textContent = allDone ? 'Все флаги угаданы!' : 'Игра завершена';
-  $('result-subtitle').textContent = allDone ? `Ты прошёл весь набор флагов мира. Пропущено: ${skipped}.` : `Пройдено ${index} из ${deck.length} флагов · пропущено ${skipped}.`;
+  $('result-title').textContent = allDone ? t('result_alldone', 'Все флаги угаданы!') : t('result_finished', 'Игра завершена');
+  $('result-subtitle').textContent = allDone
+    ? `${t('result_alldone_sub', 'Ты прошёл весь набор флагов мира. Пропущено:')} ${skipped}.`
+    : `${t('result_partial_sub1', 'Пройдено')} ${index} ${t('result_partial_sub2', 'из')} ${deck.length} ${t('result_partial_sub3', 'флагов · пропущено')} ${skipped}.`;
   $('result-trophy').textContent = allDone ? '🌍' : correct >= 100 ? '🏆' : correct >= 30 ? '🥇' : '🎯';
   $('new-record-banner').classList.toggle('show', isRecord);
 
@@ -227,15 +310,17 @@ $('copy-btn').addEventListener('click', async () => {
 
 renderRecord();
 
+document.addEventListener('langchange', renderRecord);
+
 function renderSharedResult(data) {
   const { correct, wrong, total, pct, allDone, date } = data;
   $('res-correct').textContent = correct;
   $('res-wrong').textContent = wrong;
   $('res-pct').textContent = `${pct}%`;
-  $('result-title').textContent = 'Результат друга';
+  $('result-title').textContent = t('friend_result', 'Результат друга');
   $('result-subtitle').textContent = allDone
-    ? `Друг прошёл весь набор флагов мира.${date ? ' ' + date + '.' : ''}`
-    : `Друг угадал ${correct} из ${total} флагов (${pct}%).${date ? ' ' + date + '.' : ''}`;
+    ? `${t('friend_alldone', 'Друг прошёл весь набор флагов мира.')}${date ? ' ' + date + '.' : ''}`
+    : `${t('friend_partial_prefix', 'Друг угадал')} ${correct} ${t('record_out_of_prep_v3', 'из')} ${total} ${t('friend_partial_suffix', 'флагов')} (${pct}%).${date ? ' ' + date + '.' : ''}`;
   $('result-trophy').textContent = allDone ? '🌍' : correct >= 100 ? '🏆' : correct >= 30 ? '🥇' : '🎯';
   $('new-record-banner')?.classList.remove('show');
   $('share-url').value = location.href;

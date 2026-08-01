@@ -20,107 +20,26 @@ function encodeResultV1(data) {
   return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-const COUNTRIES = [
-  {name:"Россия",code:"ru"},{name:"Германия",code:"de"},
-  {name:"Франция",code:"fr"},{name:"Италия",code:"it"},
-  {name:"Испания",code:"es"},{name:"Великобритания",code:"gb"},
-  {name:"Польша",code:"pl"},{name:"Нидерланды",code:"nl"},
-  {name:"Швеция",code:"se"},{name:"Норвегия",code:"no"},
-  {name:"Финляндия",code:"fi"},{name:"Швейцария",code:"ch"},
-  {name:"Австрия",code:"at"},{name:"Бельгия",code:"be"},
-  {name:"Португалия",code:"pt"},{name:"Греция",code:"gr"},
-  {name:"Румыния",code:"ro"},{name:"Венгрия",code:"hu"},
-  {name:"Чехия",code:"cz"},{name:"Дания",code:"dk"},
-  {name:"Украина",code:"ua"},{name:"Беларусь",code:"by"},
-  {name:"Словакия",code:"sk"},{name:"Болгария",code:"bg"},
-  {name:"Сербия",code:"rs"},{name:"Хорватия",code:"hr"},
-  {name:"Босния и Герцеговина",code:"ba"},{name:"Словения",code:"si"},
-  {name:"Литва",code:"lt"},{name:"Латвия",code:"lv"},
-  {name:"Эстония",code:"ee"},{name:"Молдова",code:"md"},
-  {name:"Албания",code:"al"},{name:"Северная Македония",code:"mk"},
-  {name:"Черногория",code:"me"},{name:"Ирландия",code:"ie"},
-  {name:"Исландия",code:"is"},{name:"Люксембург",code:"lu"},
-  {name:"Мальта",code:"mt"},{name:"Кипр",code:"cy"},
-  {name:"Лихтенштейн",code:"li"},{name:"Монако",code:"mc"},
-  {name:"Андорра",code:"ad"},{name:"Сан-Марино",code:"sm"},
-  {name:"Ватикан",code:"va"},
-  {name:"Китай",code:"cn"},{name:"Япония",code:"jp"},
-  {name:"Индия",code:"in"},{name:"Южная Корея",code:"kr"},
-  {name:"Индонезия",code:"id"},{name:"Таиланд",code:"th"},
-  {name:"Вьетнам",code:"vn"},{name:"Филиппины",code:"ph"},
-  {name:"Малайзия",code:"my"},{name:"Сингапур",code:"sg"},
-  {name:"Казахстан",code:"kz"},{name:"Саудовская Аравия",code:"sa"},
-  {name:"ОАЭ",code:"ae"},{name:"Иран",code:"ir"},
-  {name:"Ирак",code:"iq"},{name:"Пакистан",code:"pk"},
-  {name:"Бангладеш",code:"bd"},{name:"Израиль",code:"il"},
-  {name:"Иордания",code:"jo"},{name:"Сирия",code:"sy"},
-  {name:"Турция",code:"tr"},{name:"Афганистан",code:"af"},
-  {name:"Мьянма",code:"mm"},{name:"Камбоджа",code:"kh"},
-  {name:"Лаос",code:"la"},{name:"Монголия",code:"mn"},
-  {name:"Северная Корея",code:"kp"},{name:"Непал",code:"np"},
-  {name:"Шри-Ланка",code:"lk"},{name:"Мальдивы",code:"mv"},
-  {name:"Бутан",code:"bt"},{name:"Узбекистан",code:"uz"},
-  {name:"Туркменистан",code:"tm"},{name:"Таджикистан",code:"tj"},
-  {name:"Кыргызстан",code:"kg"},{name:"Азербайджан",code:"az"},
-  {name:"Армения",code:"am"},{name:"Грузия",code:"ge"},
-  {name:"Ливан",code:"lb"},{name:"Кувейт",code:"kw"},
-  {name:"Катар",code:"qa"},{name:"Бахрейн",code:"bh"},
-  {name:"Оман",code:"om"},{name:"Йемен",code:"ye"},
-  {name:"Бруней",code:"bn"},{name:"Восточный Тимор",code:"tl"},
-  {name:"Палестина",code:"ps"},
-  {name:"Египет",code:"eg"},{name:"ЮАР",code:"za"},
-  {name:"Нигерия",code:"ng"},{name:"Кения",code:"ke"},
-  {name:"Марокко",code:"ma"},{name:"Эфиопия",code:"et"},
-  {name:"Танзания",code:"tz"},{name:"Гана",code:"gh"},
-  {name:"Алжир",code:"dz"},{name:"Тунис",code:"tn"},
-  {name:"Ливия",code:"ly"},{name:"Судан",code:"sd"},
-  {name:"Южный Судан",code:"ss"},{name:"Конго",code:"cg"},
-  {name:"ДР Конго",code:"cd"},{name:"Ангола",code:"ao"},
-  {name:"Мозамбик",code:"mz"},{name:"Замбия",code:"zm"},
-  {name:"Зимбабве",code:"zw"},{name:"Уганда",code:"ug"},
-  {name:"Руанда",code:"rw"},{name:"Бурунди",code:"bi"},
-  {name:"Камерун",code:"cm"},{name:"Кот-д'Ивуар",code:"ci"},
-  {name:"Сенегал",code:"sn"},{name:"Мали",code:"ml"},
-  {name:"Буркина-Фасо",code:"bf"},{name:"Нигер",code:"ne"},
-  {name:"Чад",code:"td"},{name:"Мавритания",code:"mr"},
-  {name:"Гвинея",code:"gn"},{name:"Бенин",code:"bj"},
-  {name:"Того",code:"tg"},{name:"Сьерра-Леоне",code:"sl"},
-  {name:"Либерия",code:"lr"},{name:"Гамбия",code:"gm"},
-  {name:"Гвинея-Бисау",code:"gw"},{name:"Кабо-Верде",code:"cv"},
-  {name:"Сомали",code:"so"},{name:"Джибути",code:"dj"},
-  {name:"Эритрея",code:"er"},{name:"Экваториальная Гвинея",code:"gq"},
-  {name:"Габон",code:"ga"},{name:"ЦАР",code:"cf"},
-  {name:"Намибия",code:"na"},{name:"Ботсвана",code:"bw"},
-  {name:"Лесото",code:"ls"},{name:"Эсватини",code:"sz"},
-  {name:"Малави",code:"mw"},{name:"Мадагаскар",code:"mg"},
-  {name:"Маврикий",code:"mu"},{name:"Сейшелы",code:"sc"},
-  {name:"Коморы",code:"km"},{name:"Сан-Томе и Принсипи",code:"st"},
-  {name:"США",code:"us"},{name:"Канада",code:"ca"},
-  {name:"Мексика",code:"mx"},{name:"Куба",code:"cu"},
-  {name:"Гаити",code:"ht"},{name:"Доминиканская Республика",code:"do"},
-  {name:"Ямайка",code:"jm"},{name:"Тринидад и Тобаго",code:"tt"},
-  {name:"Панама",code:"pa"},{name:"Коста-Рика",code:"cr"},
-  {name:"Никарагуа",code:"ni"},{name:"Гондурас",code:"hn"},
-  {name:"Сальвадор",code:"sv"},{name:"Гватемала",code:"gt"},
-  {name:"Белиз",code:"bz"},{name:"Багамы",code:"bs"},
-  {name:"Барбадос",code:"bb"},{name:"Сент-Люсия",code:"lc"},
-  {name:"Гренада",code:"gd"},{name:"Антигуа и Барбуда",code:"ag"},
-  {name:"Доминика",code:"dm"},{name:"Сент-Китс и Невис",code:"kn"},
-  {name:"Сент-Винсент и Гренадины",code:"vc"},
-  {name:"Бразилия",code:"br"},{name:"Аргентина",code:"ar"},
-  {name:"Колумбия",code:"co"},{name:"Перу",code:"pe"},
-  {name:"Чили",code:"cl"},{name:"Венесуэла",code:"ve"},
-  {name:"Боливия",code:"bo"},{name:"Парагвай",code:"py"},
-  {name:"Уругвай",code:"uy"},{name:"Эквадор",code:"ec"},
-  {name:"Гайана",code:"gy"},{name:"Суринам",code:"sr"},
-  {name:"Австралия",code:"au"},{name:"Новая Зеландия",code:"nz"},
-  {name:"Папуа — Новая Гвинея",code:"pg"},{name:"Фиджи",code:"fj"},
-  {name:"Соломоновы Острова",code:"sb"},{name:"Вануату",code:"vu"},
-  {name:"Самоа",code:"ws"},{name:"Кирибати",code:"ki"},
-  {name:"Тонга",code:"to"},{name:"Микронезия",code:"fm"},
-  {name:"Палау",code:"pw"},{name:"Маршалловы Острова",code:"mh"},
-  {name:"Науру",code:"nr"},{name:"Тувалу",code:"tv"},
-];
+// Country list is loaded from flags.json (single source of truth, shared
+// with V2/V3), which carries both the Russian ("name") and English
+// ("name_en") names for every flag. This is what makes the answer options
+// follow the site language switcher instead of always staying in Russian.
+let COUNTRIES = [];
+
+function getLang() {
+  const l = localStorage.getItem('site_lang');
+  return (window.__I18N__ && window.__I18N__[l]) ? l : 'ru';
+}
+
+function t(key, fallback) {
+  const dict = (window.__I18N__ && window.__I18N__[getLang()]) || {};
+  return dict[key] !== undefined ? dict[key] : fallback;
+}
+
+function localizedName(country) {
+  if (!country) return '';
+  return getLang() === 'en' ? (country.name_en || country.name) : country.name;
+}
 
 function shuffle(arr) {
   const a = [...arr];
@@ -192,6 +111,7 @@ async function getFlagsMap() {
   if (!res.ok) throw new Error('Не удалось загрузить flags.json');
   const flags = await res.json();
   flagsMap = new Map(flags.map(f => [f.code, f]));
+  COUNTRIES = flags;
   return flagsMap;
 }
 
@@ -252,9 +172,28 @@ function startTimer() {
 function nextQuestion() {
   if (queue.length === 0) return null;
   const country = queue.pop();
-  const others  = shuffle(COUNTRIES.filter(c => c.name !== country.name)).slice(0, 3);
+  const others  = shuffle(COUNTRIES.filter(c => c.code !== country.code)).slice(0, 3);
   const options = shuffle([...others, country]);
-  return { code: country.code, correct: country.name, options: options.map(c => c.name) };
+  // Store codes only — the displayed text is resolved at render time via
+  // localizedName(), so a question survives a language switch mid-round.
+  return { code: country.code, optionCodes: options.map(c => c.code) };
+}
+
+// Re-renders the flag alt text and the 4 answer-option labels for the
+// current question in whatever language is active right now. Called both
+// when a question loads and again on 'langchange' so an in-progress round
+// updates immediately instead of staying stuck in the old language.
+function renderQuestionLabels() {
+  if (!currentQuestion) return;
+  const correctCountry = flagsMap?.get(currentQuestion.code);
+  const correctName = localizedName(correctCountry);
+
+  flagImg.alt = correctName;
+
+  currentQuestion.optionCodes.forEach((code, i) => {
+    const country = flagsMap?.get(code);
+    optBtns[i].querySelector('.opt-text').textContent = localizedName(country);
+  });
 }
 
 async function loadQuestion() {
@@ -276,38 +215,41 @@ async function loadQuestion() {
 
   currentQuestion = q;
 
-  await applyFlag(currentQuestion.code, currentQuestion.correct);
-
-  currentQuestion.options.forEach((opt, i) => {
-    optBtns[i].querySelector('.opt-text').textContent = opt;
-  });
+  const correctCountry = flagsMap?.get(currentQuestion.code);
+  await applyFlag(currentQuestion.code, localizedName(correctCountry));
+  renderQuestionLabels();
 
   flagStage.classList.remove('flip');
 }
+
+document.addEventListener('langchange', () => {
+  if (screens.game.classList.contains('active')) renderQuestionLabels();
+});
 
 function handleAnswer(idx) {
   if (answered || !currentQuestion) return;
   answered = true;
 
-  const chosen  = currentQuestion.options[idx];
-  const isRight = chosen === currentQuestion.correct;
+  const chosenCode = currentQuestion.optionCodes[idx];
+  const isRight     = chosenCode === currentQuestion.code;
+  const correctName = localizedName(flagsMap?.get(currentQuestion.code));
 
   optBtns.forEach((b, i) => {
     b.disabled = true;
-    const name = currentQuestion.options[i];
-    if (name === currentQuestion.correct) b.classList.add('correct');
-    else if (i === idx && !isRight)        b.classList.add('wrong');
+    const code = currentQuestion.optionCodes[i];
+    if (code === currentQuestion.code) b.classList.add('correct');
+    else if (i === idx && !isRight)     b.classList.add('wrong');
   });
 
   if (isRight) {
     correct++;
     scoreC.textContent = correct;
-    feedback.textContent = '✓ Правильно!';
+    feedback.textContent = t('feedback_correct', '✓ Правильно!');
     feedback.className   = 'feedback correct-fb';
   } else {
     wrong++;
     scoreW.textContent = wrong;
-    feedback.textContent = `✗ Это ${currentQuestion.correct}`;
+    feedback.textContent = `${t('feedback_wrong_prefix', '✗ Это')} ${correctName}`;
     feedback.className   = 'feedback wrong-fb';
   }
 
@@ -327,7 +269,7 @@ function endGame(allDone = false) {
 
   requestAnimationFrame(() => {
     pctFill.style.width = pct + '%';
-    pctText.textContent = pct + '% правильных';
+    pctText.textContent = pct + t('pct_correct_suffix', '% правильных');
   });
 
   const trophy = document.getElementById('result-trophy');
@@ -335,9 +277,15 @@ function endGame(allDone = false) {
 
   const resultTitle = document.querySelector('.result-title');
   if (resultTitle) {
-    resultTitle.textContent = allDone
-      ? '🎉 Все страны пройдены!'
-      : 'Игра окончена!';
+    if (allDone) {
+      // Overrides the default "game over" text — drop data-i18n so a later
+      // language switch doesn't silently revert it back.
+      resultTitle.removeAttribute('data-i18n');
+      resultTitle.textContent = t('result_title_alldone', '🎉 Все страны пройдены!');
+    } else {
+      resultTitle.setAttribute('data-i18n', 'result_title');
+      resultTitle.textContent = t('result_title', 'Игра окончена!');
+    }
   }
 
   const RECORD_KEY = 'v1_record';
@@ -376,15 +324,17 @@ function endGame(allDone = false) {
 }
 
 async function startGame() {
+  try {
+    await getFlagsMap();
+  } catch (err) {
+    console.warn(err);
+  }
   correct = 0; wrong = 0;
   queue   = shuffle(COUNTRIES);
   scoreC.textContent = '0';
   scoreW.textContent = '0';
   show('game');
   startTimer();
-  if (optimizeFlags) {
-    try { await getFlagsMap(); } catch (err) { console.warn(err); }
-  }
   loadQuestion();
 }
 
