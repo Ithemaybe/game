@@ -1,0 +1,100 @@
+.v4-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .85rem;
+  width: 100%;
+  margin-top: .5rem;
+}
+
+.v4-country-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: 1.1rem .6rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+  color: var(--text);
+}
+
+.v4-country-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79,140,255,.15);
+}
+
+.v4-country-flag {
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.v4-country-name {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.v4-country-sub {
+  font-size: .78rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.v4-country-record {
+  margin-top: .25rem;
+  font-size: .72rem;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.game-mode-label {
+  font-size: .85rem;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: -.5rem;
+}
+
+@media (max-width: 560px) {
+  .v4-mode-grid { grid-template-columns: 1fr; }
+}
+
+/* Map styling (shared by all three countries) */
+.ru-map-wrap {
+  margin: 1rem 0 .5rem;
+  padding: .75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  width: 100%;
+}
+
+.ru-map-holder { width: 100%; }
+.ru-map-holder svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.region-path {
+  fill: #232a42;
+  stroke: var(--bg);
+  stroke-width: 0.6;
+  transition: fill .25s ease;
+  cursor: default;
+}
+
+.region-path.filled {
+  fill: var(--accent);
+  animation: tilePopV4 .4s ease;
+}
+
+.region-marker { stroke-width: 1; }
+
+@keyframes tilePopV4 {
+  0%   { fill-opacity: .35; }
+  100% { fill-opacity: 1; }
+}
