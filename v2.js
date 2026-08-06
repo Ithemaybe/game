@@ -25,7 +25,16 @@ function t(key, fallback) {
 function displayName(code) {
   const entry = CODE_TO_ENTRY.get(code);
   if (!entry) return code;
-  return getLang() === 'en' ? (entry.name_en || entry.name) : entry.name;
+  const lang = getLang();
+  if (lang === 'en') return entry.name_en || entry.name;
+  if (lang === 'uk') return entry.name_uk || entry.name;
+  return entry.name;
+}
+
+// Maps the site language to a BCP-47 locale for Date/localeCompare calls.
+function dateLocale() {
+  const lang = getLang();
+  return lang === 'en' ? 'en-US' : lang === 'uk' ? 'uk-UA' : 'ru-RU';
 }
 
 async function getFlagsMap() {
@@ -156,7 +165,43 @@ const ALIASES_EN = {
   kg: ["kyrgyzstan", "kirghizia"],
 };
 
-const COUNTRY_LOOKUP = new Map(); // normalized phrase (ru or en) -> country code
+// Ukrainian aliases/spelling variants, keyed by ISO code. Lets people type
+// country names in Ukrainian in the text/voice modes.
+const ALIASES_UK = {
+  ru: ["рф", "російська федерація"],
+  us: ["сша", "америка", "сполучені штати", "сполучені штати америки", "штати"],
+  gb: ["велика британія", "британія", "англія", "об'єднане королівство", "uk"],
+  ae: ["оае", "об'єднані арабські емірати", "емірати"],
+  cd: ["дрк", "демократична республіка конго", "конго кіншаса", "заїр"],
+  cg: ["конго браззавіль", "республіка конго"],
+  za: ["пар", "південна африка"],
+  cf: ["цар", "центральноафриканська республіка"],
+  cz: ["чехія", "чеська республіка", "чехословаччина"],
+  kp: ["північна корея", "кндр"],
+  kr: ["південна корея", "корея"],
+  mm: ["м'янма", "бірма"],
+  sz: ["есватіні", "свазіленд"],
+  mk: ["північна македонія", "македонія"],
+  tl: ["східний тимор", "тимор лешті"],
+  pg: ["папуа нова гвінея"],
+  ci: ["кот д'івуар", "кот дівуар", "берег слонової кістки"],
+  ba: ["боснія", "герцеговина", "боснія і герцеговина"],
+  tt: ["тринідад"],
+  ag: ["антигуа"],
+  kn: ["сент кітс", "сент-кітс"],
+  vc: ["сент вінсент", "сент-вінсент"],
+  st: ["сан томе", "сан-томе"],
+  sb: ["соломонові острови"],
+  mh: ["маршаллові острови"],
+  fm: ["федеративні штати мікронезії"],
+  ps: ["палестинська автономія"],
+  nl: ["голландія"],
+  by: ["білорусь", "білорусія"],
+  md: ["молдова", "молдавія"],
+  kg: ["киргизстан", "киргизія"],
+};
+
+const COUNTRY_LOOKUP = new Map(); // normalized phrase (ru, en or uk) -> country code
 let MAX_COUNTRY_WORDS = 1;
 let lookupBuilt = false;
 
@@ -165,7 +210,7 @@ function normalizeText(raw) {
     .toLowerCase()
     .replace(/ё/g, 'е')
     .replace(/[—–-]/g, ' ')
-    .replace(/[^a-zа-я0-9\s']/gi, ' ')
+    .replace(/[^a-zа-яіїєґ0-9\s']/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -189,12 +234,16 @@ function buildCountryLookup() {
     if (!entry) continue;
     registerCountryPhrase(entry.name, code);
     if (entry.name_en) registerCountryPhrase(entry.name_en, code);
+    if (entry.name_uk) registerCountryPhrase(entry.name_uk, code);
   }
 
   for (const [code, aliases] of Object.entries(ALIASES_RU)) {
     aliases.forEach(a => registerCountryPhrase(a, code));
   }
   for (const [code, aliases] of Object.entries(ALIASES_EN)) {
+    aliases.forEach(a => registerCountryPhrase(a, code));
+  }
+  for (const [code, aliases] of Object.entries(ALIASES_UK)) {
     aliases.forEach(a => registerCountryPhrase(a, code));
   }
 }
@@ -443,7 +492,7 @@ function saveRecord(count, pct) {
   const banner = document.getElementById('new-record-banner');
 
   if (isNew) {
-    const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+    const date = new Date().toLocaleDateString(dateLocale(), { day: 'numeric', month: 'long' });
     localStorage.setItem(key, JSON.stringify({ count, pct, date }));
     banner.textContent = currentMode === 'voice'
       ? t('new_record_voice', '🎉 Новый рекорд голосовой игры!')
@@ -626,7 +675,7 @@ function endGame(allDone = false) {
     resultTagsEl.appendChild(tag);
   }
 
-  const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  const date = new Date().toLocaleDateString(dateLocale(), { day: 'numeric', month: 'long' });
   const encoded = encodeResultV2({ mode: currentMode, n, pct, total: TOTAL_COUNTRIES, date });
   const base = location.href.replace(/\/[^/]*$/, '/');
   shareUrlEl.value = base + 'v2.html#' + encoded;

@@ -2,7 +2,8 @@
   var STORAGE_KEY = 'site_lang';
   var LANG_META = {
     ru: { flag: '🇷🇺', code: 'RU' },
-    en: { flag: '🇬🇧', code: 'EN' }
+    en: { flag: '🇬🇧', code: 'EN' },
+    uk: { flag: '🇺🇦', code: 'UA' }
   };
 
   var dict = window.__I18N__ || {};
@@ -82,7 +83,7 @@
     curBtn.className = 'lang-btn current';
     curBtn.setAttribute('aria-haspopup', 'listbox');
     curBtn.setAttribute('aria-expanded', 'false');
-    curBtn.setAttribute('aria-label', 'Выбрать язык / Choose language');
+    curBtn.setAttribute('aria-label', 'Выбрать язык / Choose language / Обрати мову');
     curBtn.innerHTML =
       '<span class="lang-flag" id="lang-current-flag"></span>' +
       '<span id="lang-current-code"></span>' +

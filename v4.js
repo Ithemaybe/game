@@ -4,34 +4,57 @@ const MODES = {
   ru: {
     key: 'ru',
     flag: '🇷🇺',
-    title: 'Регионы России',
-    subtitle: 'Впиши как можно больше регионов России за 10 минут. Каждый угаданный регион подсвечивается на карте.',
     total: 85,
     duration: 10 * 60,
-    noun: 'регионов',
     recordKey: 'v4_record_ru',
   },
   us: {
     key: 'us',
     flag: '🇺🇸',
-    title: 'Штаты США',
-    subtitle: 'Впиши как можно больше штатов США за 7 минут. Каждый угаданный штат подсвечивается на карте.',
     total: 51,
     duration: 7 * 60,
-    noun: 'штатов',
     recordKey: 'v4_record_us',
   },
   ua: {
     key: 'ua',
     flag: '🇺🇦',
-    title: 'Области Украины',
-    subtitle: 'Впиши как можно больше областей Украины за 5 минут. Каждая угаданная область подсвечивается на карте.',
     total: 27,
     duration: 5 * 60,
-    noun: 'областей',
     recordKey: 'v4_record_ua',
   },
 };
+
+function getLang() {
+  const l = localStorage.getItem('site_lang');
+  return (window.__I18N__ && window.__I18N__[l]) ? l : 'ru';
+}
+
+function t(key, fallback) {
+  const dict = (window.__I18N__ && window.__I18N__[getLang()]) || {};
+  return dict[key] !== undefined ? dict[key] : fallback;
+}
+
+function dateLocale() {
+  const lang = getLang();
+  return lang === 'en' ? 'en-US' : lang === 'uk' ? 'uk-UA' : 'ru-RU';
+}
+
+// Localized display name for a region entry in whatever language is active.
+function regionDisplayName(region) {
+  if (!region) return '';
+  const lang = getLang();
+  if (lang === 'en') return region.name_en || region.name;
+  if (lang === 'uk') return region.name_uk || region.name;
+  return region.name;
+}
+
+function modeTitle(modeKey) {
+  return t('mode_label_' + modeKey, MODES[modeKey] ? MODES[modeKey].key : modeKey);
+}
+
+function modeNoun(modeKey) {
+  return t('noun_' + modeKey, '');
+}
 
 const CIRCUMFERENCE = 2 * Math.PI * 50;
 
@@ -141,7 +164,7 @@ function updateStats() {
   countCorrectEl.textContent = n;
   pctValEl.textContent = n + ' / ' + currentMode.total;
   progressFillEl.style.width = pct + '%';
-  answeredHeader.textContent = `Введено (${n})`;
+  answeredHeader.textContent = `${t('answered_prefix_v4', 'Введено')} (${n})`;
 }
 
 function addTag(id) {
@@ -149,10 +172,33 @@ function addTag(id) {
   const tag = document.createElement('span');
   tag.className = 'answered-tag';
   tag.dataset.id = id;
-  tag.textContent = region.name;
+  tag.textContent = regionDisplayName(region);
   answeredGrid.appendChild(tag);
   const section = answeredGrid.closest('.answered-section');
   section.scrollTop = section.scrollHeight;
+}
+
+// Re-renders every already-answered tag's label in the current language, plus
+// dynamic labels that were set at runtime (mode badge, stats header, result
+// tags). Called on 'langchange' so a mid-game switch updates immediately.
+function relabelDynamicText() {
+  answeredGrid.querySelectorAll('.answered-tag').forEach(tagEl => {
+    const id = tagEl.dataset.id;
+    if (!id) return;
+    tagEl.textContent = regionDisplayName(regionById.get(id));
+  });
+  resultTagsEl.querySelectorAll('.result-tag').forEach(tagEl => {
+    const id = tagEl.dataset.id;
+    if (!id) return;
+    tagEl.textContent = regionDisplayName(regionById.get(id));
+  });
+  if (currentMode) {
+    updateStats();
+    if (gameModeLabel && (gameActive || gameEnded)) {
+      gameModeLabel.textContent = `${currentMode.flag} ${modeTitle(currentMode.key)}`;
+    }
+  }
+  renderRecordBadges();
 }
 
 let feedbackTimer = null;
@@ -189,12 +235,12 @@ function addRegion(raw) {
 
   if (!id) {
     flashInput('shake');
-    showFeedback('❌ Не найдено', 'err');
+    showFeedback(t('not_found_v4', '❌ Не найдено'), 'err');
     return;
   }
   if (answered.has(id)) {
     flashInput('shake');
-    showFeedback(`🔁 «${regionById.get(id).name}» уже есть!`, 'dup');
+    showFeedback(`🔁 «${regionDisplayName(regionById.get(id))}» ${t('already_added_v4', 'уже есть!')}`, 'dup');
     inputEl.value = '';
     return;
   }
@@ -204,7 +250,7 @@ function addRegion(raw) {
   highlightTile(id);
   updateStats();
   flashInput('glow-correct', 400);
-  showFeedback(`✓ ${regionById.get(id).name}`, 'ok');
+  showFeedback(`✓ ${regionDisplayName(regionById.get(id))}`, 'ok');
   inputEl.value = '';
 
   if (answered.size >= currentMode.total) endGame(true);
@@ -219,7 +265,7 @@ function renderRecordBadges() {
     const el = document.getElementById('record-' + mode.key);
     if (!el) return;
     const saved = JSON.parse(localStorage.getItem(mode.recordKey) || 'null');
-    el.textContent = saved ? `Рекорд: ${saved.count}/${mode.total}` : 'Ещё не сыграно';
+    el.textContent = saved ? `${t('record_prefix_v4', 'Рекорд')}: ${saved.count}/${mode.total}` : t('not_played_v4', 'Ещё не сыграно');
   });
 }
 
@@ -228,7 +274,7 @@ function saveRecord(mode, count, pct) {
   const isNew = !saved || count > saved.count;
   const banner = document.getElementById('new-record-banner');
   if (isNew) {
-    const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+    const date = new Date().toLocaleDateString(dateLocale(), { day: 'numeric', month: 'long' });
     localStorage.setItem(mode.recordKey, JSON.stringify({ count, pct, date }));
     banner?.classList.add('show');
   } else {
@@ -248,6 +294,8 @@ function loadMode(modeKey) {
       if (n) regionLookup.set(n, r.id);
     });
     regionLookup.set(normalizeText(r.name), r.id);
+    if (r.name_en) regionLookup.set(normalizeText(r.name_en), r.id);
+    if (r.name_uk) regionLookup.set(normalizeText(r.name_uk), r.id);
   });
   mapHolder.innerHTML = MAPS[modeKey];
 }
@@ -265,7 +313,7 @@ function startGame(modeKey) {
   feedbackEl.className = 'feedback-toast';
   gameEnded = false;
   gameActive = true;
-  gameModeLabel.textContent = `${currentMode.flag} ${currentMode.title}`;
+  gameModeLabel.textContent = `${currentMode.flag} ${modeTitle(currentMode.key)}`;
   updateStats();
   showScreen('game');
   startTimer();
@@ -289,18 +337,21 @@ function endGame(allDone = false) {
   saveRecord(currentMode, n, pct);
 
   let trophy, title, subtitle;
+  const noun = modeNoun(currentMode.key);
   if (allDone) {
-    trophy = currentMode.flag; title = `Все ${currentMode.noun}!`; subtitle = `Невероятный результат! Ты знаешь все ${currentMode.total} ${currentMode.noun}!`;
+    trophy = currentMode.flag;
+    title = `${t('rt_all_v4_prefix', 'Все')} ${noun}!`;
+    subtitle = `${t('rs_all_v4', 'Невероятный результат! Ты знаешь все')} ${currentMode.total} ${noun}!`;
   } else if (pct >= 70) {
-    trophy = '🏆'; title = 'Легенда географии!'; subtitle = `${n} ${currentMode.noun} — это потрясающе! Ты настоящий эксперт.`;
+    trophy = '🏆'; title = t('rt_70_v4', 'Легенда географии!'); subtitle = `${n} ${noun} ${t('rs_70_v4_suffix', '— это потрясающе! Ты настоящий эксперт.')}`;
   } else if (pct >= 50) {
-    trophy = '🥇'; title = 'Отличный результат!'; subtitle = `${n} из ${currentMode.total} — больше половины! Достойно.`;
+    trophy = '🥇'; title = t('rt_50_v4', 'Отличный результат!'); subtitle = `${n} ${t('rs_50_v4_mid', 'из')} ${currentMode.total} ${t('rs_50_v4_suffix', '— больше половины! Достойно.')}`;
   } else if (pct >= 30) {
-    trophy = '🥈'; title = 'Хороший результат!'; subtitle = `${n} ${currentMode.noun} — неплохо, но есть куда расти!`;
+    trophy = '🥈'; title = t('rt_30_v4', 'Хороший результат!'); subtitle = `${n} ${noun} ${t('rs_30_v4_suffix', '— неплохо, но есть куда расти!')}`;
   } else if (pct >= 15) {
-    trophy = '🌐'; title = 'Неплохое начало!'; subtitle = `${n} ${currentMode.noun} — попробуй ещё раз, ты можешь лучше!`;
+    trophy = '🌐'; title = t('rt_15_v4', 'Неплохое начало!'); subtitle = `${n} ${noun} ${t('rs_15_v4_suffix', '— попробуй ещё раз, ты можешь лучше!')}`;
   } else {
-    trophy = '🗺️'; title = 'Время вышло!'; subtitle = `${n} ${currentMode.noun} — в следующий раз узнаешь больше!`;
+    trophy = '🗺️'; title = t('rt_0_v4', 'Время вышло!'); subtitle = `${n} ${noun} ${t('rs_0_v4_suffix', '— в следующий раз узнаешь больше!')}`;
   }
 
   resultTrophyEl.textContent = trophy;
@@ -308,11 +359,13 @@ function endGame(allDone = false) {
   resultSubEl.textContent    = subtitle;
 
   resultTagsEl.innerHTML = '';
-  const sorted = [...answered].map(id => regionById.get(id)).sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+  const lang = getLang();
+  const sorted = [...answered].map(id => regionById.get(id)).sort((a, b) => regionDisplayName(a).localeCompare(regionDisplayName(b), lang));
   for (const r of sorted) {
     const tag = document.createElement('span');
     tag.className = 'result-tag';
-    tag.textContent = r.name;
+    tag.dataset.id = r.id;
+    tag.textContent = regionDisplayName(r);
     resultTagsEl.appendChild(tag);
   }
 }
@@ -329,5 +382,6 @@ submitBtn?.addEventListener('click', handleSubmit);
 inputEl?.addEventListener('keydown', e => {
   if (e.key === 'Enter') handleSubmit();
 });
-
 renderRecordBadges();
+
+document.addEventListener('langchange', relabelDynamicText);

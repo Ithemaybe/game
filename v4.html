@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style-v2.css?v=4">
 <link rel="stylesheet" href="v4.css">
+<link rel="stylesheet" href="lang-switcher.css">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap"></noscript>
@@ -31,10 +32,10 @@
 <div class="wrapper">
 
   <div id="select-screen" class="screen active">
-    <div class="badge-v2">✦ РЕГИОНЫ МИРА</div>
+    <div class="badge-v2" data-i18n="badge_v4">✦ РЕГИОНЫ МИРА</div>
     <div class="hero-icon">🗺️</div>
-    <h1 class="hero-title">Регионы<br><span>мира</span></h1>
-    <p class="hero-sub">
+    <h1 class="hero-title" data-i18n-html="hero_title_v4">Регионы<br><span>мира</span></h1>
+    <p class="hero-sub" data-i18n-html="hero_sub_v4">
       Впиши как можно больше регионов на время — каждый угаданный регион подсвечивается на настоящей карте.
       Пиши на русском, английском или украинском — как удобнее.
     </p>
@@ -42,22 +43,22 @@
     <div class="v4-mode-grid">
       <button class="v4-country-card" data-start-mode="ru" type="button">
         <span class="v4-country-flag">🇷🇺</span>
-        <span class="v4-country-name">Россия</span>
-        <span class="v4-country-sub">85 регионов · 10 минут</span>
+        <span class="v4-country-name" data-i18n="mode_ru_name">Россия</span>
+        <span class="v4-country-sub" data-i18n="mode_ru_sub">85 регионов · 10 минут</span>
         <span class="v4-country-record" id="record-ru">—</span>
       </button>
 
       <button class="v4-country-card" data-start-mode="us" type="button">
         <span class="v4-country-flag">🇺🇸</span>
-        <span class="v4-country-name">США</span>
-        <span class="v4-country-sub">51 штат · 7 минут</span>
+        <span class="v4-country-name" data-i18n="mode_us_name">США</span>
+        <span class="v4-country-sub" data-i18n="mode_us_sub">51 штат · 7 минут</span>
         <span class="v4-country-record" id="record-us">—</span>
       </button>
 
       <button class="v4-country-card" data-start-mode="ua" type="button">
         <span class="v4-country-flag">🇺🇦</span>
-        <span class="v4-country-name">Украина</span>
-        <span class="v4-country-sub">27 областей · 5 минут</span>
+        <span class="v4-country-name" data-i18n="mode_ua_name">Украина</span>
+        <span class="v4-country-sub" data-i18n="mode_ua_sub">27 областей · 5 минут</span>
         <span class="v4-country-record" id="record-ua">—</span>
       </button>
     </div>
@@ -68,7 +69,7 @@
 
     <div class="game-header">
       <div class="stat-box">
-        <span class="stat-label">Угадано</span>
+        <span class="stat-label" data-i18n="stat_correct_v4">Угадано</span>
         <span class="stat-val count-correct" id="count-correct">0</span>
       </div>
       <div class="timer-ring" id="timer-ring">
@@ -86,7 +87,7 @@
         <span id="timer-text">10:00</span>
       </div>
       <div class="stat-box">
-        <span class="stat-label">Прогресс</span>
+        <span class="stat-label" data-i18n="progress_label_v4">Прогресс</span>
         <span class="stat-val count-dup" id="pct-val">0 / 0</span>
       </div>
     </div>
@@ -100,12 +101,13 @@
         type="text"
         class="country-input"
         id="region-input"
+        data-i18n-placeholder="input_placeholder_v4"
         placeholder="Название на RU / EN / UA..."
         autocomplete="off"
         autocorrect="off"
         spellcheck="false"
       >
-      <button class="submit-btn" id="submit-btn">Ввести</button>
+      <button class="submit-btn" id="submit-btn" data-i18n="btn_submit_v4">Ввести</button>
     </div>
 
     <div class="feedback-toast" id="feedback-toast"></div>
@@ -120,8 +122,8 @@
     </div>
 
     <div style="display:flex;gap:.6rem;justify-content:center;margin-top:.75rem;flex-wrap:wrap;">
-      <button class="btn-secondary" id="btn-back-select" type="button">← Выбрать другой регион</button>
-      <button class="btn-secondary" id="btn-giveup" type="button">Завершить игру</button>
+      <button class="btn-secondary" id="btn-back-select" type="button" data-i18n="btn_back_select_v4">← Выбрать другой регион</button>
+      <button class="btn-secondary" id="btn-giveup" type="button" data-i18n="btn_giveup_v4">Завершить игру</button>
     </div>
   </div>
 
@@ -129,30 +131,30 @@
     <div class="result-trophy" id="result-trophy">🏆</div>
     <h2 class="result-title" id="result-title">Время вышло!</h2>
     <p class="result-subtitle" id="result-subtitle"></p>
-    <div class="new-record-banner" id="new-record-banner">
+    <div class="new-record-banner" id="new-record-banner" data-i18n="new_record_v4">
       🎉 Новый личный рекорд!
     </div>
 
     <div class="result-stats">
       <div class="rs-box rs-correct">
         <div class="rs-num" id="res-correct">0</div>
-        <div class="rs-label">Угадано</div>
+        <div class="rs-label" data-i18n="rs_correct_v4">Угадано</div>
       </div>
       <div class="rs-divider">|</div>
       <div class="rs-box rs-total">
         <div class="rs-num" id="res-pct">0%</div>
-        <div class="rs-label">От всех</div>
+        <div class="rs-label" data-i18n="rs_ofall_v4">От всех</div>
       </div>
     </div>
 
     <div class="result-countries">
-      <div class="result-countries-header">Твои ответы</div>
+      <div class="result-countries-header" data-i18n="your_answers_v4">Твои ответы</div>
       <div class="result-tags" id="result-tags"></div>
     </div>
 
     <div style="display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;">
-      <button class="btn-primary" id="btn-again">Играть снова</button>
-      <button class="btn-secondary" id="btn-back-select-2" type="button">← Другой регион</button>
+      <button class="btn-primary" id="btn-again" data-i18n="btn_again_v4">Играть снова</button>
+      <button class="btn-secondary" id="btn-back-select-2" type="button" data-i18n="btn_back_select2_v4">← Другой регион</button>
     </div>
   </div>
 
@@ -160,5 +162,155 @@
 
 <script src="v4-data.js"></script>
 <script src="v4.js" defer></script>
+<script>
+window.__I18N__ = {
+  ru: {
+    __title: 'Регионы мира — Россия, США, Украина на время',
+    badge_v4: '✦ РЕГИОНЫ МИРА',
+    hero_title_v4: 'Регионы<br><span>мира</span>',
+    hero_sub_v4: 'Впиши как можно больше регионов на время — каждый угаданный регион подсвечивается на настоящей карте. Пиши на русском, английском или украинском — как удобнее.',
+    mode_ru_name: 'Россия',
+    mode_ru_sub: '85 регионов · 10 минут',
+    mode_us_name: 'США',
+    mode_us_sub: '51 штат · 7 минут',
+    mode_ua_name: 'Украина',
+    mode_ua_sub: '27 областей · 5 минут',
+    stat_correct_v4: 'Угадано',
+    progress_label_v4: 'Прогресс',
+    input_placeholder_v4: 'Название на RU / EN / UA...',
+    btn_submit_v4: 'Ввести',
+    answered_prefix_v4: 'Введено',
+    btn_back_select_v4: '← Выбрать другой регион',
+    btn_giveup_v4: 'Завершить игру',
+    new_record_v4: '🎉 Новый личный рекорд!',
+    rs_correct_v4: 'Угадано',
+    rs_ofall_v4: 'От всех',
+    your_answers_v4: 'Твои ответы',
+    btn_again_v4: 'Играть снова',
+    btn_back_select2_v4: '← Другой регион',
+    not_found_v4: '❌ Не найдено',
+    already_added_v4: 'уже есть!',
+    record_prefix_v4: 'Рекорд',
+    not_played_v4: 'Ещё не сыграно',
+    mode_label_ru: 'Регионы России',
+    mode_label_us: 'Штаты США',
+    mode_label_ua: 'Области Украины',
+    noun_ru: 'регионов',
+    noun_us: 'штатов',
+    noun_ua: 'областей',
+    rt_all_v4_prefix: 'Все',
+    rs_all_v4: 'Невероятный результат! Ты знаешь все',
+    rt_70_v4: 'Легенда географии!',
+    rs_70_v4_suffix: '— это потрясающе! Ты настоящий эксперт.',
+    rt_50_v4: 'Отличный результат!',
+    rs_50_v4_mid: 'из',
+    rs_50_v4_suffix: '— больше половины! Достойно.',
+    rt_30_v4: 'Хороший результат!',
+    rs_30_v4_suffix: '— неплохо, но есть куда расти!',
+    rt_15_v4: 'Неплохое начало!',
+    rs_15_v4_suffix: '— попробуй ещё раз, ты можешь лучше!',
+    rt_0_v4: 'Время вышло!',
+    rs_0_v4_suffix: '— в следующий раз узнаешь больше!'
+  },
+  en: {
+    __title: 'World Regions — Russia, USA, Ukraine time challenge',
+    badge_v4: '✦ WORLD REGIONS',
+    hero_title_v4: 'World<br><span>regions</span>',
+    hero_sub_v4: 'Type as many regions as you can before time runs out — every correct region lights up on a real map. Write in Russian, English, or Ukrainian — whichever is easier.',
+    mode_ru_name: 'Russia',
+    mode_ru_sub: '85 regions · 10 minutes',
+    mode_us_name: 'USA',
+    mode_us_sub: '51 states · 7 minutes',
+    mode_ua_name: 'Ukraine',
+    mode_ua_sub: '27 oblasts · 5 minutes',
+    stat_correct_v4: 'Correct',
+    progress_label_v4: 'Progress',
+    input_placeholder_v4: 'Name in RU / EN / UA...',
+    btn_submit_v4: 'Submit',
+    answered_prefix_v4: 'Entered',
+    btn_back_select_v4: '← Choose another region',
+    btn_giveup_v4: 'Finish game',
+    new_record_v4: '🎉 New personal best!',
+    rs_correct_v4: 'Correct',
+    rs_ofall_v4: 'Of all',
+    your_answers_v4: 'Your answers',
+    btn_again_v4: 'Play again',
+    btn_back_select2_v4: '← Another region',
+    not_found_v4: '❌ Not found',
+    already_added_v4: 'already in!',
+    record_prefix_v4: 'Best',
+    not_played_v4: 'Not played yet',
+    mode_label_ru: 'Regions of Russia',
+    mode_label_us: 'US States',
+    mode_label_ua: 'Oblasts of Ukraine',
+    noun_ru: 'regions',
+    noun_us: 'states',
+    noun_ua: 'oblasts',
+    rt_all_v4_prefix: 'All',
+    rs_all_v4: 'Incredible result! You know all',
+    rt_70_v4: 'Geography legend!',
+    rs_70_v4_suffix: '— that\u2019s amazing! A true expert.',
+    rt_50_v4: 'Great result!',
+    rs_50_v4_mid: 'out of',
+    rs_50_v4_suffix: '— more than half! Well done.',
+    rt_30_v4: 'Good result!',
+    rs_30_v4_suffix: '— not bad, but there\u2019s room to grow!',
+    rt_15_v4: 'Decent start!',
+    rs_15_v4_suffix: '— try again, you can do better!',
+    rt_0_v4: 'Time\u2019s up!',
+    rs_0_v4_suffix: '— you\u2019ll know more next time!'
+  },
+  uk: {
+    __title: 'Регіони світу — Росія, США, Україна на час',
+    badge_v4: '✦ РЕГІОНИ СВІТУ',
+    hero_title_v4: 'Регіони<br><span>світу</span>',
+    hero_sub_v4: 'Впиши якомога більше регіонів на час — кожен вгаданий регіон підсвічується на справжній карті. Пиши російською, англійською або українською — як зручніше.',
+    mode_ru_name: 'Росія',
+    mode_ru_sub: '85 регіонів · 10 хвилин',
+    mode_us_name: 'США',
+    mode_us_sub: '51 штат · 7 хвилин',
+    mode_ua_name: 'Україна',
+    mode_ua_sub: '27 областей · 5 хвилин',
+    stat_correct_v4: 'Вгадано',
+    progress_label_v4: 'Прогрес',
+    input_placeholder_v4: 'Назва на RU / EN / UA...',
+    btn_submit_v4: 'Ввести',
+    answered_prefix_v4: 'Введено',
+    btn_back_select_v4: '← Обрати інший регіон',
+    btn_giveup_v4: 'Завершити гру',
+    new_record_v4: '🎉 Новий особистий рекорд!',
+    rs_correct_v4: 'Вгадано',
+    rs_ofall_v4: 'Від усіх',
+    your_answers_v4: 'Твої відповіді',
+    btn_again_v4: 'Грати знову',
+    btn_back_select2_v4: '← Інший регіон',
+    not_found_v4: '❌ Не знайдено',
+    already_added_v4: 'вже є!',
+    record_prefix_v4: 'Рекорд',
+    not_played_v4: 'Ще не зіграно',
+    mode_label_ru: 'Регіони Росії',
+    mode_label_us: 'Штати США',
+    mode_label_ua: 'Області України',
+    noun_ru: 'регіонів',
+    noun_us: 'штатів',
+    noun_ua: 'областей',
+    rt_all_v4_prefix: 'Усі',
+    rs_all_v4: 'Неймовірний результат! Ти знаєш усі',
+    rt_70_v4: 'Легенда географії!',
+    rs_70_v4_suffix: '— це вражає! Ти справжній експерт.',
+    rt_50_v4: 'Чудовий результат!',
+    rs_50_v4_mid: 'із',
+    rs_50_v4_suffix: '— більше половини! Гідно.',
+    rt_30_v4: 'Хороший результат!',
+    rs_30_v4_suffix: '— непогано, але є куди рости!',
+    rt_15_v4: 'Непоганий початок!',
+    rs_15_v4_suffix: '— спробуй ще раз, ти можеш краще!',
+    rt_0_v4: 'Час вийшов!',
+    rs_0_v4_suffix: '— наступного разу дізнаєшся більше!'
+  }
+};
+</script>
+<script src="lang-switcher.js"></script>
+<script src="mode-switcher.js?v=1" defer></script>
 </body>
 </html>

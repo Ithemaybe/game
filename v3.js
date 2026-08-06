@@ -62,6 +62,33 @@ const ALIASES_EN = {
   kg: ['kyrgyzstan', 'kirghizia'],
 };
 
+// Ukrainian aliases/spelling variants, keyed by ISO code — lets people type
+// country names in Ukrainian too.
+const ALIASES_UK = {
+  ru: ['рф', 'російська федерація'],
+  us: ['сша', 'америка', 'сполучені штати', 'сполучені штати америки'],
+  gb: ['британія', 'англія', 'об\'єднане королівство', 'uk'],
+  ae: ['оае', 'об\'єднані арабські емірати', 'емірати'],
+  cd: ['дрк', 'демократична республіка конго', 'конго кіншаса', 'заїр'],
+  cg: ['конго браззавіль', 'республіка конго'],
+  za: ['пар', 'південна африка'],
+  cf: ['цар', 'центральноафриканська республіка'],
+  cz: ['чеська республіка'],
+  kp: ['кндр'],
+  kr: ['корея'],
+  mm: ['бірма'],
+  sz: ['свазіленд'],
+  mk: ['македонія'],
+  tl: ['тимор лешті'],
+  pg: ['папуа нова гвінея'],
+  ci: ['кот дівуар', 'берег слонової кістки'],
+  ba: ['боснія'],
+  nl: ['голландія'],
+  by: ['білорусь', 'білорусія'],
+  md: ['молдова', 'молдавія'],
+  kg: ['киргизстан', 'киргизія'],
+};
+
 let countries = [];
 let deck = [];
 let index = 0;
@@ -77,7 +104,16 @@ let lookupBuilt = false;
 
 function displayName(country) {
   if (!country) return '';
-  return getLang() === 'en' ? (country.name_en || country.name) : country.name;
+  const lang = getLang();
+  if (lang === 'en') return country.name_en || country.name;
+  if (lang === 'uk') return country.name_uk || country.name;
+  return country.name;
+}
+
+// Maps the site language to a BCP-47 locale for Date/localeCompare calls.
+function dateLocale() {
+  const lang = getLang();
+  return lang === 'en' ? 'en-US' : lang === 'uk' ? 'uk-UA' : 'ru-RU';
 }
 
 function encodeResultV3(data) {
@@ -110,7 +146,7 @@ function showScreen(name) {
 }
 
 function normalize(value) {
-  return String(value || '').toLowerCase().replace(/ё/g,'е').replace(/[—–-]/g,' ').replace(/[^a-zа-я0-9\s']/gi,' ').replace(/\s+/g,' ').trim();
+  return String(value || '').toLowerCase().replace(/ё/g,'е').replace(/[—–-]/g,' ').replace(/[^a-zа-яіїєґ0-9\s']/gi,' ').replace(/\s+/g,' ').trim();
 }
 
 function registerPhrase(phrase, code) {
@@ -124,11 +160,15 @@ function buildCountryLookup() {
   for (const c of countries) {
     registerPhrase(c.name, c.code);
     if (c.name_en) registerPhrase(c.name_en, c.code);
+    if (c.name_uk) registerPhrase(c.name_uk, c.code);
   }
   for (const [code, aliases] of Object.entries(ALIASES_RU)) {
     aliases.forEach(a => registerPhrase(a, code));
   }
   for (const [code, aliases] of Object.entries(ALIASES_EN)) {
+    aliases.forEach(a => registerPhrase(a, code));
+  }
+  for (const [code, aliases] of Object.entries(ALIASES_UK)) {
     aliases.forEach(a => registerPhrase(a, code));
   }
 }
@@ -265,7 +305,7 @@ function endGame(allDone = false) {
   const old = JSON.parse(localStorage.getItem('v3_record') || 'null');
   const isRecord = !old || correct > old.correct || (correct === old.correct && pct > old.pct);
   if (isRecord) {
-    localStorage.setItem('v3_record', JSON.stringify({ correct, total:countries.length, pct, date:new Date().toLocaleDateString('ru-RU') }));
+    localStorage.setItem('v3_record', JSON.stringify({ correct, total:countries.length, pct, date:new Date().toLocaleDateString(dateLocale()) }));
   }
 
   $('res-correct').textContent = correct;
@@ -280,7 +320,7 @@ function endGame(allDone = false) {
 
   const shareData = {
     correct, wrong, total: deck.length, pct, allDone,
-    date: new Date().toLocaleDateString('ru-RU'),
+    date: new Date().toLocaleDateString(dateLocale()),
   };
   const url = new URL(location.href);
   url.search = '';

@@ -38,7 +38,16 @@ function t(key, fallback) {
 
 function localizedName(country) {
   if (!country) return '';
-  return getLang() === 'en' ? (country.name_en || country.name) : country.name;
+  const lang = getLang();
+  if (lang === 'en') return country.name_en || country.name;
+  if (lang === 'uk') return country.name_uk || country.name;
+  return country.name;
+}
+
+// Maps the site language to a BCP-47 locale for Date/localeCompare calls.
+function dateLocale() {
+  const lang = getLang();
+  return lang === 'en' ? 'en-US' : lang === 'uk' ? 'uk-UA' : 'ru-RU';
 }
 
 function shuffle(arr) {
@@ -289,7 +298,7 @@ function endGame(allDone = false) {
   }
 
   const RECORD_KEY = 'v1_record';
-  const date = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  const date = new Date().toLocaleDateString(dateLocale(), { day: 'numeric', month: 'long' });
 
   localStorage.setItem('v1_last', JSON.stringify({ correct, wrong, total, pct, date }));
 
