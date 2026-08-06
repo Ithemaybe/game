@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="style-v2.css?v=4">
-<link rel="stylesheet" href="donate-widget.css">
+<link rel="stylesheet" href="telegram-widget.css">
 <link rel="stylesheet" href="lang-switcher.css">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500&display=swap" media="print" onload="this.media='all'">
@@ -100,9 +100,10 @@
         <span class="mode-card-icon">⌨️</span>
         <span class="mode-card-title" data-i18n="mode_text">1. Текстовая игра</span>
       </button>
-      <button class="mode-card mode-card-voice" id="btn-start-voice" type="button">
+      <button class="mode-card mode-card-voice mode-card-closed" id="btn-start-voice" type="button" disabled aria-disabled="true">
         <span class="mode-card-icon">🎙️</span>
         <span class="mode-card-title" data-i18n="mode_voice">2. Голосовая игра</span>
+        <span class="mode-card-closed-badge" data-i18n="mode_closed">Закрыто</span>
       </button>
     </div>
 
@@ -230,6 +231,7 @@ window.__I18N__ = {
     optimize_toggle: 'Оптимизировать загрузку флагов',
     mode_text: '1. Текстовая игра',
     mode_voice: '2. Голосовая игра',
+    mode_closed: 'Закрыто',
     stat_correct: 'Угадано',
     stat_of195: 'Из 195',
     mode_text_short: 'Текстовая игра',
@@ -294,6 +296,7 @@ window.__I18N__ = {
     optimize_toggle: 'Optimize flag loading',
     mode_text: '1. Text mode',
     mode_voice: '2. Voice mode',
+    mode_closed: 'Closed',
     stat_correct: 'Named',
     stat_of195: 'Out of 195',
     mode_text_short: 'Text mode',
@@ -358,6 +361,7 @@ window.__I18N__ = {
     optimize_toggle: 'Оптимізувати завантаження прапорів',
     mode_text: '1. Текстова гра',
     mode_voice: '2. Голосова гра',
+    mode_closed: 'Закрито',
     stat_correct: 'Вгадано',
     stat_of195: 'Із 195',
     mode_text_short: 'Текстова гра',
@@ -416,6 +420,6 @@ window.__I18N__ = {
 <script src="lang-switcher.js"></script>
 
 <script src="mode-switcher.js?v=1" defer></script>
-<script src="donate-widget.js" defer></script>
+<script src="telegram-widget.js" defer></script>
 </body>
 </html>

@@ -809,7 +809,12 @@ function toggleVoiceInput() {
 }
 
 btnStartText?.addEventListener('click', () => startGame('text'));
-btnStartVoice?.addEventListener('click', () => startGame('voice'));
+// Voice mode is temporarily closed — the button is disabled in the markup,
+// but guard here too in case it's ever reached via keyboard/script.
+btnStartVoice?.addEventListener('click', (e) => {
+  if (btnStartVoice.disabled) { e.preventDefault(); return; }
+  startGame('voice');
+});
 btnAgain?.addEventListener('click', () => startGame(currentMode));
 submitBtn?.addEventListener('click', handleSubmit);
 micBtn?.addEventListener('click', toggleVoiceInput);
