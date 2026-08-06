@@ -105,6 +105,7 @@ npx serve .
 ---
 
 <p align="center">Сделано с ❤️ — <a href="https://github.com/Ithemaybe">Ithemaybe</a></p>
+<p align="center">Наш тгк — <a href="https://t.me/sptf_team">sptfTeam</a></p>
 
 ### Управление режимами и пропуск
 
